@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Pismery Blog</title>
+    <link>https://Pismery.github.io/categories/</link>
+    <description>Recent content in Categories on Pismery Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+    
+	<atom:link href="https://Pismery.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Java</title>
+      <link>https://Pismery.github.io/categories/java/</link>
+      <pubDate>Thu, 21 Mar 2019 22:11:09 +0800</pubDate>
+      
+      <guid>https://Pismery.github.io/categories/java/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://Pismery.github.io/img/favicon.jpg">
+
+    <title>PowerMock使用-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://Pismery.github.io/post/java/test/powermock%E4%BD%BF%E7%94%A8/">
+
+    <link rel="stylesheet" href="https://Pismery.github.io/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://Pismery.github.io/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://Pismery.github.io/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="https://Pismery.github.io/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://Pismery.github.io/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="https://Pismery.github.io/js/jquery.min.js"></script>
+    
+    
+    <script src="https://Pismery.github.io/js/bootstrap.min.js"></script>
+    
+    
+    <script src="https://Pismery.github.io/js/hux-blog.min.js"></script>
+    <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">Java</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        <a class="tag" href="/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                    </div>
+                    <h1>PowerMock使用</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Wednesday, November 28, 2018
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#powermock">PowerMock</a></li>
+</ul>
+</nav>
+                
+                <h1 id="powermock">PowerMock</h1>
+
+<p>PowerMockito的优势在于能够mock静态方法，final方法，私有方法，构造函数，相当于弥补了mockito的不足。</p>
+
+<blockquote>
+<p>基本使用</p>
+</blockquote>
+
+<p>powerMockito具有两个重要的注解：</p>
+
+<ul>
+<li>@RunWith(PowerMockRunner.class)</li>
+<li>@PrepareForTest( { ClassWithEgStaticMethod.class })</li>
+</ul>
+
+<p>两个注解当使用时必须成对使用。当需要Mock(静态,final，private)方法和使用whenNew方法时，需要使用这两个注解，其中PrepareForTest中的参数是被mock的方法所在的类。</p>
+
+<blockquote>
+<p>注意事项</p>
+</blockquote>
+
+<ol>
+<li>因为兼容性Mockito要2.10.0以上的版本 并且powermock中的api-mockito2使用2.0以上的版本</li>
+</ol>
+
+<blockquote>
+<p>示例</p>
+</blockquote>
+
+<pre><code>## pom.xml
+&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;2.0.3.RELEASE&lt;/version&gt;
+&lt;/parent&gt;
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    
+        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;  ## Mockito-&gt;2.15.0
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.powermock&lt;/groupId&gt;
+        &lt;artifactId&gt;powermock-module-junit4&lt;/artifactId&gt;
+        &lt;version&gt;2.0.0-RC.4&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.powermock&lt;/groupId&gt;
+        &lt;artifactId&gt;powermock-api-mockito2&lt;/artifactId&gt;  ## 注意是mockito2不是mockito
+        &lt;version&gt;2.0.0-RC.4&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+
+</code></pre>
+
+<pre><code>public class Employee {
+    private String fName;
+
+    public String getfName() {
+        return fName;
+    }
+
+    public void setfName(String fName) {
+        this.fName = fName;
+    }
+}
+
+public class EmployeeService {
+    public EmployeeService() {
+
+    }
+
+    private String getEmployeeCount(Employee employee) {
+        throw new UnsupportedOperationException();
+    }
+
+    public static String updateEmployee(Employee employee) {
+        return &quot;&quot;;
+    }
+
+    public final String saveEmployee(Employee employee) {
+        return &quot;&quot;;
+    }
+
+    public static final String deleteEmployee(Employee employee) {
+        return &quot;&quot;;
+    }
+
+    public String getEmployeeSum(Employee employee) {
+        return getEmployeeCount(employee);
+    }
+    
+    public String getEmployeeName() {
+        Employee employee = new Employee();
+        return employee.getfName();
+    }
+}
+
+public class EmployeeController {
+    private EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    public void holdLife(Employee employee) {
+        System.out.println(&quot;saveEmployee: &quot;+employeeService.saveEmployee(employee));
+        System.out.println(&quot;getEmployeeSum: &quot;+employeeService.getEmployeeSum(employee));
+        System.out.println(&quot;updateEmployee: &quot;+employeeService.updateEmployee(employee));
+        System.out.println(&quot;deleteEmployee: &quot;+employeeService.deleteEmployee(employee));
+        System.out.println(&quot;getEmployeeName: &quot;+employeeService.getEmployeeName());
+    }
+}
+</code></pre>
+
+<pre><code>## Test
+
+@RunWith(PowerMockRunner.class)
+public class EmployeeControllerTest {
+
+    @Test
+    @PrepareForTest(EmployeeService.class)
+    public void holdLife() throws Exception {
+        EmployeeService employeeService = PowerMockito.mock(EmployeeService.class, Mockito
+                .withSettings()
+                .name(&quot;Mock_EmployeeService&quot;)
+        );
+        PowerMockito.mockStatic(EmployeeService.class);
+        EmployeeController employeeController = new EmployeeController(employeeService);
+        Employee employee = new Employee();
+        employee.setfName(&quot;mock name&quot;);
+
+        //mock private 方法
+        when(employeeService.getEmployeeSum(employee)).thenCallRealMethod();
+        when(employeeService, &quot;getEmployeeCount&quot;,any()).thenReturn(&quot;mock get employee count&quot;);
+
+        //mock new 方法
+        when(employeeService.getEmployeeName()).thenCallRealMethod();
+        whenNew(Employee.class).withNoArguments().thenReturn(employee);
+        //mock final 方法
+        when(employeeService.saveEmployee(employee)).thenReturn(&quot;mock save employee&quot;);
+        //mock static 方法
+        when(EmployeeService.updateEmployee(employee)).thenReturn(&quot;mock update employee&quot;);
+        //mock static final 方法
+        when(EmployeeService.deleteEmployee(employee)).thenReturn(&quot;mock delete employee&quot;);
+
+        employeeController.holdLife(employee);
+
+        Mockito.verify(employeeService).saveEmployee(employee);
+    }
+}
+
+## 结果
+saveEmployee: mock save employee
+getEmployeeSum: mock get employee count
+updateEmployee: mock update employee
+deleteEmployee: mock delete employee
+getEmployeeName: mock name
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/java/util/collectors%E4%BD%BF%E7%94%A8/" data-toggle="tooltip" data-placement="top" title="Collectors使用">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-threadrunnablecallable/" data-toggle="tooltip" data-placement="top" title="并发编程基础-Thread、Runnable、Callable">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+ <span id="/post/java/test/powermock%E4%BD%BF%E7%94%A8/" class="leancloud_visitors" data-flag-title="PowerMock使用">
+   <span class="post-meta-item-text">文章阅读量 </span>
+   <span class="leancloud-visitors-count">1000000</span>
+   <p></p>
+ </span>
+ <div id="vcomments"></div>
+ <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+ <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+ <script type="text/javascript">
+   new Valine({
+       el: '#vcomments' ,
+       appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+       appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+       notify:  false , 
+       verify:  false , 
+       avatar:'identicon', 
+       placeholder: '说点什么吧...',
+       visitor:  true 
+   });
+ </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95" title="排序算法">
+                            排序算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2019
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
