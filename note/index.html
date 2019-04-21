@@ -13,9 +13,9 @@
     <meta name="keyword"  content="Pismery 博客">
     <link rel="shortcut icon" href="https://Pismery.github.io/img/favicon.jpg">
 
-    <title>工具类-博客 | Pismery Liu Blog</title>
+    <title>Notes-博客 | Pismery Liu Blog</title>
 
-    <link rel="canonical" href="https://Pismery.github.io/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/">
+    <link rel="canonical" href="https://Pismery.github.io/note/">
 
     <link rel="stylesheet" href="https://Pismery.github.io/css/iDisqus.min.css"/>
 	
@@ -79,8 +79,6 @@
 		    
                         <li><a href="/top/about/">ABOUT</a></li>
                     
-                        <li><a href="/tags">TAGS</a></li>
-                    
 
                     
                 </ul>
@@ -137,7 +135,6 @@
 
 
 
-  
 <div class="container">
     <div class="row">
         
@@ -150,101 +147,113 @@
             post-container
         ">
             
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">
 
-<div class="post-preview">
-    <a href="https://Pismery.github.io/post/java/util/distinct_demo/">
-        <h2 class="post-title">
-            Distinct_Demo
-        </h2>
-	
-        <div class="post-content-preview">
-    
-        <p>Java 8 去重写法</p>
-    
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Pismery Liu  Thursday 2019 - 03 - 21
-    </p>
-</div>
-<hr>
+<div id="search-searchbar"></div>
+ <div class="post-list" id="search-hits">
+ </div>
 
-<div class="post-preview">
-    <a href="https://Pismery.github.io/post/java/util/%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/">
-        <h2 class="post-title">
-            生成随机数
-        </h2>
-	
-        <div class="post-content-preview">
-    
-        <p>生成随机数工具类</p>
-    
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Pismery Liu  Wednesday 2018 - 12 - 12
-    </p>
-</div>
-<hr>
+<script>
+const search = instantsearch({
+  appId: '',
+  indexName: '',
+  apiKey: ''
+});
 
-<div class="post-preview">
-    <a href="https://Pismery.github.io/post/java/util/exchangeutils/">
-        <h2 class="post-title">
-            ExchangeUtils
-        </h2>
-	
-        <div class="post-content-preview">
-    
-        <p>三种方式实现交换数组中两个数。</p>
-    
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Pismery Liu  Wednesday 2018 - 12 - 12
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="https://Pismery.github.io/post/java/util/collectors%E4%BD%BF%E7%94%A8/">
-        <h2 class="post-title">
-            Collectors使用
-        </h2>
-	
-        <div class="post-content-preview">
-    
-        <p>介绍 Collectors 工具类</p>
-    
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Pismery Liu  Thursday 2018 - 11 - 15
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="https://Pismery.github.io/post/java/util/%E6%97%A5%E6%9C%9F%E7%B1%BB%E6%93%8D%E4%BD%9C/">
-        <h2 class="post-title">
-            日期类操作
-        </h2>
-	
-        <div class="post-content-preview">
-    
-        <p>Java 8 新增日期类基本使用介绍</p>
-    
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Pismery Liu  Wednesday 2018 - 11 - 14
-    </p>
-</div>
-<hr>
+const hitTemplate = function(hit) {
 
 
-            
+  let date = '';
+  if (hit.date) {
+    date = moment.unix(hit.date).format('MMM D, YYYY');
+  }
+  let url = `${hit.url}#${hit.anchor}`;
+  const title = hit._highlightResult.title.value;
+
+  let breadcrumbs = '';
+  if (hit._highlightResult.headings) {
+    breadcrumbs = hit._highlightResult.headings.map(match => {
+      return `<span class="post-breadcrumb">${match.value}</span>`
+    }).join(' > ')
+  }
+
+  let content = "" ; 
+  if (hit._highlightResult.content){
+      content = hit._highlightResult.content.value;
+  }
+  else{
+      content = hit.summary;
+  }
 
 
+  return `
+    <div class="post-item">
+      <span class="post-meta">${date}</span>
+      <h2><a class="post-link" href="${url}">${title}</a></h2>
+      <a href="${url}" class="post-breadcrumbs">${breadcrumbs}</a>
+      <div class="post-snippet">${content}</div>
+    </div>
+  `;
+}
+
+
+search.addWidget(
+  instantsearch.widgets.searchBox({
+    container: '#search-searchbar',
+    placeholder: 'Search into posts...',
+    poweredBy: true // This is required if you're on the free Community plan
+  })
+);
+
+search.addWidget(
+  instantsearch.widgets.hits({
+    container: '#search-hits',
+    templates: {
+      item: hitTemplate
+    }
+  })
+);
+
+search.start();
+</script>
+
+<style>
+.ais-search-box {
+  max-width: 100%;
+  margin-bottom: 15px;
+}
+.post-item {
+  margin-bottom: 30px;
+}
+.post-link .ais-Highlight {
+  color: #111;
+  font-style: normal;
+  text-decoration: underline;
+}
+.post-breadcrumbs {
+  color: #424242;
+  display: block;
+}
+.post-breadcrumb {
+  font-size: 18px;
+  color: #424242;
+}
+.post-breadcrumb .ais-Highlight {
+  font-weight: bold;
+  font-style: normal;
+}
+.post-snippet .ais-Highlight {
+  color: #2a7ae2;
+  font-style: normal;
+  font-weight: bold;
+}
+.post-snippet img {
+  display: none;
+}
+</style>
 
        	</div>
         
@@ -376,8 +385,6 @@
 
 	</div>
 </div>
-
-
 
 
 
