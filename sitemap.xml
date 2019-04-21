@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://Pismery.github.io/post/database/sqlserver/</loc>
+    <lastmod>2019-04-21T21:03:34+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://Pismery.github.io/post/java/util/distinct_demo/</loc>
     <lastmod>2019-03-21T22:11:09+08:00</lastmod>
   </url>
@@ -161,13 +166,13 @@
   
   <url>
     <loc>https://Pismery.github.io/</loc>
-    <lastmod>2019-03-21T22:11:09+08:00</lastmod>
+    <lastmod>2019-04-21T21:03:34+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://Pismery.github.io/post/</loc>
-    <lastmod>2019-03-21T22:11:09+08:00</lastmod>
+    <lastmod>2019-04-21T21:03:34+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -191,6 +196,12 @@
   <url>
     <loc>https://Pismery.github.io/tags/concurrent/</loc>
     <lastmod>2019-03-02T20:47:12+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://Pismery.github.io/tags/database/</loc>
+    <lastmod>2019-04-21T21:03:34+08:00</lastmod>
     <priority>0</priority>
   </url>
   
