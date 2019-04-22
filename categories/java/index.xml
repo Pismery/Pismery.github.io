@@ -6,10 +6,19 @@
     <description>Recent content in Java on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Thu, 21 Mar 2019 22:11:09 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 22 Apr 2019 21:08:54 +0800</lastBuildDate>
     
 	<atom:link href="https://Pismery.github.io/categories/java/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GetParameterName</title>
+      <link>https://Pismery.github.io/post/java/util/getparametername/</link>
+      <pubDate>Mon, 22 Apr 2019 21:08:54 +0800</pubDate>
+      
+      <guid>https://Pismery.github.io/post/java/util/getparametername/</guid>
+      <description>&lt;p&gt;近期，自己在实现 Spring MVC 功能时，发现通过 Java 反射不能够获取到方法的参数名称；因此，查阅了一下资料，特此记录&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Distinct_Demo</title>

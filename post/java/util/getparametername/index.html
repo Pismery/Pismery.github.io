@@ -13,9 +13,9 @@
     <meta name="keyword"  content="Pismery 博客">
     <link rel="shortcut icon" href="https://Pismery.github.io/img/favicon.jpg">
 
-    <title>Sqlserver-博客 | Pismery Liu Blog</title>
+    <title>GetParameterName-博客 | Pismery Liu Blog</title>
 
-    <link rel="canonical" href="https://Pismery.github.io/post/database/sqlserver/">
+    <link rel="canonical" href="https://Pismery.github.io/post/java/util/getparametername/">
 
     <link rel="stylesheet" href="https://Pismery.github.io/css/iDisqus.min.css"/>
 	
@@ -134,12 +134,16 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/database" title="database">
-                            database
+                        <a class="tag" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        <a class="tag" href="/tags/java" title="Java">
+                            Java
                         </a>
                         
                     </div>
-                    <h1>Sqlserver</h1>
+                    <h1>GetParameterName</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
 			Posted by 
@@ -147,7 +151,7 @@
 			    Pismery Liu
 			 
 			on 
-			Sunday, April 21, 2019
+			Monday, April 22, 2019
                         
                     </span>
                 </div>
@@ -175,390 +179,200 @@
                 </header>
                 <nav id="TableOfContents">
 <ul>
-<li>
+<li><a href="#获取参数名称">获取参数名称</a>
 <ul>
-<li><a href="#view-操作">View 操作</a></li>
-<li><a href="#procedure-操作">Procedure 操作</a></li>
-<li><a href="#sequence-操作">Sequence 操作</a></li>
-<li><a href="#table-操作">Table 操作</a></li>
-<li><a href="#自带函数操作">自带函数操作</a>
-<ul>
-<li><a href="#查询表的数据行数">查询表的数据行数</a></li>
-<li><a href="#跨服务器跨数据库表传输操作">跨服务器跨数据库表传输操作</a></li>
-<li><a href="#date-函数">Date 函数</a></li>
-<li><a href="#convert-用法">Convert 用法</a></li>
-<li><a href="#date-to-string">Date to string</a></li>
-</ul></li>
+<li><a href="#设置编译器参数">设置编译器参数</a></li>
+<li><a href="#使用-javaassist">使用 javaassist</a></li>
+<li><a href="#使用-asm5">使用 Asm5</a></li>
 </ul></li>
 </ul>
 </nav>
                 
-                <p>sqlServer 的基本操作，用于日常工作查询；</p>
+                <p>近期，自己在实现 Spring MVC 功能时，发现通过 Java 反射不能够获取到方法的参数名称；因此，查阅了一下资料，特此记录</p>
 
-<h2 id="view-操作">View 操作</h2>
+<h1 id="获取参数名称">获取参数名称</h1>
 
-<pre><code class="language-sql">-- create view
-IF EXISTS (select 1 from sys.objects where name= 'VMName' and type = 'V')
-    DROP VIEW VMName
-GO
-CREATE VIEW VMName AS
-SELECT * FROM TableName WHERE ....
-GO
+<p>Java 文件经过编译生成的 class 文件，将方法的参数名称丢弃了；这也就导致通过 Java 的反射机制无法直接获取到方法的参数名；Java 8 以后可通过设置编译器参数 -parameters 能够编译生成的 class 文件包含参数表，这样就能够通过反射机制直接获取参数名；若没有 Java 8，则可通过字节码工具包 ASM 或 Javassist 获取；</p>
 
--- drop view
-IF EXISTS (select 1 from sys.objects where name= 'VMName' and type = 'V')
-    DROP VIEW VMName
-GO
-</code></pre>
-
-<h2 id="procedure-操作">Procedure 操作</h2>
-
-<pre><code class="language-sql">--create procedures
-create proc proc_logRecord_pismery
- @fileName varchar(200),
- @stepName varchar(50)
-as
-begin
-    update #pismery_log set executeTime = t1.excuteTime
-    from 
-    (
-        select a.logid,datediff(mi,a.startTime,getdate()) as excuteTime
-        from 
-        (
-            select top 1 logId,startTime
-            from #pismery_log
-            order by logid desc
-        ) a
-    )t1,#pismery_log t2
-    where t1.logid = t2.logid;
-    insert into #pismery_log(fileName,stepName,startTime) values (@fileName,@stepName,getdate());
-end
-
---check procedures
-sp_helptext proc_logRecord_pismery  
-
---drop procedures
-if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[procedureName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure [dbo].[procedureName]
-GO 
-
--- search in precedures
-select a.name, m.definition from sysobjects a, sys.sql_modules m
-where a.id = m.object_id and a.xtype = 'P' and lower(m.definition) like '%content%'
-
-</code></pre>
-
-<h2 id="sequence-操作">Sequence 操作</h2>
-
-<pre><code class="language-sql">-- 创建 sequence
-create sequence XXXSeqName
-START WITH 1
-INCREMENT BY 1
-MINVALUE 1
-MAXVALUE 9999999999999
-CYCLE  
-
--- 查询 sequence 
-SELECT * FROM sys.sequences where name = 'XXXSeqName'
-
--- 删除 sequence 
-DROP sequence XXXSeqName
-
--- 获取 sequence 值
-select NEXT VALUE FOR XXXSeqName
-
--- 根据表重制 sequence 值
-declare @restart_sequence int,
-@sql varchar(1024); 
-set @restart_sequence=(select isnull(max([Id]), 0)+1 from dbo.TblName);
-set @sql ='alter sequence dbo.XXXSeqName restart with '+   cast(@restart_sequence as varchar(10))
-exec(@sql) 
-
-</code></pre>
-
-<blockquote>
-<p>示例</p>
-</blockquote>
-
-<pre><code>if exists (SELECT 1 FROM sys.sequences where name = 'MySeq')
-    DROP sequence MySeq
-
-create sequence MySeq
-START WITH 1
-INCREMENT BY 1
-MINVALUE 1
-MAXVALUE 9999999999999
-CYCLE  
-
-</code></pre>
-
-<h2 id="table-操作">Table 操作</h2>
-
-<pre><code>查看表：exec sp_help 表名
-查看列： exec sp_columns 表名
-查看列：select * from information_schema.columns where table_name = '表名' 
-
-添加列：alter table 表名 add 列名 varchar(55)
-删除列：alter table 表名 drop column 列名
-添加主键： alter table TblName ADD CONSTRAINT pk_name primary key(pkColumn)
-修改列名称：exec sp_rename '表名.字段名' , '新名', 'column'
-修改列类型：alter table 表名 alter column 列名 varchar(22)
-</code></pre>
-
-<blockquote>
-<p>示例</p>
-</blockquote>
-
-<pre><code class="language-sql">
--- 添加列
-if not exists (select top 1 1 from syscolumns where id=object_id('TblName') and name='ColumnName')
-    alter table TblName add ColumnName varchar(5)
-
-if exists (select top 1 1 from syscolumns where id=object_id('TblName') and name='ColumnName')
-    alter table TblName drop COLUMN ColumnName
-alter table TblName add TreatyType varchar(5)
-
--- 添加非空列
-alter table [table] add NewColumn varchar(10)       --添加一个可以为空的新列
-go
-update [table] set NewColumn=''         --设置新列的值为''
-go
-ALTER TABLE [table] ALTER COLUMN
-NewColumn varchar(10) not null              --设置新列为非空
-go
-
-    
--- 添加主键
-if not exists (select top 1 1 from sysobjects where parent_obj in (select id from sysobjects where name='TblName') and xtype='pk')
-    ALTER TABLE TblName ADD CONSTRAINT pk_name primary key(pkColumn)
-    
-if exists (select top 1 1 from sysobjects where parent_obj in (select id from sysobjects where name='TblName') and xtype='pk')
-    ALTER TABLE TblReinGBNParm drop CONSTRAINT pk_name 
-ALTER TABLE TblName ADD CONSTRAINT pk_name primary key(pkColumn)
-    
-
-</code></pre>
-
-<h2 id="自带函数操作">自带函数操作</h2>
-
-<h3 id="查询表的数据行数">查询表的数据行数</h3>
-
-<pre><code class="language-sql">SELECT  a.name, b.rows
-FROM sysobjects AS a 
-INNER JOIN sysindexes AS b ON a.id = b.id
-WHERE (a.type = 'u') AND (b.indid IN (0, 1))
-ORDER BY b.rows DESC
-
-
-sp_spaceused tableName
-</code></pre>
-
-<h3 id="跨服务器跨数据库表传输操作">跨服务器跨数据库表传输操作</h3>
-
-<blockquote>
-<p>从其他数据库导入本地</p>
-</blockquote>
-
-<pre><code class="language-sql">SELECT * 
-INTO localTableName 
-FROM openrowset('SQLOLEDB' , 'ServerName' ; 'account' ; 'password' ,DatabaseName.dob.remoteTableName);
-</code></pre>
-
-<blockquote>
-<p>把本地表导入远程表</p>
-</blockquote>
-
-<pre><code class="language-sql">insert openrowset( 'SQLOLEDB ', 'sql服务器名 '; '用户名 '; '密码 ',数据库名.dbo.表名) 
-select *from 本地表 
-</code></pre>
-
-<h3 id="date-函数">Date 函数</h3>
-
-<table>
-<thead>
-<tr>
-<th>函数</th>
-<th>描述</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>GETDATE()</td>
-<td>返回当前日期和时间</td>
-</tr>
-
-<tr>
-<td>DATEPART()</td>
-<td>返回日期/时间的单独部分</td>
-</tr>
-
-<tr>
-<td>DATEADD()</td>
-<td>在日期中添加或减去指定的时间间隔</td>
-</tr>
-
-<tr>
-<td>DATEDIFF()</td>
-<td>返回两个日期之间的时间</td>
-</tr>
-
-<tr>
-<td>CONVERT()</td>
-<td>用不同的格式显示日期/时间</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="convert-用法">Convert 用法</h3>
-
-<blockquote>
-<p>用法</p>
-</blockquote>
+<p>下面分别演示三种方式获取方法的参数名；</p>
 
 <ol>
-<li>CONVERT() 函数是把日期转换为新数据类型的通用函数。</li>
-<li>CONVERT() 函数可以用不同的格式显示日期/时间数据</li>
+<li>Java8 + 设置编译器参数 -parameters + 反射 Method.getParameters();</li>
+<li>使用 javassist</li>
+<li>使用 asm</li>
 </ol>
 
+<h2 id="设置编译器参数">设置编译器参数</h2>
+
 <blockquote>
-<p>语法</p>
+<p>idea 设置方式</p>
 </blockquote>
 
-<pre><code class="language-sql">CONVERT(data_type(length),data_to_be_converted,Style ID)
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190418214458.png" alt="" /></p>
+
+<blockquote>
+<p>mavan 设置方式</p>
+</blockquote>
+
+<pre><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.3&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;source&gt;1.8&lt;/source&gt;
+        &lt;target&gt;1.8&lt;/target&gt;
+        &lt;compilerArgs&gt;
+            &lt;arg&gt;-parameters&lt;/arg&gt;
+        &lt;/compilerArgs&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
 </code></pre>
 
-<blockquote>
-<p>style 参照表</p>
-</blockquote>
+<pre><code class="language-Java">package org.pismery.mvc.util;
 
-<table>
-<thead>
-<tr>
-<th>Style ID</th>
-<th>Style 格式</th>
-</tr>
-</thead>
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
-<tbody>
-<tr>
-<td>100</td>
-<td>或者 0  mon dd yyyy hh:miAM （或者 PM）</td>
-</tr>
+public class ParameterNameUtil {
 
-<tr>
-<td>101</td>
-<td>mm/dd/yy</td>
-</tr>
+    /**
+     * 获取指定类指定方法的参数名
+     * @param method 要获取参数名的方法
+     * @return 按参数顺序排列的参数名列表，如果没有参数，则返回null
+     */
+    public static String[] getMethodParameterNamesJava8(final Method method) {
+        Parameter[] parameters = method.getParameters();
+        if (parameters == null || parameters.length == 0) {
+            return null;
+        }
+        String[] result = new String[parameters.length];
+        for (int i = 0, length = parameters.length; i &lt; length; i++) {
+            result[i] = parameters[i].getName();
+        }
+        return result;
+    }
+}
 
-<tr>
-<td>102</td>
-<td>yy.mm.dd</td>
-</tr>
+</code></pre>
 
-<tr>
-<td>103</td>
-<td>dd/mm/yy</td>
-</tr>
+<h2 id="使用-javaassist">使用 javaassist</h2>
 
-<tr>
-<td>104</td>
-<td>dd.mm.yy</td>
-</tr>
+<pre><code class="language-Java">package org.pismery.mvc.util;
 
-<tr>
-<td>105</td>
-<td>dd-mm-yy</td>
-</tr>
+import javassist.*;
+import javassist.bytecode.CodeAttribute;
+import javassist.bytecode.LocalVariableAttribute;
+import javassist.bytecode.MethodInfo;
 
-<tr>
-<td>106</td>
-<td>dd mon yy</td>
-</tr>
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
-<tr>
-<td>107</td>
-<td>Mon dd, yy</td>
-</tr>
+public class ParameterNameUtil {
 
-<tr>
-<td>108</td>
-<td>hh:mm:ss</td>
-</tr>
-
-<tr>
-<td>109</td>
-<td>或者 9  mon dd yyyy hh:mi:ss:mmmAM（或者 PM）</td>
-</tr>
-
-<tr>
-<td>110</td>
-<td>mm-dd-yy</td>
-</tr>
-
-<tr>
-<td>111</td>
-<td>yy/mm/dd</td>
-</tr>
-
-<tr>
-<td>112</td>
-<td>yymmdd</td>
-</tr>
-
-<tr>
-<td>113</td>
-<td>或者 13 dd mon yyyy hh:mm:ss:mmm(24h)</td>
-</tr>
-
-<tr>
-<td>114</td>
-<td>hh:mi:ss:mmm(24h)</td>
-</tr>
-
-<tr>
-<td>120</td>
-<td>或者 20 yyyy-mm-dd hh:mi:ss(24h)</td>
-</tr>
-
-<tr>
-<td>121</td>
-<td>或者 21 yyyy-mm-dd hh:mi:ss.mmm(24h)</td>
-</tr>
-
-<tr>
-<td>126</td>
-<td>yyyy-mm-ddThh:mm:ss.mmm（没有空格）</td>
-</tr>
-
-<tr>
-<td>130</td>
-<td>dd mon yyyy hh:mi:ss:mmmAM</td>
-</tr>
-
-<tr>
-<td>131</td>
-<td>dd/mm/yy hh:mi:ss:mmmAM</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="date-to-string">Date to string</h3>
-
-<pre><code>select CONVERT(VARCHAR(23),GETDATE(),101) AS [MM/DD/YYYY] 
-## 结果
-MM/DD/YYYY
-11/20/2018
+   
+    /**
+     * 获取指定类指定方法的参数名
+     *
+     * @param method 要获取参数名的方法
+     * @return 按参数顺序排列的参数名列表，如果没有参数，则返回null
+     */
+    public static String[] getParameterNamesByJavaAssist(Method method) {
+        ClassPool classPool = ClassPool.getDefault();
+        classPool.insertClassPath(new ClassClassPath(method.getDeclaringClass()));
+        String[] result = new String[method.getParameters().length];
+        try {
+            CtClass ctClass = classPool.get(method.getDeclaringClass().getName());
+            CtMethod ctMethod = ctClass.getDeclaredMethod(method.getName());
 
 
-select 
-    Case 
-        When isDate(DateColmun)=0 Then cast(null as datetime) 
-        Else cast(GETDATE() as VARCHAR(23)) 
-    END AS [String Date] 
-## 结果
-String Date
-Nov 20 2018  9:25AM
+            MethodInfo methodInfo = ctMethod.getMethodInfo();
+            CodeAttribute codeAttribute = methodInfo.getCodeAttribute();
+            LocalVariableAttribute attr = (LocalVariableAttribute) codeAttribute
+                    .getAttribute(LocalVariableAttribute.tag);
+
+            if (attr == null) {
+                return null;
+            }
+
+            // 非静态的成员函数的第一个参数是this
+            int pos = Modifier.isStatic(ctMethod.getModifiers()) ? 0 : 1;
+            for (int i = 0, len = ctMethod.getParameterTypes().length; i &lt; len; i++) {
+                result[i] = attr.variableName(i + pos);
+            }
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+}
+</code></pre>
+
+<h2 id="使用-asm5">使用 Asm5</h2>
+
+<pre><code class="language-Java">package org.pismery.mvc.util;
+
+import jdk.internal.org.objectweb.asm.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+
+public class ParameterNameUtil {
+    /**
+     * 获取指定类指定方法的参数名
+     *
+     * @param clazz  要获取参数名的方法所属的类
+     * @param method 要获取参数名的方法
+     * @return 按参数顺序排列的参数名列表，如果没有参数，则返回null
+     */
+    public static String[] getMethodParameterNamesByAsm5(Class&lt;?&gt; clazz, final Method method) {
+        final Class&lt;?&gt;[] parameterTypes = method.getParameterTypes();
+        if (parameterTypes == null || parameterTypes.length == 0) {
+            return null;
+        }
+        final Type[] types = new Type[parameterTypes.length];
+        for (int i = 0; i &lt; parameterTypes.length; i++) {
+            types[i] = Type.getType(parameterTypes[i]);
+        }
+        final String[] parameterNames = new String[parameterTypes.length];
+
+        String className = clazz.getName();
+        int lastDotIndex = className.lastIndexOf(&quot;.&quot;);
+        className = className.substring(lastDotIndex + 1) + &quot;.class&quot;;
+        InputStream is = clazz.getResourceAsStream(className);
+        try {
+            ClassReader classReader = new ClassReader(is);
+            classReader.accept(new ClassVisitor(Opcodes.ASM5) {
+                @Override
+                public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+                    // 只处理指定的方法
+                    Type[] argumentTypes = Type.getArgumentTypes(desc);
+                    if (!method.getName().equals(name) || !Arrays.equals(argumentTypes, types)) {
+                        return null;
+                    }
+                    return new MethodVisitor(Opcodes.ASM5) {
+                        @Override
+                        public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
+                            // 静态方法第一个参数就是方法的参数，如果是实例方法，第一个参数是this
+                            if (Modifier.isStatic(method.getModifiers())) {
+                                parameterNames[index] = name;
+                            } else if (index &gt; 0) {
+                                parameterNames[index - 1] = name;
+                            }
+                        }
+                    };
+
+                }
+            }, 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parameterNames;
+    }
+}
 </code></pre>
 
                 
@@ -567,20 +381,15 @@ Nov 20 2018  9:25AM
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/java/util/distinct_demo/" data-toggle="tooltip" data-placement="top" title="Distinct_Demo">&larr;
+                        <a href="/post/database/sqlserver/" data-toggle="tooltip" data-placement="top" title="Sqlserver">&larr;
                             Previous Post</a>
                     </li>
                     
                     
-                    <li class="next">
-                        <a href="/post/java/util/getparametername/" data-toggle="tooltip" data-placement="top" title="GetParameterName">Next
-                            Post &rarr;</a>
-                    </li>
-                    
                 </ul>
 
                 
- <span id="/post/database/sqlserver/" class="leancloud_visitors" data-flag-title="Sqlserver">
+ <span id="/post/java/util/getparametername/" class="leancloud_visitors" data-flag-title="GetParameterName">
    <span class="post-meta-item-text">文章阅读量 </span>
    <span class="leancloud-visitors-count">1000000</span>
    <p></p>
