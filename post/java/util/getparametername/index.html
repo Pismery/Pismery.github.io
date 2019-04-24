@@ -328,40 +328,40 @@ public class ParameterNameUtil {
      * @param method 要获取参数名的方法
      * @return 按参数顺序排列的参数名列表，如果没有参数，则返回null
      */
-    public static String[] getMethodParameterNamesByAsm5(Class&lt;?&gt; clazz, final Method method) {
+    public static String[] getMethodParameterNamesByAsm5(final Method method) {
+        Class&lt;?&gt; clazz = method.getDeclaringClass();
         final Class&lt;?&gt;[] parameterTypes = method.getParameterTypes();
         if (parameterTypes == null || parameterTypes.length == 0) {
             return null;
         }
+        // 获取参数类型
         final Type[] types = new Type[parameterTypes.length];
         for (int i = 0; i &lt; parameterTypes.length; i++) {
             types[i] = Type.getType(parameterTypes[i]);
         }
+
         final String[] parameterNames = new String[parameterTypes.length];
 
-        String className = clazz.getName();
-        int lastDotIndex = className.lastIndexOf(&quot;.&quot;);
-        className = className.substring(lastDotIndex + 1) + &quot;.class&quot;;
+        String className = clazz.getSimpleName() + &quot;.class&quot;;
         InputStream is = clazz.getResourceAsStream(className);
         try {
             ClassReader classReader = new ClassReader(is);
             classReader.accept(new ClassVisitor(Opcodes.ASM5) {
+                //当访问方法时，调用有以下重写方法
                 @Override
                 public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-                    // 只处理指定的方法
+                    // 只处理指定的方法 method
                     Type[] argumentTypes = Type.getArgumentTypes(desc);
                     if (!method.getName().equals(name) || !Arrays.equals(argumentTypes, types)) {
                         return null;
                     }
                     return new MethodVisitor(Opcodes.ASM5) {
+                        AtomicInteger integer = new AtomicInteger();
+
+                        // 当访问方法参数时，调用以下重写方法
                         @Override
-                        public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
-                            // 静态方法第一个参数就是方法的参数，如果是实例方法，第一个参数是this
-                            if (Modifier.isStatic(method.getModifiers())) {
-                                parameterNames[index] = name;
-                            } else if (index &gt; 0) {
-                                parameterNames[index - 1] = name;
-                            }
+                        public void visitParameter(String name, int index) {
+                            parameterNames[integer.getAndIncrement()] = name;
                         }
                     };
 
