@@ -6,10 +6,19 @@
     <description>Recent content in Java on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Mon, 22 Apr 2019 21:08:54 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 28 Apr 2019 11:23:34 +0800</lastBuildDate>
     
 	<atom:link href="https://Pismery.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>手写springmvc实践</title>
+      <link>https://Pismery.github.io/post/java/spring/%E6%89%8B%E5%86%99springmvc%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Sun, 28 Apr 2019 11:23:34 +0800</pubDate>
+      
+      <guid>https://Pismery.github.io/post/java/spring/%E6%89%8B%E5%86%99springmvc%E5%AE%9E%E8%B7%B5/</guid>
+      <description>Spring MVC Spring MVC 中核心关键类是 DispatchServlet, 所有的请求都会通过这个类进行分派调用指定的业务逻辑代码；这个类中最重要的两个入口方法是 initStrategies() 和 doDispatch() DispatchServlet.initStrategies() 从上图继承关系，可以发</description>
+    </item>
     
     <item>
       <title>GetParameterName</title>
