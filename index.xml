@@ -287,7 +287,7 @@
       <pubDate>Tue, 30 Oct 2018 21:43:29 +0800</pubDate>
       
       <guid>https://Pismery.github.io/post/common/design-pattern/%E5%B7%A5%E5%8E%82%E4%B8%89%E5%85%84%E5%BC%9F/</guid>
-      <description>创建型模式 工厂三兄弟 作用 一个类对象相关职责可以分为对象本身具有的职责、创建耦合对象职责、使用耦合对象职责； 在工厂模式中强调，两个类A和B的关</description>
+      <description>工厂三兄弟 作用 一个类对象相关职责可以分为对象本身具有的职责、创建耦合对象职责、使用耦合对象职责；在工厂模式中强调，两个类A和B的关系要么A创</description>
     </item>
     
     <item>

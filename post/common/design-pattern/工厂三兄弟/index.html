@@ -175,31 +175,24 @@
                 </header>
                 <nav id="TableOfContents">
 <ul>
-<li><a href="#创建型模式">创建型模式</a>
-<ul>
 <li><a href="#工厂三兄弟">工厂三兄弟</a>
 <ul>
 <li><a href="#简单工厂模式-静态工厂模式">简单工厂模式(静态工厂模式)</a></li>
 <li><a href="#工厂方法模式">工厂方法模式</a></li>
 <li><a href="#抽象工厂模式">抽象工厂模式</a></li>
 </ul></li>
-</ul></li>
 </ul>
 </nav>
                 
-                <h1 id="创建型模式">创建型模式</h1>
-
-<h2 id="工厂三兄弟">工厂三兄弟</h2>
+                <h1 id="工厂三兄弟">工厂三兄弟</h1>
 
 <blockquote>
 <p>作用</p>
 </blockquote>
 
-<p>一个类对象相关职责可以分为对象本身具有的职责、创建耦合对象职责、使用耦合对象职责；</p>
+<p>一个类对象相关职责可以分为对象本身具有的职责、创建耦合对象职责、使用耦合对象职责；在工厂模式中强调，两个类A和B的关系要么A创建B要么A使用B；不应该两者都存在；</p>
 
-<p>在工厂模式中强调，两个类A和B的关系要么A创建B要么A使用B；不应该两者都存在；</p>
-
-<h3 id="简单工厂模式-静态工厂模式">简单工厂模式(静态工厂模式)</h3>
+<h2 id="简单工厂模式-静态工厂模式">简单工厂模式(静态工厂模式)</h2>
 
 <blockquote>
 <p>意图</p>
@@ -211,14 +204,20 @@
 <p>优缺点</p>
 </blockquote>
 
-<p>优点：
-- 客户端不需要关心对象的创建过程，只需知道具体产品对应的参数。使得创建对象职责和使用对象职责分离；
-- 引入配置文件，可以在不修改客户端代码的前提下实现更换、添加具体产品类；<strong>但是工厂类添加时 需要修改代码</strong></p>
+<p>优点：</p>
 
-<p>缺点：
-- 工厂集中了所有产品的创建逻辑，若工厂无法工作，整个系统将受到影响；
-- 工厂扩展难，违反开闭原则，若需要添加新产品需要修改工厂代码；
-- 工厂使用了静态工厂方法，使得工厂无法形成基于 继承的等级结构；</p>
+<ul>
+<li>客户端不需要关心对象的创建过程，只需知道具体产品对应的参数。使得创建对象职责和使用对象职责分离；</li>
+<li>引入配置文件，可以在不修改客户端代码的前提下实现更换、添加具体产品类；<strong>但是工厂类添加时 需要修改代码</strong></li>
+</ul>
+
+<p>缺点：</p>
+
+<ul>
+<li>工厂集中了所有产品的创建逻辑，若工厂无法工作，整个系统将受到影响；</li>
+<li>工厂扩展难，违反开闭原则，若需要添加新产品需要修改工厂代码；</li>
+<li>工厂使用了静态工厂方法，使得工厂无法形成基于 继承的等级结构；</li>
+</ul>
 
 <blockquote>
 <p>适用场景</p>
@@ -233,8 +232,11 @@
 <p>结构图</p>
 </blockquote>
 
-<p><img src="http://pcu3ajroc.bkt.clouddn.com/18-8-2/26110815.jpg" alt="" />
-&gt; 代码</p>
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190511112849.png" alt="" /></p>
+
+<blockquote>
+<p>代码</p>
+</blockquote>
 
 <pre><code>## 产品
 public interface Car {
@@ -296,15 +298,13 @@ public class Client {
     }
 }
 
+// 运行结果
+com.pismery.study.gof23.pattern.create.factory.simple.product.BenzCar - Benz is running
+com.pismery.study.gof23.pattern.create.factory.simple.product.BMWCar - BMW is running
+com.pismery.study.gof23.pattern.create.factory.simple.product.MaseratiCar - MaseratiCar is running
 </code></pre>
 
-<blockquote>
-<p>运行结果</p>
-</blockquote>
-
-<p><img src="http://pcu3ajroc.bkt.clouddn.com/18-8-4/10487579.jpg" alt="" /></p>
-
-<h3 id="工厂方法模式">工厂方法模式</h3>
+<h2 id="工厂方法模式">工厂方法模式</h2>
 
 <blockquote>
 <p>意图</p>
@@ -316,19 +316,25 @@ public class Client {
 <p>结构图</p>
 </blockquote>
 
-<p><img src="http://pcu3ajroc.bkt.clouddn.com/18-8-2/23662678.jpg" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190511113023.png" alt="" /></p>
 
 <blockquote>
 <p>优缺点</p>
 </blockquote>
 
-<p>优点：
-- 工厂类和产品类扩展时都能够符合开闭原则，在需要添加产品时，只需要添加一个产品类和工厂类；
-- 每一个工厂职责只负责一个产品的创建，减少事故的影响面积
-- 客户端只需要关心所需产品对应的工厂，无须关心创建细节，甚至无须知道具体产品类的类名。减少客户端记忆的开销；</p>
+<p>优点：</p>
 
-<p>缺点：
-- 类的复杂度高，每添加一个产品都需要相应添加一个工厂类</p>
+<ul>
+<li>工厂类和产品类扩展时都能够符合开闭原则，在需要添加产品时，只需要添加一个产品类和工厂类；</li>
+<li>每一个工厂职责只负责一个产品的创建，减少事故的影响面积</li>
+<li>客户端只需要关心所需产品对应的工厂，无须关心创建细节，甚至无须知道具体产品类的类名。减少客户端记忆的开销；</li>
+</ul>
+
+<p>缺点：</p>
+
+<ul>
+<li>类的复杂度高，每添加一个产品都需要相应添加一个工厂类</li>
+</ul>
 
 <blockquote>
 <p>适用场景</p>
@@ -343,9 +349,8 @@ public class Client {
 </blockquote>
 
 <ul>
-<li><p>将产品类接口方法在工厂接口类中实现调用，能够完全通过工厂类实现所创建产品的功能，更加让客户端不需要知道产品类。但是这样工厂必须是抽象类不能是接口。</p></li>
-
-<li><p>重载创建方法提供多种创建方式;</p></li>
+<li>将产品类接口方法在工厂接口类中实现调用，能够完全通过工厂类实现所创建产品的功能，更加让客户端不需要知道产品类。但是这样工厂必须是抽象类不能是接口。</li>
+<li>重载创建方法提供多种创建方式;</li>
 </ul>
 
 <blockquote>
@@ -431,15 +436,19 @@ public class Client {
         new MaseratiFatory().run();
     }
 }
+
+// 运行结果
+com.pismery.study.gof23.pattern.create.factory.nomal.Client - version 1
+com.pismery.study.gof23.pattern.create.factory.nomal.product.BenzCar - Benz is running
+com.pismery.study.gof23.pattern.create.factory.nomal.product.BMWCar - BMW is running
+com.pismery.study.gof23.pattern.create.factory.nomal.product.MaseratiCar - MaseratiCar is running
+com.pismery.study.gof23.pattern.create.factory.nomal.Client - version 2
+com.pismery.study.gof23.pattern.create.factory.nomal.product.BenzCar - Benz is running
+com.pismery.study.gof23.pattern.create.factory.nomal.product.BMWCar - BMW is running
+com.pismery.study.gof23.pattern.create.factory.nomal.product.MaseratiCar - MaseratiCar is running
 </code></pre>
 
-<blockquote>
-<p>运行结果</p>
-</blockquote>
-
-<p><img src="http://pcu3ajroc.bkt.clouddn.com/18-8-4/76922947.jpg" alt="" /></p>
-
-<h3 id="抽象工厂模式">抽象工厂模式</h3>
+<h2 id="抽象工厂模式">抽象工厂模式</h2>
 
 <blockquote>
 <p>引入概念</p>
@@ -459,20 +468,26 @@ public class Client {
 <p>结构图</p>
 </blockquote>
 
-<p><img src="http://pcu3ajroc.bkt.clouddn.com/18-8-2/37904326.jpg" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190511113458.png" alt="" /></p>
 
 <blockquote>
 <p>优缺点</p>
 </blockquote>
 
-<p>优点：
-- 解决工厂模式中工厂类的暴增导致系统复杂度的提升；
-- 一个产品族中的多个不同产品等级对象设计成一起工作时，能够限制客户端只能操作同一产品族的对象；
-- 增加新的产品族很方便，符合开闭原则；</p>
+<p>优点：</p>
 
-<p>缺点：
-- 当要增加一个产品等级时，就需要更改工厂接口类和所有的具体工厂类，违反了开闭原则；
-- 需要设计人员设计时要考虑全面，设计完成后不会增加新的产品等级和删除已有产品等级；</p>
+<ul>
+<li>解决工厂模式中工厂类的暴增导致系统复杂度的提升；</li>
+<li>一个产品族中的多个不同产品等级对象设计成一起工作时，能够限制客户端只能操作同一产品族的对象；</li>
+<li>增加新的产品族很方便，符合开闭原则；</li>
+</ul>
+
+<p>缺点：</p>
+
+<ul>
+<li>当要增加一个产品等级时，就需要更改工厂接口类和所有的具体工厂类，违反了开闭原则；</li>
+<li>需要设计人员设计时要考虑全面，设计完成后不会增加新的产品等级和删除已有产品等级；</li>
+</ul>
 
 <blockquote>
 <p>适用场景</p>
@@ -561,13 +576,15 @@ public class Client {
         footbrake.brake();
     }
 }
+
+// 运行结果
+
+com.pismery.study.gof23.pattern.create.factory.abstrct.Client - begin
+com.pismery.study.gof23.pattern.create.factory.abstrct.product.mediu.MediuEnginee - MediuEnginee start...
+com.pismery.study.gof23.pattern.create.factory.abstrct.product.mediu.MediuTyre - MediuTyre rolling
+com.pismery.study.gof23.pattern.create.factory.abstrct.product.mediu.MediuFootbrake - MediuFootbrake braking...
+com.pismery.study.gof23.pattern.create.factory.abstrct.Client - end
 </code></pre>
-
-<blockquote>
-<p>运行结果</p>
-</blockquote>
-
-<p><img src="http://pcu3ajroc.bkt.clouddn.com/18-8-4/58296482.jpg" alt="" /></p>
 
                 
 
