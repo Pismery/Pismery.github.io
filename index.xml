@@ -12,11 +12,11 @@
     
     
     <item>
-      <title>JsxlDemo</title>
-      <link>https://Pismery.github.io/post/java/util/jsxldemo/</link>
+      <title>JxlsDemo</title>
+      <link>https://Pismery.github.io/post/java/util/jxlsdemo/</link>
       <pubDate>Sun, 12 May 2019 22:35:32 +0800</pubDate>
       
-      <guid>https://Pismery.github.io/post/java/util/jsxldemo/</guid>
+      <guid>https://Pismery.github.io/post/java/util/jxlsdemo/</guid>
       <description>JXLS JXLS 是 Java 导出 Excel 的一个工具包，尽管 POI 工具包已经可以满足所有的需求，但是有时候操作还是比较复杂，且有一定的代码量，而 JXLS 在生成 Excel 方面显得更加方便好</description>
     </item>
     
