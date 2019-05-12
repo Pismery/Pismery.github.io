@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Thu, 02 May 2019 21:40:34 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 12 May 2019 22:35:32 +0800</lastBuildDate>
     
 	<atom:link href="https://Pismery.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JsxlDemo</title>
+      <link>https://Pismery.github.io/post/java/util/jsxldemo/</link>
+      <pubDate>Sun, 12 May 2019 22:35:32 +0800</pubDate>
+      
+      <guid>https://Pismery.github.io/post/java/util/jsxldemo/</guid>
+      <description>JXLS JXLS 是 Java 导出 Excel 的一个工具包，此前一直使用 POI 来进行 Excel 的操作；而 POI 操作 Excel 还是十分繁琐的，尽管几乎所有的需求都能使用；而 JXLS 在生成 Excel 方面显得更加方便</description>
+    </item>
     
     <item>
       <title>SiftingAppender</title>
