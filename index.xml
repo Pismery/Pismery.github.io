@@ -6,10 +6,19 @@
     <description>Recent content on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Sun, 29 Sep 2019 10:47:59 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 01 Oct 2019 20:26:55 +0800</lastBuildDate>
     
 	<atom:link href="https://Pismery.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GetPrime</title>
+      <link>https://Pismery.github.io/post/common/algorithm/getprime/</link>
+      <pubDate>Tue, 01 Oct 2019 20:26:55 +0800</pubDate>
+      
+      <guid>https://Pismery.github.io/post/common/algorithm/getprime/</guid>
+      <description>算法 - 素数 题目 求小于等于 maxNum 中的所有素数；「ps: 素数又称质数，质数是指在大于1的自然数中，除了1和它本身以外不再有其他因数的自然数。」 题解 思</description>
+    </item>
     
     <item>
       <title>G1收集器</title>

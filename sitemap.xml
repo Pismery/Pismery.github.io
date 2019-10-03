@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://Pismery.github.io/post/common/algorithm/getprime/</loc>
+    <lastmod>2019-10-01T20:26:55+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://Pismery.github.io/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/</loc>
     <lastmod>2019-09-29T10:47:59+08:00</lastmod>
   </url>
@@ -201,13 +206,13 @@
   
   <url>
     <loc>https://Pismery.github.io/</loc>
-    <lastmod>2019-09-29T10:47:59+08:00</lastmod>
+    <lastmod>2019-10-01T20:26:55+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://Pismery.github.io/post/</loc>
-    <lastmod>2019-09-29T10:47:59+08:00</lastmod>
+    <lastmod>2019-10-01T20:26:55+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -279,6 +284,12 @@
   <url>
     <loc>https://Pismery.github.io/tags/%E6%B5%8B%E8%AF%95/</loc>
     <lastmod>2018-11-28T21:30:42+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://Pismery.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2019-10-01T20:26:55+08:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -13,9 +13,9 @@
     <meta name="keyword"  content="Pismery 博客">
     <link rel="shortcut icon" href="https://Pismery.github.io/img/favicon.jpg">
 
-    <title>并发编程基础概念-核心理论-博客 | Pismery Liu Blog</title>
+    <title>GetPrime-博客 | Pismery Liu Blog</title>
 
-    <link rel="canonical" href="https://Pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA/">
+    <link rel="canonical" href="https://Pismery.github.io/post/common/algorithm/getprime/">
 
     <link rel="stylesheet" href="https://Pismery.github.io/css/iDisqus.min.css"/>
 	
@@ -138,16 +138,12 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/concurrent" title="concurrent">
-                            concurrent
-                        </a>
-                        
-                        <a class="tag" href="/tags/java" title="Java">
-                            Java
+                        <a class="tag" href="/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
                         </a>
                         
                     </div>
-                    <h1>并发编程基础概念-核心理论</h1>
+                    <h1>GetPrime</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
 			Posted by 
@@ -155,7 +151,7 @@
 			    Pismery Liu
 			 
 			on 
-			Thursday, December 20, 2018
+			Tuesday, October 1, 2019
                         
                     </span>
                 </div>
@@ -183,76 +179,133 @@
                 </header>
                 <nav id="TableOfContents">
 <ul>
-<li><a href="#核心理论">核心理论</a>
-<ul>
-<li><a href="#共享性">共享性</a></li>
-<li><a href="#互斥性">互斥性</a></li>
-<li><a href="#原子性">原子性</a></li>
-<li><a href="#可见性">可见性</a></li>
-<li><a href="#有序性">有序性</a></li>
-</ul></li>
-<li><a href="#参考链接">参考链接</a></li>
+<li><a href="#算法-素数">算法 - 素数</a></li>
 </ul>
 </nav>
                 
-                <h1 id="核心理论">核心理论</h1>
+                <h1 id="算法-素数">算法 - 素数</h1>
 
-<h2 id="共享性">共享性</h2>
+<blockquote>
+<p>题目</p>
+</blockquote>
 
-<p>共享性指资源对多个线程操作同一份资源，是导致线程不安全的主要前提之一。若所有线程都只操作线程内的数据，则就不会产生线程安全问题。这也是为什么编程过程中更倾向于编写无状态的类、方法。但是在多线程编程中，总不可避免需要数据共享。最明显的例子就是数据库访问，为了保证数据一致性，不可避免的需要多个线程访问同一数据，再通过锁机制保证线程的安全。</p>
+<p>求小于等于 maxNum 中的所有素数；「ps: 素数又称质数，质数是指在大于1的自然数中，除了1和它本身以外不再有其他因数的自然数。」</p>
 
-<h2 id="互斥性">互斥性</h2>
+<blockquote>
+<p>题解</p>
+</blockquote>
 
-<p>互斥性指同一时刻只允许一个线程访问共享资源。通常我们允许多个线程同时读，但同一时刻允许一个线程写，此时读也是不允许的。这就是通常讲的共享锁(读锁)和排它锁(写锁)。在多线程环境中，如果所有线程只读共享资源，不修改共享资源，此时线程也是安全的，当需要复写共享资源时，就需要使用互斥操作来保证线程安全。所以在编写代码时，共享变量总是优先使用静态常量类型，迫不得已才通过互斥操作保证线程安全。在Java中最简单方便的就是使用synchronized关键字实现互斥性。</p>
+<p>思路：遍历 2 至 maxNum 依次判断是否是素数；</p>
 
-<h2 id="原子性">原子性</h2>
+<p>第一步，写出判断一个数是否是素数的方法；按定义可以很快写出如下判断素数的代码；</p>
 
-<p>原子性指一个操作是一个独立的，不可分割的整体。原子性操作就是指一个连续不可中断的操作。最简单的原子操作就是系统指令，若一个操作对应一条系统指令就可以保证原子性。然而，许多操作都需要多个系统指令组合而成。例如:自增(i++)操作，需要以下三个步骤：</p>
+<pre><code class="language-Java">public static boolean isPrime(int num) {
+    if(num &lt; 2) {
+        return false;
+    }
+    for (int j = 2; j &lt;= num; j++) {
+        if (num % j == 0 &amp;&amp; num != j) { //如果存在除了本身还有其他因素
+            return false;
+        }
+    }
+    return true;
+}
+</code></pre>
+
+<p>下面优化一下判断素数的函数，其实判断是否是素数，只需要确认区间 [2,√num] 没有其他因数即可；原因是如果 a 是 num 的因数，则 √a 也是 num 的因数，而 num 最大的因数就是其本身，所以如果还有其他因数，那么一定能够在区间 [2,√num] 找到；</p>
+
+<pre><code class="language-Java">public static boolean isPrime(int num) {
+    if (num &lt; 2)
+        return false;
+    //注意 j&lt;= Math.sqrt(num) 必须有=号  num = 4 9 16
+    double sqrt = Math.sqrt(num);
+    for (int j = 2; j &lt;= sqrt; j++) {
+        if (num % j == 0 &amp;&amp; num != j) {
+            return false;
+        }
+    }
+    return true;
+}
+</code></pre>
+
+<p>下面再优化一下，能否再减少遍历的次数呢？我们知道如果 a 是素数，那么 n（n &gt; 1） 倍的 a 都肯定不是素数；例如 2 是素数，则 4, 6, 8, 10 等都不会是素数；因此我们可先判断 num 是否被 2 整除；这样后面的遍历则可以以 2 为单位进行遍历；</p>
+
+<pre><code class="language-Java">public static boolean isPrime(int num) {
+    if (num &lt; 2)
+        return false;
+    if (num == 2)
+        return true;
+    if (num % 2 == 0)
+        return false;
+
+    for (int i = 3; i * i &lt;= num; i += 2) {
+        if (num % i == 0)
+            return false;
+    }
+    return true;
+}
+</code></pre>
+
+<p>判断数 num 是否为素数优化的差不多了，接下来就直接遍历获取指定区间内的所有素数了；</p>
+
+<pre><code class="language-Java">public static List&lt;Integer&gt; getPrime(int maxNum) {
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    for (int i = 2; i &lt;= maxNum; i++) {
+        if (isPrime(i)) {
+            result.add(i);
+        }
+    }
+    return result;
+}
+</code></pre>
+
+<p>下面也优化一下遍历函数，很自然想到跟上面优化一样，可以将 2 做单独处理，然后就能以 2 为单位遍历；</p>
+
+<pre><code class="language-Java">public static List&lt;Integer&gt; getPrime(int maxNum) {
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    if (maxNum &lt; 2) {
+        return result;
+    }
+
+    result.add(2);
+
+    for (int i = 3; i &lt;= maxNum; i += 2) {
+        if (isPrime(i))
+            result.add(i);
+    }
+    return result;
+}
+</code></pre>
+
+<p>最后，通过搜索资料发现还有一种筛选方式，可减少更多的遍历次数；思路如下：</p>
 
 <ol>
-<li>获取i的值；</li>
-<li>对i进行运算+1操作；</li>
-<li>将结果写回主存中；</li>
+<li>所有的自然数都可以这么表示：6N, 6N + 1, 6N + 2, 6N + 3, 6N + 4, 6N + 5;</li>
+<li>而显然除了 2 和 3 以外，6N, 6N + 2, 6N + 3, 6N + 4 都不可能是素数，都有因数 2；</li>
+<li>6N + 5 也可以表示为 6N - 1；所以只有 6N + 1 和 6N - 1 才有可能是素数；</li>
 </ol>
 
-<p>这就是为什么volatile只保证可见性和有序性，不保证原子性会导致i++操作仍然不安全。</p>
+<p>经过上面的分析，我们就可以以 6 为单位进行遍历了；</p>
 
-<h2 id="可见性">可见性</h2>
+<pre><code class="language-Java">public static List&lt;Integer&gt; getPrimeBy6N_1(int maxNum) {
+    ArrayList&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    if (maxNum &gt;= 2)
+        result.add(2);
+    if (maxNum &gt;= 3)
+        result.add(3);
 
-<p>要理解可见性，首先要了解JMM（Java内存模型），JMM与操作系统模型相似，如下图所示</p>
+    int i = 0;
+    while (6 * i - 1 &lt;= maxNum || 6 * i + 1 &lt;= maxNum) {
+        if (6 * i - 1 &lt;= maxNum &amp;&amp; isPrime2(6 * i - 1))
+            result.add(6 * i - 1);
+        if (6 * i + 1 &lt;= maxNum &amp;&amp; isPrime2(6 * i + 1))
+            result.add(6 * i + 1);
+        i++;
+    }
 
-<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20181219204949.png" alt="" /></p>
-
-<p>每个共享变量都存在主存中，当一个线程访问共享变量时，会将主存中的共享变量复制一份到自己的工作内存，只有线程对共享变量修改后，才会将工作内存的值更新到主存中。这就可能导致一个线程已经修改了数据，而另一个线程依旧拿着旧的数据做操作。这就是不可见性。而volatile实现了可见性就是通过线程每次读取共享资源都从主存读取，这就保证了一个线程对共享资源修改更新至主存，立刻能够被其他线程感知。同样synchronized也保证了可见性。</p>
-
-<p>注意指令重排序也会导致不可见，而voatile关键字底层通过内存屏障实现了防重排序，这使得volatile关键字保证可见性。</p>
-
-<h2 id="有序性">有序性</h2>
-
-<p>这里有序性指避免指令重排序导致的线程不安全问题。下面重点介绍什么是指令重排序。</p>
-
-<p>指令重排序是编译器和处理器为了优化程序对指令序列的重新排序，也就是说指令重排序目的是为了提高程序运行性能。</p>
-
-<p>重排序有三类：</p>
-
-<ul>
-<li>编译器优化重排序：编译器在不改变单线程运行程序结果的前提下，对执行语句的重新排序。</li>
-<li>指令级并行重排序：由于现代处理器采用指令级并行技术(ILP)将多条指令并行执行。所以当两个操作之间不存在数据依赖，处理器可以改变语句对应的机器指令的执行顺序</li>
-<li>内存系统重排序：由于处理器使用缓存和读/写缓冲区，这使得加载和存储操作看上去可能是在乱序执行。</li>
-</ul>
-
-<p>数据依赖：如果两个操作访问同一个变量，且这两个操作中有一个为写操作，此时这两个操作之间就存在数据依赖性。数据依赖分为以下三种类型</p>
-
-<p>有关指令重排序的内容详细请看JVM章节的指令重排序笔记。</p>
-
-<h1 id="参考链接">参考链接</h1>
-
-<ul>
-<li><a href="https://blog.csdn.net/qq_32646795/article/details/78221064">由Java引起的指令重排序思考</a></li>
-<li><a href="https://yq.aliyun.com/articles/348581">https://yq.aliyun.com/articles/348581</a></li>
-<li><a href="http://www.cnblogs.com/paddix/p/5374810.html">http://www.cnblogs.com/paddix/p/5374810.html</a></li>
-<li><a href="http://www.cnblogs.com/wewill/p/8086375.html">http://www.cnblogs.com/wewill/p/8086375.html</a></li>
-</ul>
+    return result;
+}
+</code></pre>
 
                 
 
@@ -260,20 +313,15 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-synchronized/" data-toggle="tooltip" data-placement="top" title="并发编程基础-synchronized">&larr;
+                        <a href="/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="G1收集器">&larr;
                             Previous Post</a>
                     </li>
                     
                     
-                    <li class="next">
-                        <a href="/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-countdownlatch/" data-toggle="tooltip" data-placement="top" title="并发编程之并发工具类-CountDownLatch">Next
-                            Post &rarr;</a>
-                    </li>
-                    
                 </ul>
 
                 
- <span id="/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA/" class="leancloud_visitors" data-flag-title="并发编程基础概念-核心理论">
+ <span id="/post/common/algorithm/getprime/" class="leancloud_visitors" data-flag-title="GetPrime">
    <span class="post-meta-item-text">文章阅读量 </span>
    <span class="leancloud-visitors-count">1000000</span>
    <p></p>
