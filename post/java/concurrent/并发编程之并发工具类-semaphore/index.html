@@ -251,8 +251,7 @@ semaphore.release();
 }
 </code></pre>
 
-<pre><code class="language-Java">@Slf4j
-private static class PrintJob implements Runnable {
+<pre><code class="language-Java">private static class PrintJob implements Runnable {
     private PrinterQueue printerQueue;
 
     public PrintJob(PrinterQueue printerQueue) {

@@ -420,7 +420,7 @@ public static String joinTite(List&lt;Task&gt; taskList) {
 <p>使用示例</p>
 </blockquote>
 
-<pre><code>public static void collectToValue(List&lt;Task&gt; list) {
+<pre><code class="language-Java">public static void collectToValue(List&lt;Task&gt; list) {
     Double average = list.stream().collect(Collectors.averagingInt(Task::getValue));
     log.debug(&quot;task list average: &quot; + average);
 

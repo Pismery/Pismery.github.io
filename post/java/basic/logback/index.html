@@ -349,6 +349,7 @@
         &lt;pattern&gt;%msg%n&lt;/pattern&gt;
     &lt;/encoder&gt;
 &lt;/appender&gt;
+
 &lt;!-- FixedWindowRollingPolicy--&gt;
 &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
     &lt;file&gt;test.log&lt;/file&gt;
@@ -402,7 +403,8 @@
     &lt;file&gt;foo.log&lt;/file&gt;
     &lt;encoder&gt;&lt;!--默认就是PatternLayoutEncoder类--&gt;
         &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
-        &lt;!-- this quadruples logging throughput --&gt; &lt;immediateFlush&gt;false&lt;/immediateFlush&gt; &lt;outputPatternAsHeader&gt;true&lt;/outputPatternAsHeader&gt;
+        &lt;!-- this quadruples logging throughput --&gt; 
+        &lt;immediateFlush&gt;false&lt;/immediateFlush&gt; &lt;outputPatternAsHeader&gt;true&lt;/outputPatternAsHeader&gt;
     &lt;/encoder&gt; 
 &lt;/appender&gt;
 </code></pre>
