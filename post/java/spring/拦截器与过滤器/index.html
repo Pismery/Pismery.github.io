@@ -13,9 +13,9 @@
     <meta name="keyword"  content="Pismery 博客">
     <link rel="shortcut icon" href="https://Pismery.github.io/img/favicon.jpg">
 
-    <title>GetParameterName-博客 | Pismery Liu Blog</title>
+    <title>拦截器与过滤器-博客 | Pismery Liu Blog</title>
 
-    <link rel="canonical" href="https://Pismery.github.io/post/java/util/getparametername/">
+    <link rel="canonical" href="https://Pismery.github.io/post/java/spring/%E6%8B%A6%E6%88%AA%E5%99%A8%E4%B8%8E%E8%BF%87%E6%BB%A4%E5%99%A8/">
 
     <link rel="stylesheet" href="https://Pismery.github.io/css/iDisqus.min.css"/>
 	
@@ -138,16 +138,16 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
-                            工具类
-                        </a>
-                        
                         <a class="tag" href="/tags/java" title="Java">
                             Java
                         </a>
                         
+                        <a class="tag" href="/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
                     </div>
-                    <h1>GetParameterName</h1>
+                    <h1>拦截器与过滤器</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
 			Posted by 
@@ -155,7 +155,7 @@
 			    Pismery Liu
 			 
 			on 
-			Monday, April 22, 2019
+			Saturday, January 4, 2020
                         
                     </span>
                 </div>
@@ -183,201 +183,322 @@
                 </header>
                 <nav id="TableOfContents">
 <ul>
-<li><a href="#获取参数名称">获取参数名称</a>
+<li><a href="#过滤器与拦截器">过滤器与拦截器</a>
 <ul>
-<li><a href="#设置编译器参数">设置编译器参数</a></li>
-<li><a href="#使用-javaassist">使用 javaassist</a></li>
-<li><a href="#使用-asm5">使用 Asm5</a></li>
+<li><a href="#过滤器">过滤器</a>
+<ul>
+<li><a href="#bean-配置方式">Bean 配置方式</a></li>
+<li><a href="#注解配置">注解配置</a></li>
+<li><a href="#多个-filter-指定执行顺序">多个 Filter 指定执行顺序</a></li>
+<li><a href="#两种配置方式对比">两种配置方式对比</a></li>
+</ul></li>
+<li><a href="#拦截器">拦截器</a>
+<ul>
+<li><a href="#bean-配置方式-1">Bean 配置方式</a></li>
+</ul></li>
+<li><a href="#参考链接">参考链接</a></li>
 </ul></li>
 </ul>
 </nav>
                 
-                <p>近期，自己在实现 Spring MVC 功能时，发现通过 Java 反射不能够获取到方法的参数名称；因此，查阅了一下资料，特此记录</p>
+                <h1 id="过滤器与拦截器">过滤器与拦截器</h1>
 
-<h1 id="获取参数名称">获取参数名称</h1>
+<p>本篇文章，主要讲解过滤器与拦截器的区别，使用方式以及使用场景；</p>
 
-<p>Java 文件经过编译生成的 class 文件，将方法的参数名称丢弃了；这也就导致通过 Java 的反射机制无法直接获取到方法的参数名；Java 8 以后可通过设置编译器参数 -parameters 能够编译生成的 class 文件包含参数表，这样就能够通过反射机制直接获取参数名；若没有 Java 8，则可通过字节码工具包 ASM 或 Javassist 获取；</p>
+<blockquote>
+<p>过滤器与拦截器的区别：</p>
+</blockquote>
 
-<p>下面分别演示三种方式获取方法的参数名；</p>
+<ul>
+<li>使用范围不同：过滤器 (filter) 是 Java Sevlet 规范中的一部分的，因此只能用于 web 程序；而拦截器 (interceptor) 是 Spring 提供的组件，不依赖 Servlet 容器，可用于 Web ，Application，Swing 程序；</li>
+<li>可使用资源不同：拦截器可直接注入 Spring 容器对象，即拦截器可以注入 Server 执行业务操作，而过滤器无法注入 Spring 容器对象；</li>
+<li>实现方式不同：过滤器是基于函数回调的方式实现；拦截器是通过反射机制实现；</li>
+<li>调用时机不同：</li>
+</ul>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Pismery/Picture/img20200104212211.png" alt="" /></p>
+
+<blockquote>
+<p>常见使用场景</p>
+</blockquote>
+
+<ul>
+<li>统一请求字符串编码方式；</li>
+<li>记录访问日志；</li>
+<li>权限认证，token 检测；</li>
+<li>接口执行时间检测；</li>
+</ul>
+
+<h2 id="过滤器">过滤器</h2>
+
+<p>过滤器有多种配置方式，下面演示其中两种方式： Bean 配置方式和注解配置方式</p>
+
+<h3 id="bean-配置方式">Bean 配置方式</h3>
+
+<p>操作步骤：</p>
 
 <ol>
-<li>Java8 + 设置编译器参数 -parameters + 反射 Method.getParameters();</li>
-<li>使用 javassist</li>
-<li>使用 asm</li>
+<li>编写 Filter 类实现 javax.servlet.Filter 类；</li>
+<li>编写配置类，注册 FilterRegistrationBean，并将 filter 配置信息配置其中；</li>
 </ol>
 
-<h2 id="设置编译器参数">设置编译器参数</h2>
+<pre><code class="language-Java">@Configuration
+public class FilterConfig implements WebMvcConfigurer {
+    @Bean
+    public FilterRegistrationBean&lt;AFilter&gt; aFilterRegistration() {
+        FilterRegistrationBean&lt;AFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
+        registration.setFilter(new AFilter());
+        // 过滤应用程序中所有资源,当前应用程序根下的所有文件包括多级子目录下的所有文件;
+        registration.addUrlPatterns(&quot;/a-filter/*&quot;); // 不用加上server.servlet.context-path;
+        // 可通过 FilterConfig 对象获取设置的 Parameter 值
+        registration.addInitParameter(&quot;aFilter&quot;, &quot;pis-a-filter&quot;);
+        registration.setName(&quot;AFilter&quot;);
+
+        return registration;
+    }
+}
+</code></pre>
+
+<pre><code class="language-Java">@Slf4j
+public class AFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        log.info(&quot;AFilter init!...&quot;);
+        log.info(&quot;AFilter Param: &quot; + filterConfig.getInitParameter(&quot;aFilter&quot;));
+
+    }
+
+    @Override
+    public void destroy() {
+        log.info(&quot;AFilter destroy!...&quot;);
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        log.info(&quot;AFilter before invoke doFilter!...&quot;);
+        chain.doFilter(request, response);
+        log.info(&quot;AFilter after invoke doFilter!...&quot;);
+    }
+}
+</code></pre>
+
+<h3 id="注解配置">注解配置</h3>
+
+<p>操作步骤：</p>
+
+<ol>
+<li>编写 Filter 类实现 javax.servlet.Filter 类；</li>
+<li>使用 @WebFilter 注解配置 Filter 相应信息；</li>
+<li>在启动类中加上注解 @ServletComponentScan，用于扫描发现 Servlet 规范组件；</li>
+</ol>
+
+<pre><code class="language-Java">@Slf4j
+@WebFilter(
+        urlPatterns = &quot;/b-filter/*&quot;
+        , displayName = &quot;BFilter&quot;
+        , initParams = {@WebInitParam(name = &quot;bFilter&quot;, value = &quot;pis-b-filter&quot;)}
+)
+public class BFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        log.info(&quot;BFilter init!...&quot;);
+        log.info(&quot;BFilter Param: &quot;+filterConfig.getInitParameter(&quot;bFilter&quot;));
+    }
+
+    @Override
+    public void destroy() {
+        log.info(&quot;BFilter destroy!...&quot;);
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        log.info(&quot;BFilter before invoke doFilter!...&quot;);
+        chain.doFilter(request, response);
+        log.info(&quot;BFilter after invoke doFilter!...&quot;);
+    }
+}
+
+@SpringBootApplication
+@ServletComponentScan //用于扫描 Servlet 规范的组件，如 Filter, Servlet, Listener
+public class InterceptorFilterApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(InterceptorFilterApplication.class, args);
+    }
+}
+</code></pre>
+
+<h3 id="多个-filter-指定执行顺序">多个 Filter 指定执行顺序</h3>
+
+<p>当对于某一个请求，存在多个 filter 时，其默认执行顺序是按照 Filter Bean 的名称升序排序方式；也可通过 Bean 配置方式，显示设置 Order 值；Order 值越小越优先执行；<strong>注意：通过注解 @Order 是无法设置 Filter 执行顺序的</strong>；</p>
+
+<pre><code class="language-Java">@Configuration
+public class FilterConfig implements WebMvcConfigurer {
+    @Bean
+    public FilterRegistrationBean&lt;CFilter&gt; cFilterRegistration() {
+        FilterRegistrationBean&lt;CFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
+        registration.setFilter(new CFilter());
+        registration.addUrlPatterns(&quot;/*&quot;);
+        registration.addInitParameter(&quot;cFilter&quot;, &quot;pis-c-filter&quot;);
+        registration.setName(&quot;CFilter&quot;);
+        // 设置执行顺序，否则按 Bean 的名字排序
+        registration.setOrder(1);
+
+        return registration;
+    }
+}
+</code></pre>
+
+<pre><code class="language-Java">@Slf4j
+public class CFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        log.info(&quot;CFilter init!...&quot;);
+        log.info(&quot;CFilter Param: &quot; + filterConfig.getInitParameter(&quot;cFilter&quot;));
+    }
+
+    @Override
+    public void destroy() {
+        log.info(&quot;CFilter destroy!...&quot;);
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        log.info(&quot;CFilter before invoke doFilter!...&quot;);
+        chain.doFilter(request, response);
+        log.info(&quot;CFilter after invoke doFilter!...&quot;);
+    }
+}
+</code></pre>
 
 <blockquote>
-<p>idea 设置方式</p>
+<p>执行结果</p>
 </blockquote>
 
-<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190418214458.png" alt="" /></p>
+<p>启动 Spring boot 服务器，访问 http:xxx/a-filter，执行结果如下</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Pismery/Picture/img20200104215340.png" alt="" /></p>
+
+<p>从结果可以看到，由于显示设置了 CFilter 的 Order 为 1 优先执行；所以 CFilter 优先执行，而如果按照 Bean 名称则应该 AFilter 优先执行，所以配置生效；</p>
+
+<h3 id="两种配置方式对比">两种配置方式对比</h3>
 
 <blockquote>
-<p>mavan 设置方式</p>
+<p>Bean 配置方式</p>
 </blockquote>
 
-<pre><code class="language-xml">&lt;plugin&gt;
-    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
-    &lt;version&gt;3.3&lt;/version&gt;
-    &lt;configuration&gt;
-        &lt;source&gt;1.8&lt;/source&gt;
-        &lt;target&gt;1.8&lt;/target&gt;
-        &lt;compilerArgs&gt;
-            &lt;arg&gt;-parameters&lt;/arg&gt;
-        &lt;/compilerArgs&gt;
-    &lt;/configuration&gt;
-&lt;/plugin&gt;
-</code></pre>
+<p>配置更加灵活，能够指定执行顺序和引入第三方类库中的过滤器；</p>
 
-<pre><code class="language-Java">package org.pismery.mvc.util;
+<blockquote>
+<p>注解配置方式</p>
+</blockquote>
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
+<p>配置更加简单，并且代码处于同一个位置，更好维护；但无法指定 Order 即不能调整过滤器的执行顺序，只能按照过滤器名称顺序执行；如果需要配置第三方类库中的过滤器，则无法使用注解方式；</p>
 
-public class ParameterNameUtil {
+<h2 id="拦截器">拦截器</h2>
 
-    /**
-     * 获取指定类指定方法的参数名
-     * @param method 要获取参数名的方法
-     * @return 按参数顺序排列的参数名列表，如果没有参数，则返回null
-     */
-    public static String[] getMethodParameterNamesJava8(final Method method) {
-        Parameter[] parameters = method.getParameters();
-        if (parameters == null || parameters.length == 0) {
-            return null;
-        }
-        String[] result = new String[parameters.length];
-        for (int i = 0, length = parameters.length; i &lt; length; i++) {
-            result[i] = parameters[i].getName();
-        }
-        return result;
-    }
-}
+<h3 id="bean-配置方式-1">Bean 配置方式</h3>
 
-</code></pre>
+<p>操作步骤：</p>
 
-<h2 id="使用-javaassist">使用 javaassist</h2>
+<ol>
+<li>编写 Interceptor 类实现 org.springframework.web.servlet.HandlerInterceptor 类；</li>
+<li>编写配置类，实现 org.springframework.web.servlet.config.annotation.WebMvcConfigurer 接口中的 addInterceptors 方法；</li>
+</ol>
 
-<pre><code class="language-Java">package org.pismery.mvc.util;
-
-import javassist.*;
-import javassist.bytecode.CodeAttribute;
-import javassist.bytecode.LocalVariableAttribute;
-import javassist.bytecode.MethodInfo;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-
-public class ParameterNameUtil {
-
-   
-    /**
-     * 获取指定类指定方法的参数名
-     *
-     * @param method 要获取参数名的方法
-     * @return 按参数顺序排列的参数名列表，如果没有参数，则返回null
-     */
-    public static String[] getParameterNamesByJavaAssist(Method method) {
-        ClassPool classPool = ClassPool.getDefault();
-        classPool.insertClassPath(new ClassClassPath(method.getDeclaringClass()));
-        String[] result = new String[method.getParameters().length];
-        try {
-            CtClass ctClass = classPool.get(method.getDeclaringClass().getName());
-            CtMethod ctMethod = ctClass.getDeclaredMethod(method.getName());
-
-
-            MethodInfo methodInfo = ctMethod.getMethodInfo();
-            CodeAttribute codeAttribute = methodInfo.getCodeAttribute();
-            LocalVariableAttribute attr = (LocalVariableAttribute) codeAttribute
-                    .getAttribute(LocalVariableAttribute.tag);
-
-            if (attr == null) {
-                return null;
-            }
-
-            // 非静态的成员函数的第一个参数是this
-            int pos = Modifier.isStatic(ctMethod.getModifiers()) ? 0 : 1;
-            for (int i = 0, len = ctMethod.getParameterTypes().length; i &lt; len; i++) {
-                result[i] = attr.variableName(i + pos);
-            }
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return result;
+<pre><code class="language-Java">@Slf4j
+@Configuration
+public class InterceptorConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        //如果想指定某一个 url 如 login 接口，不能用 /web/login, /*/login； 需要使用 /**/login/**
+        //添加顺序即为拦截器的执行顺序；
+        registry.addInterceptor(new AInterceptor()).addPathPatterns(&quot;/**/a-interceptor/**&quot;);
+        registry.addInterceptor(new CInterceptor()).addPathPatterns(&quot;/**&quot;);
     }
 }
 </code></pre>
 
-<h2 id="使用-asm5">使用 Asm5</h2>
+<pre><code class="language-Java">@Slf4j
+public class AInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.info(&quot;AInterceptor preHandle!...&quot;);
+        return true;
+    }
 
-<pre><code class="language-Java">package org.pismery.mvc.util;
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        log.info(&quot;AInterceptor postHandle!...&quot;);
+    }
 
-import jdk.internal.org.objectweb.asm.*;
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        log.info(&quot;AInterceptor afterCompletion!...&quot;);
+    }
+}
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
+@Slf4j
+public class CInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.info(&quot;CInterceptor preHandle!...&quot;);
+        return true;
+    }
 
-public class ParameterNameUtil {
-    /**
-     * 获取指定类指定方法的参数名
-     *
-     * @param clazz  要获取参数名的方法所属的类
-     * @param method 要获取参数名的方法
-     * @return 按参数顺序排列的参数名列表，如果没有参数，则返回null
-     */
-    public static String[] getMethodParameterNamesByAsm5(final Method method) {
-        Class&lt;?&gt; clazz = method.getDeclaringClass();
-        final Class&lt;?&gt;[] parameterTypes = method.getParameterTypes();
-        if (parameterTypes == null || parameterTypes.length == 0) {
-            return null;
-        }
-        // 获取参数类型
-        final Type[] types = new Type[parameterTypes.length];
-        for (int i = 0; i &lt; parameterTypes.length; i++) {
-            types[i] = Type.getType(parameterTypes[i]);
-        }
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        log.info(&quot;CInterceptor postHandle!...&quot;);
+    }
 
-        final String[] parameterNames = new String[parameterTypes.length];
-
-        String className = clazz.getSimpleName() + &quot;.class&quot;;
-        InputStream is = clazz.getResourceAsStream(className);
-        try {
-            ClassReader classReader = new ClassReader(is);
-            classReader.accept(new ClassVisitor(Opcodes.ASM5) {
-                //当访问方法时，调用以下重写方法
-                @Override
-                public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-                    // 只处理指定的方法 method
-                    Type[] argumentTypes = Type.getArgumentTypes(desc);
-                    if (!method.getName().equals(name) || !Arrays.equals(argumentTypes, types)) {
-                        return null;
-                    }
-                    return new MethodVisitor(Opcodes.ASM5) {
-                        AtomicInteger integer = new AtomicInteger();
-
-                        // 当访问方法参数时，调用以下重写方法
-                        @Override
-                        public void visitParameter(String name, int index) {
-                            parameterNames[integer.getAndIncrement()] = name;
-                        }
-                    };
-
-                }
-            }, 0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return parameterNames;
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        log.info(&quot;CInterceptor afterCompletion!...&quot;);
     }
 }
 </code></pre>
+
+<blockquote>
+<p>执行结果</p>
+</blockquote>
+
+<p>启动 Spring boot 服务器，访问 http:xxx/a-interceptor，执行结果如下</p>
+
+<pre><code class="language-Java">@Slf4j
+@Configuration
+public class InterceptorConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AInterceptor()).addPathPatterns(&quot;/**/a-interceptor/**&quot;);
+        registry.addInterceptor(new CInterceptor()).addPathPatterns(&quot;/**&quot;);
+    }
+}
+</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Pismery/Picture/img20200104220509.png" alt="" /></p>
+
+<p>调整添加 Interceptor 顺序，重新测试拦截器执行顺序，执行结果如下：</p>
+
+<pre><code class="language-Java">@Slf4j
+@Configuration
+public class InterceptorConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new CInterceptor()).addPathPatterns(&quot;/**&quot;);
+        registry.addInterceptor(new AInterceptor()).addPathPatterns(&quot;/**/a-interceptor/**&quot;);
+    }
+}
+</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Pismery/Picture/img20200104220641.png" alt="" /></p>
+
+<h2 id="参考链接">参考链接</h2>
+
+<ul>
+<li><a href="https://www.cnblogs.com/ibigboy/p/11528775.html">SpringBoot自定义过滤器的两种方式及过滤器执行顺序</a></li>
+<li><a href="https://www.cnblogs.com/okong/p/correct-webfilter.html">关于@webFilter使用@Order无效问题</a></li>
+<li><a href="https://my.oschina.net/zdtdtel/blog/3025880">SpringBoot 过滤器, 拦截器, 监听器 对比及使用场景</a></li>
+<li><a href="https://blog.csdn.net/weixin_43687167/article/details/91966538">SpringBoot2.x - 基于注解实现拦截器</a></li>
+</ul>
 
                 
 
@@ -385,20 +506,15 @@ public class ParameterNameUtil {
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/database/sqlserver/" data-toggle="tooltip" data-placement="top" title="Sqlserver">&larr;
+                        <a href="/post/common/design-pattern/%E6%8E%A5%E5%8F%A3%E5%B9%82%E7%AD%89%E6%80%A7/" data-toggle="tooltip" data-placement="top" title="接口幂等性">&larr;
                             Previous Post</a>
                     </li>
                     
                     
-                    <li class="next">
-                        <a href="/post/java/spring/%E6%89%8B%E5%86%99springmvc%E5%AE%9E%E8%B7%B5/" data-toggle="tooltip" data-placement="top" title="手写springmvc实践">Next
-                            Post &rarr;</a>
-                    </li>
-                    
                 </ul>
 
                 
- <span id="/post/java/util/getparametername/" class="leancloud_visitors" data-flag-title="GetParameterName">
+ <span id="/post/java/spring/%E6%8B%A6%E6%88%AA%E5%99%A8%E4%B8%8E%E8%BF%87%E6%BB%A4%E5%99%A8/" class="leancloud_visitors" data-flag-title="拦截器与过滤器">
    <span class="post-meta-item-text">文章阅读量 </span>
    <span class="leancloud-visitors-count">1000000</span>
    <p></p>
