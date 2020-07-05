@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Wed, 01 Jul 2020 21:09:02 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 05 Jul 2020 21:41:44 +0800</lastBuildDate>
     
 	<atom:link href="https://Pismery.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>「极客时间」- MySQL 查询语句执行流程</title>
+      <link>https://Pismery.github.io/post/geektime/mysql45/mysql_execution_process/</link>
+      <pubDate>Sun, 05 Jul 2020 21:41:44 +0800</pubDate>
+      
+      <guid>https://Pismery.github.io/post/geektime/mysql45/mysql_execution_process/</guid>
+      <description>&lt;p&gt;本系列是「极客时间」课程「MySQL 实战 45 讲」的学习笔记，目的是为了强化学习效果；&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>单例模式演进</title>
@@ -17,7 +26,7 @@
       <pubDate>Wed, 01 Jul 2020 21:09:02 +0800</pubDate>
       
       <guid>https://Pismery.github.io/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E6%BC%94%E8%BF%9B/</guid>
-      <description>单例模式 本文将通过梳理编码的思考过程，来讲述各种单例模式实现的缘由和注意事项； 单例模式各种实现方式中，最容易想到方式就是饿汉式单例，代码实现</description>
+      <description>&lt;p&gt;本文将通过梳理编码的思考过程，来讲述各种单例模式实现的缘由和注意事项；&lt;/p&gt;</description>
     </item>
     
     <item>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MySQL on Pismery Blog</title>
+    <link>https://Pismery.github.io/tags/mysql/</link>
+    <description>Recent content in MySQL on Pismery Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+    <lastBuildDate>Sun, 05 Jul 2020 21:41:44 +0800</lastBuildDate>
+    
+	<atom:link href="https://Pismery.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>「极客时间」- MySQL 查询语句执行流程</title>
+      <link>https://Pismery.github.io/post/geektime/mysql45/mysql_execution_process/</link>
+      <pubDate>Sun, 05 Jul 2020 21:41:44 +0800</pubDate>
+      
+      <guid>https://Pismery.github.io/post/geektime/mysql45/mysql_execution_process/</guid>
+      <description>&lt;p&gt;本系列是「极客时间」课程「MySQL 实战 45 讲」的学习笔记，目的是为了强化学习效果；&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
