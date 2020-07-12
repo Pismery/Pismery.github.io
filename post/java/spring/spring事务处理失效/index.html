@@ -13,9 +13,9 @@
     <meta name="keyword"  content="Pismery 博客">
     <link rel="shortcut icon" href="https://Pismery.github.io/img/favicon.jpg">
 
-    <title>并发编程之并发工具类 Exchanger-博客 | Pismery Liu Blog</title>
+    <title>Spring 事务处理失效-博客 | Pismery Liu Blog</title>
 
-    <link rel="canonical" href="https://Pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-exchanger/">
+    <link rel="canonical" href="https://Pismery.github.io/post/java/spring/spring%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%A4%B1%E6%95%88/">
 
     <link rel="stylesheet" href="https://Pismery.github.io/css/iDisqus.min.css"/>
 	
@@ -138,16 +138,20 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/concurrent" title="concurrent">
-                            concurrent
-                        </a>
-                        
                         <a class="tag" href="/tags/java" title="Java">
                             Java
                         </a>
                         
+                        <a class="tag" href="/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        <a class="tag" href="/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
                     </div>
-                    <h1>并发编程之并发工具类 Exchanger</h1>
+                    <h1>Spring 事务处理失效</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
 			Posted by 
@@ -155,7 +159,7 @@
 			    Pismery Liu
 			 
 			on 
-			Saturday, March 2, 2019
+			Sunday, July 12, 2020
                         
                     </span>
                 </div>
@@ -183,205 +187,393 @@
                 </header>
                 <nav id="TableOfContents">
 <ul>
-<li><a href="#exchanger">Exchanger</a></li>
-<li><a href="#参考文章">参考文章</a></li>
+<li><a href="#spring-事务处理失效">Spring 事务处理失效</a>
+<ul>
+<li><a href="#没有通过-spring-bean-的方式调用事务方法">没有通过 Spring Bean 的方式调用事务方法；</a></li>
+<li><a href="#在不使用-aspectj-实现代理情况下-对非-public-方法进行-transaction-申明">在不使用 AspectJ 实现代理情况下，对非 public 方法进行 @Transaction 申明</a></li>
+<li><a href="#异常被-catch-没有抛出">异常被 catch 没有抛出</a></li>
+<li><a href="#抛出的异常为-checked-exception-受检异常">抛出的异常为 checked exception「受检异常」</a></li>
+<li><a href="#数据库本身不支持事务-如-mysql-的-myisam-存储引擎">数据库本身不支持事务，如 MySQL 的 MyISAM 存储引擎</a></li>
+</ul></li>
+<li><a href="#参考资料">参考资料</a></li>
 </ul>
 </nav>
                 
-                <div></div>
+                <p>本文重点介绍 Spring 事务处理的几个失效的场景和相关解决方案；</p>
 
-<h1 id="exchanger">Exchanger</h1>
+<h1 id="spring-事务处理失效">Spring 事务处理失效</h1>
 
-<p>Exchanger 是 Jdk5 之后提供的一个并发工具类，用于两个线程之间交互数据；下面是官方 api 的描述</p>
+<p>在日常业务开发过程中，事务处理在保证数据一致性起到了重要作用；而 Java 中常用 Spring 的声明式事务控制事务；即 Spring 注解 @Transaction；</p>
 
-<pre><code class="language-Java">/**
- * A synchronization point at which threads can pair and swap elements
- * within pairs.  Each thread presents some object on entry to the
- * {@link #exchange exchange} method, matches with a partner thread,
- * and receives its partner's object on return.  An Exchanger may be
- * viewed as a bidirectional form of a {@link SynchronousQueue}.
- * Exchangers may be useful in applications such as genetic algorithms
- * and pipeline designs.
- */
-</code></pre>
+<p>Spring 的声明式事务依旧是 JDBC 的事务 API 上的封装实现；其通过 AOP 的方式对指定方法动态增强，为方法添加事务的功能；默认的 AOP 实现方式是动态代理；动态代理的实现方式有 JDK 代理和 CGLIB 代理，Spring 会根据指定条件判断使用哪种动态代理实现；大致实现如下：</p>
 
-<p>简单表示为下列几点：</p>
+<pre><code class="language-Java">public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
-<ol>
-<li>以同步的方式对成对线程之间进行数据交换</li>
-<li>一个 Exchanger 可以视为一个双向同步队列</li>
-<li>适用于基因算法和流水线场景</li>
-</ol>
+    @Override
+    public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+        if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
+            Class&lt;?&gt; targetClass = config.getTargetClass();
+            if (targetClass == null) {
+                throw new AopConfigException(&quot;TargetSource cannot determine target class: &quot; +
+                        &quot;Either an interface or a target is required for proxy creation.&quot;);
+            }
+            if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
+                return new JdkDynamicAopProxy(config);
+            }
+            return new ObjenesisCglibAopProxy(config);
+        }
+        else {
+            return new JdkDynamicAopProxy(config);
+        }
+    }
 
-<blockquote>
-<p>源码</p>
-</blockquote>
+    /**
+     * Determine whether the supplied {@link AdvisedSupport} has only the
+     * {@link org.springframework.aop.SpringProxy} interface specified
+     * (or no proxy interfaces specified at all).
+     */
+    private boolean hasNoUserSuppliedProxyInterfaces(AdvisedSupport config) {
+        Class&lt;?&gt;[] ifcs = config.getProxiedInterfaces();
+        return (ifcs.length == 0 || (ifcs.length == 1 &amp;&amp; SpringProxy.class.isAssignableFrom(ifcs[0])));
+    }
 
-<pre><code class="language-Java">public V exchange(V x) throws InterruptedException {
-    Object v;
-    Object item = (x == null) ? NULL_ITEM : x; // translate null args
-    if ((arena != null ||
-         (v = slotExchange(item, false, 0L)) == null) &amp;&amp;
-        ((Thread.interrupted() || // disambiguates null return
-          (v = arenaExchange(item, false, 0L)) == null)))
-        throw new InterruptedException();
-    return (v == NULL_ITEM) ? null : (V)v;
-}
-
-public V exchange(V x, long timeout, TimeUnit unit)
-        throws InterruptedException, TimeoutException {
-    Object v;
-    Object item = (x == null) ? NULL_ITEM : x;
-    long ns = unit.toNanos(timeout);
-    if ((arena != null ||
-         (v = slotExchange(item, true, ns)) == null) &amp;&amp;
-        ((Thread.interrupted() ||
-          (v = arenaExchange(item, true, ns)) == null)))
-        throw new InterruptedException();
-    if (v == TIMED_OUT)
-        throw new TimeoutException();
-    return (v == NULL_ITEM) ? null : (V)v;
 }
 </code></pre>
 
-<p>执行流程如下：</p>
-
-<p>当一个线程调用 exchange 方法时</p>
+<p>对于 AOP 方面有机会再另行讨论；我们回到主题，先总结一下，导致 Spring 事务处理异常的情况：</p>
 
 <ul>
-<li>如果其对应的线程已经调用了 exchange 方法，则唤醒对应线程进行数据交换后各自返回。</li>
-<li>如果对应线程还未调用 exchange 方法，则线程阻塞，等待对应线程调用 exchange 方法；</li>
-<li>如果线程在等待过程中，线程被中断，则抛出中断异常；如果线程等待超时，则抛出超时异常</li>
+<li>没有通过 Spring Bean 的方式调用事务方法；</li>
+<li>在不使用 AspectJ 实现代理情况下，对非 public 方法进行 @Transaction 申明；</li>
+<li>异常被 catch 没有抛出；</li>
+<li>抛出的异常为 checked exception「受检异常」；</li>
+<li>数据库本身不支持事务，如 MySQL 的 MyISAM 存储引擎；</li>
 </ul>
 
-<p>JDK6 以后 Exchanger 实现采用了类似 ConcurrentHashMap 的分段锁方式，将内部的 Stack 分为 多个片段 Slot，线程 ID(Thread.getId()) 哈希值相同的会落在同一个 Slot 上。默认是 32 个 Slot, JDK 还会根据运行环境 CPU 核数进行一定的优化；</p>
+<p>下面逐一分析以上几种事务处理异常的情况；</p>
+
+<h2 id="没有通过-spring-bean-的方式调用事务方法">没有通过 Spring Bean 的方式调用事务方法；</h2>
+
+<p>首先，先看看错误示例</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+
+    public void updatePerson() {
+        doUpdatePerson();
+    }
+
+    @Transaction
+    public void doUpdatePerson() {
+        ....
+    }
+}
+</code></pre>
+
+<p>我们知道 Spring 是通过动态代理的方式实现声明式事务的；因此，要想对方法实现事务控制，必须通过 Spring 增强后的代理对象来调用方法；类内部方法自调用没有经过 Spring Bean 动态增强，最终方法 doUpdatePerson 没有事务控制；</p>
+
+<p>解决方式也很简单，下面展示三种方式：</p>
 
 <blockquote>
-<p>示例</p>
+<p>方式一</p>
 </blockquote>
 
-<ol>
-<li>生产者每秒产生一个数字 i, 消费者消费生产者生产的数字后交换为 0；</li>
-</ol>
+<p>通过 Autowired 自身，再用 Autowied 进来的 Bean 来调用相应方法即可；</p>
 
-<pre><code class="language-Java">public class ExchangerDemo {
-    // 用于控制线程执行，这里可以不使用 volatile 也能保证线程间的可见性；
-    // 原因是采用了 System.out.print 内部有 sychronzied 此时会自动去获取主存的值；
-    private static boolean done = false;
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Autowired
+    private PersonService self;
 
-    static class ExchangerProducer implements Runnable {
-        private Exchanger&lt;Integer&gt; exchanger;
-
-        public ExchangerProducer(Exchanger&lt;Integer&gt; exchanger) {
-            this.exchanger = exchanger;
-        }
-
-        @Override
-        public void run() {
-            int product = 0;
-
-            for (int i = 0; i &lt; 3; i++) {
-                product = i;
-                if (exchanger != null) {
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                        System.out.println(&quot;Producer produce:&quot; + product);
-                        exchanger.exchange(i);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            done = true;
-        }
+    public void updatePerson() {
+        self.doUpdatePerson();
     }
 
-    static class ExchangerConsumer implements Runnable {
-        private Exchanger&lt;Integer&gt; exchanger;
-
-        public ExchangerConsumer(Exchanger&lt;Integer&gt; exchanger) {
-            this.exchanger = exchanger;
-        }
-
-        @Override
-        public void run() {
-            int i = 0;
-            while (!done &amp;&amp; exchanger != null) {
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                    Integer exchange = exchanger.exchange(i);
-                    System.out.println(&quot;Consumer:&quot; + exchange);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    @Transaction
+    public void doUpdatePerson() {
+        ....
     }
+}
+</code></pre>
 
+<blockquote>
+<p>方式二</p>
+</blockquote>
 
-    public static void main(String[] args) {
-        Exchanger&lt;Integer&gt; exchanger = new Exchanger&lt;&gt;();
-        ExecutorService threadPool = Executors.newFixedThreadPool(2);
-        threadPool.submit(new ExchangerProducer(exchanger));
-        threadPool.submit(new ExchangerConsumer(exchanger));
+<p>将方法移动到另一个类中，再 Autowird 新的类，来调用</p>
 
-        threadPool.shutdown();
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Autowired
+    private PersonDoService doService;
+
+    public void updatePerson() {
+        doService.doUpdatePerson();
     }
 }
 
-//运行结果
-Producer produce:0
-Consumer:0
-Producer produce:1
-Consumer:1
-Producer produce:2
-Consumer:2
-</code></pre>
-
-<p>场景：用于校对工作，如某些银行流水需要手动输入，为了避免录入错误，因此，让 A 和 B 分别录入，两者录入在各自 Excel 中，系统需要校对两份 Excel；</p>
-
-<pre><code class="language-Java">public class ExchangerDemo2 {
-
-    public static void main(String[] args) {
-        final Exchanger&lt;String&gt; excelContent = new Exchanger&lt;&gt;();
-
-        ExecutorService threadPool = Executors.newFixedThreadPool(2);
-
-        threadPool.submit(() -&gt; {
-            try {
-                TimeUnit.SECONDS.sleep(2); //模拟录入时间
-                excelContent.exchange(&quot;content&quot;);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-
-
-        threadPool.submit(() -&gt; {
-            try {
-                TimeUnit.SECONDS.sleep(1); //模拟录入时间
-                String a = &quot;content&quot;;
-                String b = excelContent.exchange(a);
-                System.out.println(&quot;A和B数据是否一致：&quot; + a.equals(b) + &quot;,A录入的是：&quot;
-                        + a + &quot;,B录入是：&quot; + b);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        });
-
-        threadPool.shutdown();
+@Service
+public class PersonDoService {
+    @Transaction
+    public void doUpdatePerson() {
+        ....
     }
 }
-
-// 运行结果
-A和B数据是否一致：true,A录入的是：content,B录入是：content
 </code></pre>
 
-<h1 id="参考文章">参考文章</h1>
+<blockquote>
+<p>方式三</p>
+</blockquote>
+
+<p>通过 ApplicationContext 的 getBean 方法获取增强代理对象；</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Autowired
+    private ApplicationContext ctx;
+
+    public void updatePerson() {
+        PersonService self = (PersonService) ctx.getBean(&quot;personService&quot;);
+        self.doUpdatePerson();
+    }
+
+    @Transaction
+    public void doUpdatePerson() {
+        ....
+    }
+}
+</code></pre>
+
+<p>日常开发过程中，建议使用方式二；方式一的实现方式，一方面对于不了解 Spring 事务的同事，可能会十分疑惑这样的设计；另一方面其还可能引入循环依赖的问题；</p>
+
+<p>下面我们看看会导致循环依赖问题的示例：</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Autowired
+    private PersonService self;
+
+    public void updatePerson() {
+        self.doUpdatePerson();
+    }
+
+    @Transaction
+    @Aync
+    public void doUpdatePerson() {
+        ....
+    }
+}
+</code></pre>
+
+<p>示例很简单，只是在原来的基础上加上了注解 @Async，来实现方法异步的增强；此时启动 Spring 容器将会启动异常，错误信息如下：</p>
+
+<pre><code>org.springframework.beans.factory.BeanCurrentlyInCreationException: Error creating bean with name 'personService': 
+Bean with name 'personService' has been injected into other beans [personService] in its raw version as part of a circular reference, 
+but has eventually been wrapped. This means that said other beans do not use the final version of the bean. 
+This is often the result of over-eager type matching - consider using 'getBeanNamesOfType' with the 'allowEagerInit' flag turned off, for example.
+</code></pre>
+
+<p>错误信息意思是，初始化 personService 时，此对象已经注入 personService 注入，形成了循环依赖；解决方式也很简单，通过 @Lazy 注解实现延迟加载即可；实现如下：</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Autowired
+    @Lazy
+    private PersonService self;
+
+    public void updatePerson() {
+        self.doUpdatePerson();
+    }
+
+    @Transaction
+    @Aync
+    public void doUpdatePerson() {
+        ....
+    }
+}
+</code></pre>
+
+<h2 id="在不使用-aspectj-实现代理情况下-对非-public-方法进行-transaction-申明">在不使用 AspectJ 实现代理情况下，对非 public 方法进行 @Transaction 申明</h2>
+
+<p>错误示例如下：</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Autowired
+    private PersonService self;
+
+    public void updatePerson() {
+        self.doUpdatePerson1();
+        self.doUpdatePerson2();
+        self.doUpdatePerson3();
+    }
+
+    @Transaction
+    protected void doUpdatePerson1() {
+        ....
+    }
+
+    @Transaction
+    default void doUpdatePerson2() {
+        ....
+    }
+
+    @Transaction
+    private void doUpdatePerson3() {
+        ....
+    }
+}
+</code></pre>
+
+<p>解决方式：将事务方法设置为 public 方法；</p>
+
+<h2 id="异常被-catch-没有抛出">异常被 catch 没有抛出</h2>
+
+<p>方法出现异常，本希望事务进行回滚操作，但是以下代码却发现，事务未回滚，正常提交；</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Transaction
+    public void updatePerson() {
+        try {
+            doUpdatePerson();
+        } catch(Exception e) {
+            log(e);
+        }
+    }
+
+    private void doUpdatePerson() {
+        ....
+        throw new RunTimeExcpetion();
+    }
+
+}
+</code></pre>
+
+<p>Spring 处理事务逻辑如下：</p>
+
+<pre><code class="language-Java">try {
+   // This is an around advice: Invoke the next interceptor in the chain.
+   // This will normally result in a target object being invoked.
+   retVal = invocation.proceedWithInvocation();
+}
+catch (Throwable ex) {
+   // target invocation exception
+   completeTransactionAfterThrowing(txInfo, ex);
+   throw ex;
+}
+finally {
+   cleanupTransactionInfo(txInfo);
+}
+</code></pre>
+
+<p>只有当 Spring 捕获到了异常，才能够执行 completeTransactionAfterThrowing 方法进行事务回滚；因此，当我们方法将异常捕获后，没有抛出则不会进行事务回滚；</p>
+
+<p>解决方案如下：</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Transaction
+    public void updatePerson() {
+        try {
+            doUpdatePerson();
+        } catch(Exception e) {
+            log(e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+    }
+
+    private void doUpdatePerson() {
+        ....
+        throw new RunTimeExcpetion();
+    }
+
+}
+</code></pre>
+
+<p>通过 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly() 显示设置 RollbackOnly，使得事务进行回滚</p>
+
+<h2 id="抛出的异常为-checked-exception-受检异常">抛出的异常为 checked exception「受检异常」</h2>
+
+<p>有时候我们抛出了异常，但是事务还是没有回滚，下面我们看看示例：</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Transaction
+    public void updatePerson() throws IOException{
+        doUpdatePerson();
+    }
+
+    private void doUpdatePerson() throws IOException{
+        ....
+        readFile();
+    }
+
+}
+</code></pre>
+
+<p>当读取文件时，会抛出一个受检异常 IOException；但是 Spring 默认情况下，出现 RuntimeException（非受检异常）或 Error 的时候，Spring 才会回滚事务。</p>
+
+<p>Spring 官方解释是受检异常一般是业务异常或者是另一种方法返回值，出现这样的异常，业务可能还能完成，因此不会主动回滚；而 Error 或 RuntimeException 代表了非预期的结果，应该回滚；</p>
+
+<p>解决方案:</p>
+
+<blockquote>
+<p>方式一</p>
+</blockquote>
+
+<p>如果希望自己处理异常，但仍要回滚事务；</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Transaction
+    public void updatePerson(){
+        try {
+            doUpdatePerson();
+        } catch(Exception e) {
+            log(e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+    }
+
+    private void doUpdatePerson() throws IOException{
+        ....
+        readFile();
+    }
+
+}
+</code></pre>
+
+<blockquote>
+<p>方式二</p>
+</blockquote>
+
+<p>使用 rollbackFor 指定需要回滚的异常；</p>
+
+<pre><code class="language-Java">@Service
+public class PersonService {
+    @Transaction(rollbackFor = Exception.class)
+    public void updatePerson() throws IOException{
+        doUpdatePerson();
+    }
+
+    private void doUpdatePerson() throws IOException{
+        ....
+        readFile();
+    }
+
+}
+</code></pre>
+
+<h2 id="数据库本身不支持事务-如-mysql-的-myisam-存储引擎">数据库本身不支持事务，如 MySQL 的 MyISAM 存储引擎</h2>
+
+<p>这种情况解决方案就更换 MySQL 存储引擎为 InnoDB；</p>
+
+<h1 id="参考资料">参考资料</h1>
 
 <ul>
-<li><a href="https://blog.csdn.net/coslay/article/details/45242581">java Exchanger 原理</a></li>
+<li>「极客时间」Java业务开发常见错误100例 之 06 | 20%的业务代码的Spring声明式事务，可能都没处理正确</li>
+<li>「极客时间」每日一课 之 内部方法调用时，为什么Spring AOP增强不生效？</li>
 </ul>
 
                 
@@ -390,20 +582,15 @@ A和B数据是否一致：true,A录入的是：content,B录入是：content
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/java/basic/%E5%88%9D%E8%AF%86try-finally/" data-toggle="tooltip" data-placement="top" title="初识Try Finally">&larr;
+                        <a href="/post/geektime/mysql45/mysql_execution_process/" data-toggle="tooltip" data-placement="top" title="「极客时间」- MySQL 查询语句执行流程">&larr;
                             Previous Post</a>
                     </li>
                     
                     
-                    <li class="next">
-                        <a href="/post/java/util/distinct_demo/" data-toggle="tooltip" data-placement="top" title="Distinct_Demo">Next
-                            Post &rarr;</a>
-                    </li>
-                    
                 </ul>
 
                 
- <span id="/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-exchanger/" class="leancloud_visitors" data-flag-title="并发编程之并发工具类 Exchanger">
+ <span id="/post/java/spring/spring%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%A4%B1%E6%95%88/" class="leancloud_visitors" data-flag-title="Spring 事务处理失效">
    <span class="post-meta-item-text">文章阅读量 </span>
    <span class="leancloud-visitors-count">1000000</span>
    <p></p>
