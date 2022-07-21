@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>日期类操作-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/java/util/%E6%97%A5%E6%9C%9F%E7%B1%BB%E6%93%8D%E4%BD%9C/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        <a class="tag" href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                    </div>
+                    <h1>日期类操作</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Wednesday, November 14, 2018
+                        
+                            <span id="/blog/post/java/util/%E6%97%A5%E6%9C%9F%E7%B1%BB%E6%93%8D%E4%BD%9C/" class="leancloud_visitors meta_data_item" data-flag-title="日期类操作">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#java-8-date-and-time-operation">Java 8 – Date and Time Operation</a>
+<ul>
+<li><a href="#介绍">介绍</a></li>
+<li><a href="#日期类">日期类</a>
+<ul>
+<li><a href="#localdate">LocalDate</a></li>
+<li><a href="#localtime">LocalTime</a></li>
+</ul></li>
+<li><a href="#持续时间类">持续时间类</a>
+<ul>
+<li><a href="#duration">Duration</a></li>
+<li><a href="#period">Period</a></li>
+</ul></li>
+<li><a href="#基本操作">基本操作</a>
+<ul>
+<li><a href="#convert-between-localdate-and-localdatetime-to-java-util-date">Convert between LocalDate and LocalDateTime to java.util.Date</a></li>
+<li><a href="#convert-between-localdate-to-java-sql-date">Convert between LocalDate to java.sql.Date</a></li>
+<li><a href="#convert-between-string-to-localdate">Convert between String to LocalDate</a></li>
+<li><a href="#java-convert-date-or-timestamp-between-timezones">Java Convert Date or Timestamp Between Timezones</a></li>
+<li><a href="#data-compare">Data Compare</a></li>
+<li><a href="#writing-custom-temporaladjuster">Writing custom TemporalAdjuster</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                
+                <p>Java 8 新增日期类基本使用介绍</p>
+
+<h1 id="java-8-date-and-time-operation">Java 8 – Date and Time Operation</h1>
+
+<h2 id="介绍">介绍</h2>
+
+<p>Java 8 新增许多日期操作类来替换原来的Date，Calendar，timestamp，SimpleDateFormat(线程不安全)。</p>
+
+<p>新增类大致如下：</p>
+
+<ol>
+<li>日期类
+
+<ul>
+<li>Instant: 瞬时实例;</li>
+<li>LocalDate: 本地日期，不包含具体时间 例如：2014-01-14 可以用来记录生日、纪念日、加盟日等;</li>
+<li>LocalTime: 本地时间，不包含日期;</li>
+<li>LocalDateTime: 组合了日期和时间，但不包含时差和时区信息;</li>
+<li>ZonedDateTime: 最完整的日期时间，包含时区和相对UTC或格林威治的时差;</li>
+</ul></li>
+<li>持续时间类
+
+<ul>
+<li>Duration: 表示两个Instant间的一段时间;具有：纳秒值（小于一秒的部分），秒钟值（一共有几秒）</li>
+<li>Period: 表示两个LocalDate间的一段时间;内部使用三个int值分表表示年、月、</li>
+</ul></li>
+<li>格式化和解析类
+
+<ul>
+<li>DateTimeFormatter</li>
+</ul></li>
+</ol>
+
+<hr />
+
+<h2 id="日期类">日期类</h2>
+
+<h3 id="localdate">LocalDate</h3>
+
+<pre><code class="language-Java">public static void init() {
+    log.debug(&quot;LocalDate.MAX: &quot;+LocalDate.MAX); //LocalDate.MAX: +999999999-12-31
+    log.debug(&quot;LocalDate.MIN: &quot;+LocalDate.MIN); //LocalDate.MIN: -999999999-01-01
+    log.debug(&quot;LocalDate.of(2015, Month.SEPTEMBER,12): &quot;+LocalDate.of(2015, Month.SEPTEMBER,12)); //LocalDate.of(2015, Month.SEPTEMBER,12): 2015-09-12
+    log.debug(&quot;LocalDate.now(): &quot;+LocalDate.now()); //LocalDate.now(): 2018-09-09
+}
+
+public static void apiBaseUse() {
+    LocalDate localDate = LocalDate.of(2015,11,12);
+
+    log.debug(&quot;toString: &quot;+localDate.toString()); //toString: 2015-11-12
+    log.debug(&quot;getYear: &quot;+localDate.getYear()); //getYear: 2015
+
+    log.debug(&quot;getMonth: &quot;+localDate.getMonth()); //getMonth: NOVEMBER
+    log.debug(&quot;getMonthValue: &quot;+localDate.getMonthValue()); //getMonthValue: 11
+
+    log.debug(&quot;getDayOfWeek: &quot;+localDate.getDayOfWeek()); //getDayOfWeek: THURSDAY
+    log.debug(&quot;getDayOfMonth: &quot;+localDate.getDayOfMonth()); //getDayOfMonth: 12
+    log.debug(&quot;getDayOfYear: &quot;+localDate.getDayOfYear()); //getDayOfYear: 316
+
+    log.debug(&quot;isLeapYear: &quot;+localDate.isLeapYear()); //isLeapYear: false
+    log.debug(&quot;lengthOfMonth: &quot;+localDate.lengthOfMonth()); //lengthOfMonth: 30
+    log.debug(&quot;lengthOfYear: &quot;+localDate.lengthOfYear()); //lengthOfYear: 365
+}
+
+## 求两个日期的天数
+public static long getBetweenDays(LocalDate d1,LocalDate d2) {
+    return Math.abs(d1.toEpochDay() - d2.toEpochDay());
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>now,of</td>
+<td>根据当前时间或指定年月日来创建LocalDate对象</td>
+</tr>
+
+<tr>
+<td>plusDays,plusWeeks,plusMonths,plusYears</td>
+<td>向当前对象添加天、周、月、年</td>
+</tr>
+
+<tr>
+<td>minusDays,minusWeeks,minusMonths,plusYears</td>
+<td>向当前对象减去天、周、月、年</td>
+</tr>
+
+<tr>
+<td>plus,minus</td>
+<td>添加或减少一个Duration或者Perid</td>
+</tr>
+
+<tr>
+<td>WithDayOfMonth，WithDayOfYear,withMonth,withYear</td>
+<td>将月份天数、年份天数、年份修改为指定的值,并返回一个新的LocalDate对象</td>
+</tr>
+
+<tr>
+<td>getDayOfMonth</td>
+<td>获得月份天数（1~31）</td>
+</tr>
+
+<tr>
+<td>getDayOfYear</td>
+<td>获得年份天数（1~366）</td>
+</tr>
+
+<tr>
+<td>getDayOfWeek</td>
+<td>获得星期几</td>
+</tr>
+
+<tr>
+<td>getMonth，getMonthValue</td>
+<td>获得月份，或者Month枚举值，或者1-12数字</td>
+</tr>
+
+<tr>
+<td>getYear</td>
+<td>获得年份</td>
+</tr>
+
+<tr>
+<td>isBefore，isAfter</td>
+<td>比较日期</td>
+</tr>
+
+<tr>
+<td>isleapYear</td>
+<td>是否为闰年</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h3 id="localtime">LocalTime</h3>
+
+<pre><code>public static void init() {
+    log.debug(&quot;LocalTime.MAX: &quot;+ LocalTime.MAX); //LocalTime.MAX: 23:59:59.999999999
+    log.debug(&quot;LocalTime.MIDNIGHT: &quot;+ LocalTime.MIDNIGHT); //LocalTime.MIDNIGHT: 00:00
+    log.debug(&quot;LocalTime.MIN: &quot;+ LocalTime.MIN); //LocalTime.MIN: 00:00
+    log.debug(&quot;LocalTime.NOON: &quot;+ LocalTime.NOON); //LocalTime.NOON: 12:00
+}
+
+public static void apiBasicUse() {
+    LocalTime time = LocalTime.of(7,20,10,110000000);
+
+    log.debug(&quot;time.getHour(): &quot;+time.getHour()); //time.getHour(): 7
+    log.debug(&quot;time.getMinute(): &quot;+time.getMinute()); //time.getMinute(): 20
+    log.debug(&quot;time.getSecond(): &quot;+time.getSecond()); //time.getSecond(): 10
+    log.debug(&quot;time.getLong(ChronoField.MICRO_OF_DAY): &quot;+ time.getLong(ChronoField.MICRO_OF_DAY)); //time.getLong(ChronoField.MICRO_OF_DAY): 26410110000
+    log.debug(&quot;time.getNano(): &quot;+time.getNano()); //time.getNano(): 110000000
+
+    log.debug(&quot;time.plusHours(17): &quot;+ time.plusHours(17)); //time.plusHours(17): 00:20:10.110
+    log.debug(&quot;time.plus(Duration.ofHours(17)): &quot;+time.plus(Duration.ofHours(17))); //time.plus(Duration.ofHours(17)): 00:20:10.110
+
+}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>now,of</td>
+<td>根据当前时间或指定年月日来创建LocalTime对象</td>
+</tr>
+
+<tr>
+<td>plusHours,plusMinutes,plusSeconds,plusNanos</td>
+<td>向当前对象添加时、分秒、微秒</td>
+</tr>
+
+<tr>
+<td>minusHours,minusMinutes,minusSeconds,minusNanos</td>
+<td>向当前对象减去时、分秒、微秒</td>
+</tr>
+
+<tr>
+<td>plus,minus</td>
+<td>添加或减少一个Duration</td>
+</tr>
+
+<tr>
+<td>WithHour，WithMinute,withSecond,withNano</td>
+<td>将时、分、秒、微秒修改为指定的值,并返回一个新的LocalTime对象</td>
+</tr>
+
+<tr>
+<td>getHour，getMinute,getSecond,getNano</td>
+<td>获取事件对象的时、分、秒、微秒</td>
+</tr>
+
+<tr>
+<td>isBefore，isAfter</td>
+<td>比较时间</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2 id="持续时间类">持续时间类</h2>
+
+<h3 id="duration">Duration</h3>
+
+<p>Duration表示秒、纳秒，分钟，小时和天数的持续时间</p>
+
+<pre><code>public static long getLivedDays() {
+    LocalDateTime birthday = LocalDateTime.of(
+            LocalDate.of(1990, Month.JANUARY, 1),
+            LocalTime.of(10, 10));
+    LocalDateTime deathDay = LocalDateTime.of(
+            LocalDate.of(2090, Month.JANUARY, 1),
+            LocalTime.of(10, 10));
+
+    return Duration.between(birthday, deathDay).toDays(); //36525
+}
+</code></pre>
+
+<h3 id="period">Period</h3>
+
+<p>Period表示年，月，日的时间差值。</p>
+
+<pre><code>public static Period getLivedDays() {
+    LocalDate birthday = LocalDate.of(1990, Month.JANUARY, 1);
+    LocalDate deathDay = LocalDate.of(2090, Month.JANUARY, 1);
+
+    return Period.between(birthday,deathDay); //36525
+}
+
+## 测试
+@Test
+public void getLivedDays() {
+    assertThat(PeriodDemo.getLivedDays().getYears()).isEqualTo(100);
+    assertThat(PeriodDemo.getLivedDays().getMonths()).isEqualTo(0);
+    assertThat(PeriodDemo.getLivedDays().getDays()).isEqualTo(0);
+}
+</code></pre>
+
+<hr />
+
+<h2 id="基本操作">基本操作</h2>
+
+<h3 id="convert-between-localdate-and-localdatetime-to-java-util-date">Convert between LocalDate and LocalDateTime to java.util.Date</h3>
+
+<pre><code>public static Date asDate(LocalDate localDate) {
+    return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+}
+
+public static Date asDate(LocalDateTime localDateTime) {
+    return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+}
+
+public static LocalDate asLocalDate(Date date) {
+    return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+}
+
+public static LocalDateTime asLocalDateTime(Date date) {
+    return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+}
+</code></pre>
+
+<h3 id="convert-between-localdate-to-java-sql-date">Convert between LocalDate to java.sql.Date</h3>
+
+<pre><code>public static java.sql.Date asDate(LocalDate localDate) {
+    return java.sql.Date.valueOf( localDate );
+}
+
+public static LocalDate asLocalDate(java.sql.Date date) {
+    return date.toLocalDate();
+}
+</code></pre>
+
+<h3 id="convert-between-string-to-localdate">Convert between String to LocalDate</h3>
+
+<pre><code>DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;);
+String dateString = &quot;14/07/2018&quot;;
+ 
+LocalDate localDateObj = LocalDate.parse(dateString, dateTimeFormatter);    //String to LocalDate
+ 
+String dateStr = localDateObj.format(dateTimeFormatter);        //LocalDate to String
+
+LocalDate localDate = LocalDate.parse( dateString ); ##defaul pattern yyyy-MM-dd
+</code></pre>
+
+<h3 id="java-convert-date-or-timestamp-between-timezones">Java Convert Date or Timestamp Between Timezones</h3>
+
+<blockquote>
+<p>Convert ZonedDateTime between timezones</p>
+</blockquote>
+
+<pre><code>import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+ 
+public class Main {
+    private static final String DATE_FORMAT = &quot;dd-M-yyyy hh:mm:ss a z&quot;;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+     
+    public static void main(String[] args) {
+        ZoneId fromTimeZone = ZoneId.of(&quot;Asia/Kolkata&quot;);    //Source timezone
+        ZoneId toTimeZone = ZoneId.of(&quot;America/New_York&quot;);  //Target timezone
+         
+        LocalDateTime today = LocalDateTime.now();          //Current time
+        ZonedDateTime currentISTime = today.atZone(fromTimeZone);  //Zoned date time at source timezone    
+        ZonedDateTime currentETime = currentISTime.withZoneSameInstant(toTimeZone);//Zoned date time at target timezone
+         
+        //Format date time - optional
+        System.out.println(formatter.format(currentISTime));
+        System.out.println(formatter.format(currentETime));
+    }
+}
+ 
+//Output:
+ 
+14-7-2018 11:57:46 PM IST
+14-7-2018 02:27:46 PM EDT
+</code></pre>
+
+<blockquote>
+<p>Convert Date between timezones</p>
+</blockquote>
+
+<pre><code>import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+ 
+public class Main {
+    static SimpleDateFormat FORMATTER = new SimpleDateFormat(&quot;MM/dd/yyyy 'at' hh:mma z&quot;);
+     
+    public static void main(String[] args) {
+        TimeZone etTimeZone = TimeZone.getTimeZone(&quot;America/New_York&quot;); //Target timezone
+        Date currentDate = new Date();
+         
+        System.out.println(FORMATTER.format(currentDate));  //Date in current timezone
+         
+        FORMATTER.setTimeZone(etTimeZone);
+         
+        System.out.println(FORMATTER.format(currentDate));  //Date in target timezone
+    }
+}
+ 
+//Output:
+ 
+07/15/2018 at 12:13AM IST
+07/14/2018 at 02:43PM EDT
+</code></pre>
+
+<blockquote>
+<p>Convert Calendar between timezones</p>
+</blockquote>
+
+<pre><code>import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+ 
+public class Main {
+    static SimpleDateFormat FORMATTER = new SimpleDateFormat(&quot;MM/dd/yyyy 'at' hh:mma z&quot;);
+     
+    public static void main(String[] args) {
+        TimeZone istTimeZone = TimeZone.getTimeZone(&quot;Asia/Kolkata&quot;);    //Source timezone
+        TimeZone etTimeZone = TimeZone.getTimeZone(&quot;America/New_York&quot;); //Target timezone
+         
+        Calendar today = Calendar.getInstance(istTimeZone);
+         
+        System.out.println(FORMATTER.format(today.getTime()));  //07/15/2018 at 12:35AM IST
+         
+        //Change timezone in formatter
+        FORMATTER.setTimeZone(etTimeZone);         
+         
+        System.out.println(FORMATTER.format(today.getTime()));  //07/14/2018 at 03:05PM EDT
+         
+        //OR calendar static methods
+         
+        System.out.println(today.get(Calendar.HOUR));       //0
+        System.out.println(today.get(Calendar.MINUTE));     //37
+        System.out.println(today.get(Calendar.SECOND));     //9
+         
+        //Change calendar timezone
+        today.setTimeZone(etTimeZone);
+         
+        System.out.println(today.get(Calendar.HOUR));       //3
+        System.out.println(today.get(Calendar.MINUTE));     //7
+        System.out.println(today.get(Calendar.SECOND));     //9
+    }
+}
+</code></pre>
+
+<h3 id="data-compare">Data Compare</h3>
+
+<p>Class:
+- java.time.LocalDate
+- java.time.LocalTime
+- java.time.LocalDateTime.</p>
+
+<p>Method:
+- date1.isAfter( date2 ) – It returns true is date1 comes after date2; else false.
+- date1.isBefore( date2 ) – It returns true is date1 comes before date2; else false.
+- date1.compareTo( date2 ) – It returns ‘positive number’ is date1 comes after date2; else ‘negative number’.   A value &lsquo;0&rsquo; means both dates are equal.</p>
+
+<pre><code>public static void compareLocalDates() {
+    LocalDate todayLocalDate = LocalDate.now();
+    LocalDate pastLocalDate = LocalDate.of(2018, 10, 01);
+    DateTimeFormatter sdf = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);
+    String date1 = sdf.format(todayLocalDate);
+    String date2 = sdf.format(pastLocalDate);
+    
+    //isAfter() Method
+    System.out.println(date1 + &quot; is after &quot; + date2 + &quot; :: &quot; + todayLocalDate.isAfter(pastLocalDate));    //true
+    //isBefore() Method
+    System.out.println(date2 + &quot; is before &quot; + date2 + &quot; :: &quot; + pastLocalDate.isBefore(todayLocalDate));  //true
+    //compareTo()
+    int dateDifference = todayLocalDate.compareTo(pastLocalDate);
+    System.out.println(&quot;Date diff : &quot; + dateDifference);
+
+    if (dateDifference &gt; 0)
+        System.out.println(date1 + &quot; &gt; &quot; + date2);           //prints
+    else if (dateDifference &lt; 0)
+        System.out.println(date1 + &quot; &lt; &quot; + date2);       //does not print
+    else
+        System.out.println(date1 + &quot; = &quot; + date2);          //does not print
+}
+
+## 结果
+2018-10-18 is after 2018-10-01 :: true
+2018-10-01 is before 2018-10-01 :: true
+Date diff : 17
+2018-10-18 &gt; 2018-10-01
+</code></pre>
+
+<h3 id="writing-custom-temporaladjuster">Writing custom TemporalAdjuster</h3>
+
+<pre><code>public static void nextWorkDate() {
+    LocalDate today = LocalDate.now();
+    TemporalAdjuster nextWorkingDayAdjuster = TemporalAdjusters.ofDateAdjuster(localDate -&gt; {
+        DayOfWeek dayOfWeek = localDate.getDayOfWeek();
+        if (dayOfWeek == DayOfWeek.FRIDAY) {
+            return localDate.plusDays(3);
+        } else if (dayOfWeek == DayOfWeek.SATURDAY) {
+            return localDate.plusDays(2);
+        }
+        return localDate.plusDays(1);
+    });
+    System.out.println(today.with(nextWorkingDayAdjuster));
+}
+</code></pre>
+
+<hr />
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/common/algorithm/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" data-toggle="tooltip" data-placement="top" title="快速排序">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/java/test/mockito%E4%BD%BF%E7%94%A8/" data-toggle="tooltip" data-placement="top" title="Mockito使用">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

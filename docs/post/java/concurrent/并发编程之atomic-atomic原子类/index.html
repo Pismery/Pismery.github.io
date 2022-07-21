@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>并发编程之 Atomic 原子类-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Batomic-atomic%E5%8E%9F%E5%AD%90%E7%B1%BB/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        <a class="tag" href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                    </div>
+                    <h1>并发编程之 Atomic 原子类</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Saturday, January 26, 2019
+                        
+                            <span id="/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Batomic-atomic%E5%8E%9F%E5%AD%90%E7%B1%BB/" class="leancloud_visitors meta_data_item" data-flag-title="并发编程之 Atomic 原子类">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#atomic-原子类">Atomic 原子类</a>
+<ul>
+<li><a href="#基本类型">基本类型</a></li>
+<li><a href="#数组类型">数组类型</a></li>
+<li><a href="#引用类型">引用类型</a></li>
+<li><a href="#更新器类">更新器类</a></li>
+<li><a href="#java8-新增类">Java8 新增类</a>
+<ul>
+<li><a href="#adder-类">Adder 类</a></li>
+<li><a href="#accumulator-类">Accumulator 类</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#参考链接">参考链接</a></li>
+</ul>
+</nav>
+                
+                <p>J.U.C Atomic 类通过 CAS 实现原子性操作。</p>
+
+<h1 id="atomic-原子类">Atomic 原子类</h1>
+
+<p>Atomic 原子类能够保证在多线程下的原子性。其内部是通过 CAS 机制实现的原子性操作。Atomic 原子类可以分为以下几类：</p>
+
+<ul>
+<li>基本类型：AtomicInteger，AtomicLong，AtomicBoolean</li>
+<li>数组类型：AtomicIntegerArray，AtomicLongArray，AtomicReferenceArray</li>
+<li>引用类型：AtomicReference，AtomicStampedRerence，AtomicMarkableReference</li>
+<li>更新器类：AtomicIntegerFieldUpdater、AtomicLongFieldUpdater、AtomicReferenceFieldUpdater</li>
+<li>Java8 新增类：DoubleAccumulator，DoubleAdder，LongAccumulator，LongAdder</li>
+</ul>
+
+<h2 id="基本类型">基本类型</h2>
+
+<blockquote>
+<p>基本方法</p>
+</blockquote>
+
+<pre><code class="language-Java">public final int get() //获取当前的值
+public final int getAndSet(int newValue)//获取当前的值，并设置新的值
+public final int getAndIncrement()//获取当前的值，并自增
+public final int getAndDecrement() //获取当前的值，并自减
+public final int getAndAdd(int delta) //获取当前的值，并加上预期的值
+boolean compareAndSet(int expect, int update) //如果输入的数值等于预期值，则以原子方式将该值设置为输入值（update）
+</code></pre>
+
+<blockquote>
+<p>accumulateAndGet 方法</p>
+</blockquote>
+
+<pre><code class="language-Java">//x：表示 IntBinaryOperator 中第二个参数right，IntBinaryOperator 的返回值即最终结果值
+public final int accumulateAndGet(int x, IntBinaryOperator accumulatorFunction) 
+
+@FunctionalInterface
+public interface IntBinaryOperator {
+    int applyAsInt(int left, int right);
+}
+</code></pre>
+
+<p>accumulateAndGet 是 Java8 新增的方法，其中 IntBinaryOperator 是函数式接口。</p>
+
+<p>使用示例如下</p>
+
+<pre><code>public static void main(String[] args){
+    //integer初始化为0
+    AtomicInteger integer = new AtomicInteger();
+    //0 + 2 = 2
+    integer.accumulateAndGet(2,(old,x)-&gt; old + x);
+    System.out.println(integer.get());
+}
+
+##结果
+2
+</code></pre>
+
+<blockquote>
+<p>lazySet 方法</p>
+</blockquote>
+
+<pre><code class="language-Java">public final void set(int newValue)//设置新值
+public final void lazySet(int newValue)//最终设置为newValue,使用 lazySet 设置之后可能导致其他线程在之后的一小段时间内还是可以读到旧的值。
+</code></pre>
+
+<p>首先，我们知道 volatile 底层通过内存屏障保证了数据的可见性。</p>
+
+<ol>
+<li>修改 volatile 变量保证立即从工作内存刷新至主存；</li>
+<li>读取 volatile 变量则使工作内存缓存失效，获取主内存数据；</li>
+<li>通过内存屏障防止指令重排序；</li>
+</ol>
+
+<p>lazySet 方法修改值不会立即可见。主要用于底层代码的优化手段，其原理是通过减少内存屏障来提升性能。</p>
+
+<p>Atomic类中的 set 方法中使用的变量就是 volatile 变量，从而实现修改后其他线程立即可见；volatile 变量写操作会加入 StoreLoad 和 StoreStore，而内存屏障也是一个消耗性能的操作，使用 lazySet 方法能够省去 StoreLoad 这个屏障，从而提升性能。</p>
+
+<p>使用场景：</p>
+
+<ol>
+<li>在使用 lock 与 unlock 方法中间的共享变量可以不使用 volatile 变量，又或者说不需要立即可见，因为 lock，unlock 本身也有内存屏障保证可见性的功能，此时可以通过 lazyset 方式修改共享变量减少屏障的产生，提升性能。</li>
+</ol>
+
+<blockquote>
+<p>示例</p>
+</blockquote>
+
+<pre><code class="language-Java">public class AtomicIntegerDemo {
+
+    public static void main(String[] args) throws InterruptedException {
+        AtomicInteger integer = new AtomicInteger();
+
+        NormalIncrement normalIncrement = new NormalIncrement(0);
+
+        ExecutorService threadPool = Executors.newFixedThreadPool(5);
+        for (int i = 0; i &lt; 1000; i++) {
+            threadPool.submit(normalIncrement);
+            threadPool.submit(integer::getAndIncrement);
+        }
+
+
+        Thread.sleep(1000);
+        threadPool.shutdown();
+        System.out.println(&quot;normalIncrement result:&quot; + normalIncrement.getInteger());
+        System.out.println(&quot;atomicIncrement result:&quot; + integer.get());
+    }
+
+
+    @AllArgsConstructor
+    @Getter
+    static class NormalIncrement implements Runnable {
+        private volatile Integer integer;
+
+        @Override
+        public void run() {
+            integer = integer + 1;
+        }
+    }
+
+}
+
+//运行结果
+normalIncrement result:993
+atomicIncrement result:1000
+</code></pre>
+
+<p>从结果可以分析出 volatile 变量无法保证自增操作的原子性，而 Atomic 类则可以通过 CAS 的机制保证其原子性，不过仍存在 ABA 问题。</p>
+
+<h2 id="数组类型">数组类型</h2>
+
+<p>与基本类型操作相似，就是方法的参数都多了一个 index 参数，指明数组中的哪一个值进行原子操作。</p>
+
+<blockquote>
+<p>示例</p>
+</blockquote>
+
+<pre><code class="language-Java">public class AtomicArrayDemo {
+
+    public static void main(String[] args) {
+        AtomicIntegerArray atomicIntegerArray = new AtomicIntegerArray(
+                new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+        );
+
+        for (int i = 0; i &lt; 10; i++) {
+            atomicIntegerArray.accumulateAndGet(i, 10, (y, x) -&gt; x+y);
+            System.out.println(&quot;int[&quot; + i + &quot;]:&quot; + atomicIntegerArray.get(i));
+        }
+    }
+}
+
+## 运行结果
+int[0]:10
+int[1]:11
+int[2]:12
+int[3]:13
+int[4]:14
+int[5]:15
+int[6]:16
+int[7]:17
+int[8]:18
+int[9]:19
+</code></pre>
+
+<pre><code class="language-Java">public class AtomicIntegerArrayDemo
+
+    public static void main(String[] args) {
+        int temvalue = 0;
+        int[] nums = { 1, 2, 3, 4, 5, 6 };
+        AtomicIntegerArray i = new AtomicIntegerArray(nums);
+        
+        temvalue = i.getAndSet(0, 2);
+        System.out.println(&quot;temvalue:&quot; + temvalue + &quot;;  i:&quot; + i);
+        temvalue = i.getAndIncrement(0);
+        System.out.println(&quot;temvalue:&quot; + temvalue + &quot;;  i:&quot; + i);
+        temvalue = i.getAndAdd(0, 5);
+        System.out.println(&quot;temvalue:&quot; + temvalue + &quot;;  i:&quot; + i);
+    }
+
+}
+
+## 运行结果
+temvalue:1;  i:[2, 2, 3, 4, 5, 6]
+temvalue:2;  i:[3, 2, 3, 4, 5, 6]
+temvalue:3;  i:[8, 2, 3, 4, 5, 6]
+</code></pre>
+
+<h2 id="引用类型">引用类型</h2>
+
+<p>引用类型有以下三个类</p>
+
+<ul>
+<li>AtomicReference: 引用类型原子类</li>
+<li>AtomicStampedRerence: 带有版本号的引用类型原子类</li>
+<li>AtomicMarkableReference: 带有标记的引用类型原子类</li>
+</ul>
+
+<p>可以把 AtomicMarkableReference 当作只有两个版本号的 AtomicStampedRerence</p>
+
+<blockquote>
+<p>示例</p>
+</blockquote>
+
+<pre><code class="language-Java">//AtomicStampedRerence
+public class AtomicStampedReferenceDemo {
+
+    public static void main(String[] args) throws InterruptedException {
+        AtomicStampedReference&lt;Integer&gt; atomicStampedReference = new AtomicStampedReference&lt;&gt;(0, 0);
+
+        ExecutorService threadPool = Executors.newFixedThreadPool(5);
+        for (int i = 0; i &lt; 1000; i++) {
+            threadPool.submit(() -&gt; {
+                for (; ; ) {//自旋操作
+                    int stamp = atomicStampedReference.getStamp();
+                    Integer value = atomicStampedReference.getReference();
+                    if (atomicStampedReference.compareAndSet(value, new Integer(value + 1), stamp, stamp + 1))
+                        break;
+                }
+            });
+        }
+        threadPool.shutdown();
+        threadPool.awaitTermination(1, TimeUnit.DAYS);
+        System.out.println(&quot;atomicIncrement reference:&quot; + atomicStampedReference.getReference());
+        System.out.println(&quot;atomicIncrement stamp:&quot; + atomicStampedReference.getStamp());
+
+    }
+}
+
+## 运行结果
+atomicIncrement reference:1000
+atomicIncrement stamp:1000
+</code></pre>
+
+<h2 id="更新器类">更新器类</h2>
+
+<p>更新器类能够原子性的操作对象的成员变量，内部原理是通过反射和 CAS 实现的。</p>
+
+<ul>
+<li>AtomicIntegerFieldUpdater</li>
+<li>AtomicLongFieldUpdater</li>
+<li>AtomicReferenceFieldUpdater</li>
+</ul>
+
+<p>使用 Updater 方式：</p>
+
+<ol>
+<li>更新器类成员属性要声明为 staic final</li>
+<li>目标操作对象的成员变量必须为 volatile</li>
+<li>AtomicIntegerFieldUpdater 操作目标要为 int 类型，不能是 Integer 类型；要操作 Integer 类型，则使用 AtomicReferenceFieldUpdater</li>
+</ol>
+
+<blockquote>
+<p>示例</p>
+</blockquote>
+
+<pre><code class="language-Java">@Slf4j
+public class AtomicFieldUpdaterDemo implements Runnable {
+    private static final AtomicIntegerFieldUpdater&lt;AtomicFieldUpdaterDemo&gt; intUpdater
+            = AtomicIntegerFieldUpdater.newUpdater(AtomicFieldUpdaterDemo.class, &quot;i&quot;);
+    private static final AtomicLongFieldUpdater&lt;AtomicFieldUpdaterDemo&gt; longUpdater
+            = AtomicLongFieldUpdater.newUpdater(AtomicFieldUpdaterDemo.class, &quot;l&quot;);
+    private static final AtomicReferenceFieldUpdater&lt;AtomicFieldUpdaterDemo, Integer&gt; refUpdater
+            = AtomicReferenceFieldUpdater.newUpdater(AtomicFieldUpdaterDemo.class, Integer.class, &quot;integer&quot;);
+
+    private volatile int i = 0;
+    private volatile long l = 0;
+    private volatile Integer integer = 0;
+
+
+    public static void main(String[] args) throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        AtomicFieldUpdaterDemo demo = new AtomicFieldUpdaterDemo();
+
+        IntStream.range(0, 10).forEach(i -&gt; executorService.submit(demo));
+
+        Thread.sleep(1000L);
+        executorService.shutdown();
+
+        demo.getResult();
+    }
+
+    public void getResult() {
+        log.debug(&quot;Result int :&quot; + i);
+        log.debug(&quot;Result long :&quot; + l);
+        log.debug(&quot;Result Integer :&quot; + integer);
+    }
+
+    @Override
+    public void run() {
+        intUpdater.incrementAndGet(this);
+        longUpdater.incrementAndGet(this);
+        refUpdater.updateAndGet(this, (integer) -&gt; integer + 1);
+    }
+}
+
+// 运行结果
+AtomicFieldUpdaterDemo - Result int :10
+AtomicFieldUpdaterDemo - Result long :10
+AtomicFieldUpdaterDemo - Result Integer :10
+</code></pre>
+
+<h2 id="java8-新增类">Java8 新增类</h2>
+
+<h3 id="adder-类">Adder 类</h3>
+
+<p>Java8 中，在 J.U.C 中 atomic 包下新增了类 DoubleAdder, LongAdder，与 AtomicLong 一样，使用了 CAS 机制来确保操作的原子性；在性能方面会比 Atomic 类更加高；「ps：Java8 中不存在 IntegerAdder」</p>
+
+<p>首先，我们知道在高并发的情况下，CAS 机制容易出现更新失败，自旋的可能性大大增高；而 Adder 类采用「热点分离」解决了这个问题；</p>
+
+<p>「热点分离」：将一个值拆分为几份 cell，不同的线程通过操作不同 cell 实现值的原子操作；这样就实现了多线程操作更新不同的值，大大减少的碰撞的发生；举个例子：线程 A，B 对值 8 进行自增操作，将 8 拆分为 5 和 3 两个 cell 从而，线程 A 自增 5，线程 B 自增 3，最终结果在合并为 10；同样实现了多线程下的原子性操作；「ps：Adder 类没有乘法除法操作」</p>
+
+<p>但是，在并发不是很高的情况下，若还需要将值拆分为 cell 再合并为最后结果，这将导致效率方面不如 Atomic 类；为了减少这样的消耗，Adder 类采用了「自适应」来解决这个问题；</p>
+
+<p>「自适应」：初始情况下，操作与 Atomic 类一样，不会拆分为 cell；发生 CAS 碰撞，才会拆分为 cell，每次碰撞都会增加 cell 个数；这样就实现了，在低并发的情况下，性能与 Atomic 类差距不大；在高并发时，只要 cell 个数足够多时，将不会发生碰撞，大大提高效率；</p>
+
+<blockquote>
+<p>示例</p>
+</blockquote>
+
+<pre><code class="language-Java">@Slf4j
+public class AdderDemo implements Runnable{
+    LongAdder longAdder = new LongAdder();
+    DoubleAdder doubleAdder = new DoubleAdder();
+
+    @Override
+    public void run() {
+        longAdder.increment();
+        doubleAdder.add(1D);
+    }
+
+    private void getResult() {
+        log.debug(&quot;Result longAdder:&quot; + longAdder);
+        log.debug(&quot;Result doubleAdder:&quot; + doubleAdder);
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(100);
+        AdderDemo adderDemo = new AdderDemo();
+
+        IntStream.range(0,1000).forEach(i -&gt; executorService.submit(adderDemo));
+
+        Thread.sleep(1000L);
+        executorService.shutdown();
+        adderDemo.getResult();
+    }
+}
+
+## result
+AdderDemo - Result longAdder:1000
+AdderDemo - Result doubleAdder:1000.0
+</code></pre>
+
+<h3 id="accumulator-类">Accumulator 类</h3>
+
+<p>Accumulator 类相当于是 Adder 类的加强版，Adder 类中只能做简单的加减法，并且初始值都是 0；而 Accumenlator 类能够设置初始值和计算方式；</p>
+
+<p>下面是 LongAccumulator 类中的构造函数源码实现</p>
+
+<pre><code class="language-Java">//构造函数
+public LongAccumulator(LongBinaryOperator accumulatorFunction,
+                       long identity) {
+    this.function = accumulatorFunction;
+    base = this.identity = identity;
+}
+
+// LongBinaryOperator 定义
+@FunctionalInterface
+public interface LongBinaryOperator {
+
+    /**
+     * Applies this operator to the given operands.
+     *
+     * @param left the first operand
+     * @param right the second operand
+     * @return the operator result
+     */
+    long applyAsLong(long left, long right);
+}
+</code></pre>
+
+<p>参数：</p>
+
+<ul>
+<li>LongBinaryOperator： 定义计算的方式</li>
+<li>identity： 设置初始值；</li>
+</ul>
+
+<blockquote>
+<p>示例</p>
+</blockquote>
+
+<p>计算由 10 个线程产生的 [0,2000) 之间的数的最大值；</p>
+
+<pre><code class="language-Java">@Slf4j
+public class AccumulatorDemo {
+    public static void main(String[] args) throws InterruptedException {
+        LongAccumulator accumulator = new LongAccumulator(Long::max, Long.MIN_VALUE);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+        IntStream.range(0, 10).forEach(i -&gt; executorService.submit(() -&gt; {
+            Random random = new Random();
+            long value = J8RandomUtils.randomInt(0, 2000);
+            log.debug(&quot;Random value: &quot; + value);
+            accumulator.accumulate(value);
+        }));
+
+        Thread.sleep(1000L);
+        executorService.shutdown();
+
+        log.debug(&quot;Max value: &quot; + accumulator.longValue());
+    }
+}
+
+
+//结果
+AccumulatorDemo - Random value: 1557
+AccumulatorDemo - Random value: 1970
+AccumulatorDemo - Random value: 1582
+AccumulatorDemo - Random value: 632
+AccumulatorDemo - Random value: 1422
+AccumulatorDemo - Random value: 1701
+AccumulatorDemo - Random value: 1409
+AccumulatorDemo - Random value: 275
+AccumulatorDemo - Random value: 1149
+AccumulatorDemo - Random value: 44
+AccumulatorDemo - Max value: 1970
+</code></pre>
+
+<h1 id="参考链接">参考链接</h1>
+
+<ul>
+<li><a href="https://blog.csdn.net/xh16319/article/details/17056767">Java JUC 之 Atomic 系列 12 大类实例讲解和原理分解</a></li>
+<li><a href="https://github.com/Snailclimb/JavaGuide/blob/master/Java%E7%9B%B8%E5%85%B3/Multithread/Atomic.md">Atomic 原子类介绍
+</a></li>
+<li><a href="https://segmentfault.com/a/1190000006051340">Java 8 并发教程：原子变量和 ConcurrentMap</a></li>
+<li><a href="https://www.baeldung.com/java-longadder-and-longaccumulator">LongAdder and LongAccumulator in Java</a></li>
+</ul>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/java/jvm/jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" data-toggle="tooltip" data-placement="top" title="JVM之垃圾回收机制">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/java/basic/%E5%88%9D%E8%AF%86try-finally/" data-toggle="tooltip" data-placement="top" title="初识Try Finally">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

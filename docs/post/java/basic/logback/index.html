@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>Logback-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/java/basic/logback/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        <a class="tag" href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                    </div>
+                    <h1>Logback</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Wednesday, May 1, 2019
+                        
+                            <span id="/blog/post/java/basic/logback/" class="leancloud_visitors meta_data_item" data-flag-title="Logback">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#logback">Logback</a>
+<ul>
+<li><a href="#logback-使用">Logback 使用</a>
+<ul>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#appender">Appender</a>
+<ul>
+<li><a href="#consoleappender">ConsoleAppender</a></li>
+<li><a href="#fileappender">FileAppender</a></li>
+<li><a href="#rollingfileappender">RollingFileAppender</a></li>
+</ul></li>
+<li><a href="#encoder-vs-layout">Encoder vs Layout</a></li>
+<li><a href="#logger">Logger</a></li>
+</ul></li>
+<li><a href="#完整的配置示例">完整的配置示例</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                <h1 id="logback">Logback</h1>
+
+<p>Spring Boot 默认采用的日志框架就是 Logback; Logback 是 Log4j 创建者 Ceki Gülcü 创建的；下面介绍一下 Logback 的一些特性；</p>
+
+<ul>
+<li>与 Log4j 相比更高的性能和更小的初始加载内存空间；</li>
+<li>Logback 经过了非常充分的测试；作者认为这就足以成为 Logback 的原因了</li>
+<li>Logback 很好的兼容了 slf4j, 并且通过 slf4j 开发者能够无需修改任何代码切换日志框架为 Log4j 或 j.u.l</li>
+<li>文档更加充足且时常更新</li>
+<li>不仅支持 XML 配置，0.9.22 版本后支持 Groovy 配置；而 Groovy 配置相较于 XML 配置更加直观、简单；</li>
+<li>支持自动化读取配置</li>
+<li>更优雅的处理 IO 异常导致的日志错误；当文件服务暂时性的不可用时，不需要重启应用，只要文件服务恢复，自动会将日志恢复回来；</li>
+<li>自动移除过老的日志记录和自动压缩日志；</li>
+<li>Prudent mode（谨慎模式）尽管 Logback 运行在不同的 JVM 中也能够确保安全的写入同一个日志文件中；</li>
+<li>Lilith 类似 Log4j 中的 chainsaw 是日志访问查看器，但是 Lilith 的设计能够处理大量的日志数据</li>
+<li>支持条件配置 if, then, else; 这样能够通过一个配置环境配置开发、测试、生产环境的配置；</li>
+<li>Filters, 有时候由于日志过多，我们会叫日志配置级别调的较高，当系统出现问题时，我们希望打印某方面的 debug 级别的日志而不想讲所有 debug 日志打印；此时可以使用 Filters 的使用；</li>
+<li>SiftingAppender 一个功能强大的 Appender, 能够通过指定参数拆分文件，如根据用户 seesion 拆分文件，为每一个用户记录一份日志文件</li>
+<li>错误日志更加详细，能够打印出 jar 包的版本号</li>
+</ul>
+
+<h2 id="logback-使用">Logback 使用</h2>
+
+<p>Logback 配置文件默认查找规则如下：</p>
+
+<ol>
+<li>查找类目录下的 logback-test.xml 文件;</li>
+<li>如果不存在，查找类目录下的 logback.groovy 文件</li>
+<li>如果不存在，查找类目录下的 logback.xml 文件；</li>
+<li>如果不存在，默认使用 BasicConfigurator, 创建最小化配置；等价于如下配置</li>
+</ol>
+
+<pre><code class="language-xml">&lt;configuration&gt;
+    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+        &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;
+            &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n &lt;/pattern&gt;   
+        &lt;/encoder&gt; 
+    &lt;/appender&gt;
+    
+    &lt;root level=&quot;INFO&quot;&gt;
+        &lt;appender-ref ref=&quot;DEBUG&quot; /&gt;
+    &lt;/root&gt; 
+&lt;/configuration&gt;
+</code></pre>
+
+<h3 id="configuration">Configuration</h3>
+
+<p>configuration 有以下三个参数配置</p>
+
+<ul>
+<li>scan: true 表示定期扫描配置，刷新日志行为；false 表示不扫描；</li>
+<li>scanPeriod: 配置扫描周期；如 60 seconds；</li>
+<li>debug: true 表示打印 logback 自身信息；</li>
+</ul>
+
+<p>示例如下</p>
+
+<pre><code class="language-xml">&lt;configuration scan=&quot;true&quot; scanPeriod=&quot;60 seconds&quot; debug=&quot;false&quot;&gt;
+&lt;/configuration&gt;
+</code></pre>
+
+<h3 id="appender">Appender</h3>
+
+<p>Appender 主要用于设置日志的输出目标对象，可以是 Console(控制台)，文件，远程 Sorket 服务，数据库(Mysql, PostreSQL等)，JMS，Unix Syslog 守护进程等；</p>
+
+<p>Appender 继承关系如下图</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190501151955.png" alt="" /></p>
+
+<h4 id="consoleappender">ConsoleAppender</h4>
+
+<p>ConsoleAppender 将日志信息输出至控制台，有如下子节点配置</p>
+
+<ul>
+<li>encoder：格式化日志信息</li>
+<li>target： System.out (默认)或者 System.err</li>
+</ul>
+
+<h4 id="fileappender">FileAppender</h4>
+
+<p>FileAppender 将日志信息输出至文件中，有如下子节点配置</p>
+
+<ul>
+<li>file：被写入的文件名，可以是绝对路径，也可以是相对路径；<strong>不建议使用相对路径</strong></li>
+<li>append：true（默认） 表示向文件后添加日志信息；false 表示清空现存文件，重新写入；</li>
+<li>encoder：格式化日志信息</li>
+<li>prudent：是否安全的写入</li>
+</ul>
+
+<h4 id="rollingfileappender">RollingFileAppender</h4>
+
+<p>RollingFileAppender 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。有如下子节点配置</p>
+
+<ul>
+<li>file：被写入的文件名，可以是绝对路径，也可以是相对路径；<strong>不建议使用相对路径</strong></li>
+<li>append：true（默认） 表示向文件后添加日志信息；false 表示清空现存文件，重新写入；</li>
+<li>encoder：格式化日志信息</li>
+<li>prudent：是否安全的写入</li>
+<li>rollingPolicy: 设置发生 rolling 的操作
+
+<ul>
+<li>TimeBasedRollingPolicy</li>
+<li>SizeAndTimeBasedRollingPolicy</li>
+<li>FixedWindowRollingPolicy</li>
+</ul></li>
+<li>triggeringPolicy：设置如何触发 rolling 操作
+
+<ul>
+<li>SizeBasedTriggeringPolicy</li>
+</ul></li>
+</ul>
+
+<blockquote>
+<p>示例配置</p>
+</blockquote>
+
+<pre><code class="language-xml">&lt;!-- TimeBasedRollingPolicy--&gt;
+&lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+    &lt;!-- Support multiple-JVM writing to the same log file --&gt;
+    &lt;prudent&gt;true&lt;/prudent&gt;
+    &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+        &lt;fileNamePattern&gt;logFile.%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;
+        &lt;maxHistory&gt;30&lt;/maxHistory&gt; 
+        &lt;totalSizeCap&gt;3GB&lt;/totalSizeCap&gt;
+    &lt;/rollingPolicy&gt;
+    
+    &lt;encoder&gt;
+        &lt;pattern&gt;%-4relative [%thread] %-5level %logger{35} - %msg%n&lt;/pattern&gt;
+    &lt;/encoder&gt;
+&lt;/appender&gt; 
+
+&lt;!-- Size and time based rolling policy--&gt;
+&lt;appender name=&quot;ROLLING&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+    &lt;file&gt;mylog.txt&lt;/file&gt;
+    &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy&quot;&gt;
+    &lt;!-- rollover daily --&gt;
+        &lt;fileNamePattern&gt;mylog-%d{yyyy-MM-dd}.%i.txt&lt;/fileNamePattern&gt;
+        &lt;!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB --&gt;
+        &lt;maxFileSize&gt;100MB&lt;/maxFileSize&gt;    
+        &lt;maxHistory&gt;60&lt;/maxHistory&gt;
+        &lt;totalSizeCap&gt;20GB&lt;/totalSizeCap&gt;
+    &lt;/rollingPolicy&gt;
+    
+    &lt;encoder&gt;
+        &lt;pattern&gt;%msg%n&lt;/pattern&gt;
+    &lt;/encoder&gt;
+&lt;/appender&gt;
+
+&lt;!-- FixedWindowRollingPolicy--&gt;
+&lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+    &lt;file&gt;test.log&lt;/file&gt;
+    
+    &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.FixedWindowRollingPolicy&quot;&gt;
+        &lt;fileNamePattern&gt;tests.%i.log.zip&lt;/fileNamePattern&gt;
+        &lt;minIndex&gt;1&lt;/minIndex&gt;
+        &lt;maxIndex&gt;3&lt;/maxIndex&gt;
+    &lt;/rollingPolicy&gt;
+    
+    &lt;triggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;
+        &lt;maxFileSize&gt;5MB&lt;/maxFileSize&gt;
+    &lt;/triggeringPolicy&gt;
+    &lt;encoder&gt;
+        &lt;pattern&gt;%-4relative [%thread] %-5level %logger{35} - %msg%n&lt;/pattern&gt;
+    &lt;/encoder&gt;
+&lt;/appender&gt;
+</code></pre>
+
+<h3 id="encoder-vs-layout">Encoder vs Layout</h3>
+
+<p>Appender 内能够通过 encoder 和 layout 配置日志输出的格式；两者配置方式如下：</p>
+
+<pre><code class="language-xml">&lt;appender name=&quot;Encoder&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+    &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;
+        &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n &lt;/pattern&gt;   
+    &lt;/encoder&gt; 
+&lt;/appender&gt;
+
+&lt;appender name=&quot;Encoder&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+    &lt;layout class=&quot;ch.qos.logback.classic.PatternLayout&quot;&gt;
+        &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+    &lt;/layout&gt;
+&lt;/appender&gt;
+</code></pre>
+
+<blockquote>
+<p>encoder</p>
+</blockquote>
+
+<p>encoder 功能是将一个 event 事件转换成一组 btye 数组，再将数据写入目标对象中；其是在 0.9.19之后的版本引进的，之后的版本 FileAppender及其子类都期望使用 encoder 而不使用 layout；</p>
+
+<p>encoder 可配置标签</p>
+
+<ul>
+<li>immediateFlush 默认值为 true； 表示立即刷新日志至输出目标对象；这样即时项目没有正常关闭也能够记录到所有日志到磁盘中；如果设置为 false ，能够处理大概 5 倍的 logger 接入量，但是非正常关闭项目时可能丢失日志</li>
+<li>outputPatternAsHeader 默认值为 false; 如果为 true 则日志开头会打印 pattern 信息如：#logback.classic pattern: %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</li>
+</ul>
+
+<pre><code class="language-xml">&lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.FileAppender&quot;&gt; 
+    &lt;file&gt;foo.log&lt;/file&gt;
+    &lt;encoder&gt;&lt;!--默认就是PatternLayoutEncoder类--&gt;
+        &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+        &lt;!-- this quadruples logging throughput --&gt; 
+        &lt;immediateFlush&gt;false&lt;/immediateFlush&gt; &lt;outputPatternAsHeader&gt;true&lt;/outputPatternAsHeader&gt;
+    &lt;/encoder&gt; 
+&lt;/appender&gt;
+</code></pre>
+
+<p><strong>注意不要在 logback 中使用相对路径配置日志文件路径</strong></p>
+
+<blockquote>
+<p>layout</p>
+</blockquote>
+
+<p>layout 功能是将一个 event 事件转换成字符串，后通过 java.io.writer 将字符串写入目标对象中；</p>
+
+<h3 id="logger">Logger</h3>
+
+<p>Logger 是日志的记录器，能够配置指定的应用 context，定义日志级别，指定 appender；Logger 之间存在父子关系，其中根 Logger 用 root 标签表示，如下配置中，3 的父 Logger 是 2，2 的父 Logger 是根 Logger 1；</p>
+
+<pre><code class="language-xml">&lt;!-- 3--&gt;
+&lt;logger name=&quot;com.pismery.basic.log&quot; level=&quot;TRACE&quot; additivity=&quot;true&quot;&gt;
+    &lt;appender-ref ref=&quot;STDOUT&quot;/&gt;
+&lt;/logger&gt;
+&lt;!-- 2--&gt;
+&lt;logger name=&quot;com.pismery.basic&quot; level=&quot;INFO&quot; additivity=&quot;false&quot;&gt;
+    &lt;appender-ref ref=&quot;STDOUT&quot;/&gt;
+&lt;/logger&gt;
+&lt;!-- 1--&gt;
+&lt;root level=&quot;ERROR&quot;&gt;
+    &lt;appender-ref ref=&quot;STDOUT&quot;/&gt;
+&lt;/root&gt;
+</code></pre>
+
+<p>参数解释</p>
+
+<ul>
+<li>name: 指定包路径下的使用此 Logger 配置；</li>
+<li>level: 指定日志级别；若子 Logger 没有设置，默认使用父 Logger 的 level;</li>
+<li>additivity: 指定是否将日志信息向父亲传递；注意传递的日志信息，打印级别按子 Logger 的；</li>
+</ul>
+
+<h2 id="完整的配置示例">完整的配置示例</h2>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;
+    &lt;!--
+       说明：
+       1、日志级别及文件
+           日志记录采用分级记录，级别与日志文件名相对应，不同级别的日志信息记录到不同的日志文件中
+           例如：error级别记录到log_error_xxx.log或log_error.log（该文件为当前记录的日志文件），而log_error_xxx.log为归档日志，
+           日志文件按日期记录，同一天内，若日志文件大小等于或大于2M，则按0、1、2...顺序分别命名
+           例如log-level-2013-12-21.0.log
+           其它级别的日志也是如此。
+       2、文件路径
+           若开发、测试用，在Eclipse中运行项目，则到Eclipse的安装路径查找logs文件夹，以相对路径../logs。
+           若部署到Tomcat下，则在Tomcat下的logs文件中
+       3、Appender
+           FILEERROR对应error级别，文件名以log-error-xxx.log形式命名
+           FILEWARN对应warn级别，文件名以log-warn-xxx.log形式命名
+           FILEINFO对应info级别，文件名以log-info-xxx.log形式命名
+           FILEDEBUG对应debug级别，文件名以log-debug-xxx.log形式命名
+           stdout将日志信息输出到控制上，为方便开发测试使用
+    --&gt;
+    &lt;contextName&gt;SpringBootDemo&lt;/contextName&gt;
+    &lt;property name=&quot;LOG_PATH&quot; value=&quot;D:\\JavaWebLogs&quot; /&gt;
+    &lt;!--设置系统日志目录--&gt;
+    &lt;property name=&quot;APPDIR&quot; value=&quot;SpringBootDemo&quot; /&gt;
+
+    &lt;!-- 日志记录器，日期滚动记录 --&gt;
+    &lt;appender name=&quot;FILEERROR&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+        &lt;!-- 正在记录的日志文件的路径及文件名 --&gt;
+        &lt;file&gt;${LOG_PATH}/${APPDIR}/log_error.log&lt;/file&gt;
+        &lt;!-- 日志记录器的滚动策略，按日期，按大小记录 --&gt;
+        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+            &lt;fileNamePattern&gt;${LOG_PATH}/${APPDIR}/error/log-error-%d{yyyy-MM-dd}.%i.log&lt;/fileNamePattern&gt;
+            &lt;timeBasedFileNamingAndTriggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP&quot;&gt;
+                &lt;maxFileSize&gt;2MB&lt;/maxFileSize&gt;
+            &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;
+        &lt;/rollingPolicy&gt;
+        &lt;append&gt;true&lt;/append&gt;
+        &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;
+            &lt;pattern&gt;===%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n&lt;/pattern&gt;
+            &lt;charset&gt;utf-8&lt;/charset&gt;
+        &lt;/encoder&gt;
+        &lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;
+            &lt;level&gt;error&lt;/level&gt;
+            &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;
+            &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;
+        &lt;/filter&gt;
+    &lt;/appender&gt;
+
+    &lt;!-- 日志记录器，日期滚动记录 --&gt;
+    &lt;appender name=&quot;FILEWARN&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+        &lt;!-- 正在记录的日志文件的路径及文件名 --&gt;
+        &lt;file&gt;${LOG_PATH}/${APPDIR}/log_warn.log&lt;/file&gt;
+        &lt;!-- 日志记录器的滚动策略，按日期，按大小记录 --&gt;
+        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+            &lt;fileNamePattern&gt;${LOG_PATH}/${APPDIR}/warn/log-warn-%d{yyyy-MM-dd}.%i.log&lt;/fileNamePattern&gt;
+            &lt;timeBasedFileNamingAndTriggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP&quot;&gt;
+                &lt;maxFileSize&gt;2MB&lt;/maxFileSize&gt;
+            &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;
+        &lt;/rollingPolicy&gt;
+        
+        &lt;append&gt;true&lt;/append&gt;
+        &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;
+            &lt;pattern&gt;===%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n&lt;/pattern&gt;
+            &lt;charset&gt;utf-8&lt;/charset&gt;
+        &lt;/encoder&gt;
+        
+        &lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;
+            &lt;level&gt;warn&lt;/level&gt;
+            &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;
+            &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;
+        &lt;/filter&gt;
+    &lt;/appender&gt;
+
+    &lt;!-- 日志记录器，日期滚动记录 --&gt;
+    &lt;appender name=&quot;FILEINFO&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+        &lt;!-- 正在记录的日志文件的路径及文件名 --&gt;
+        &lt;file&gt;${LOG_PATH}/${APPDIR}/log_info.log&lt;/file&gt;
+        &lt;!-- 日志记录器的滚动策略，按日期，按大小记录 --&gt;
+        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+            &lt;fileNamePattern&gt;${LOG_PATH}/${APPDIR}/info/log-info-%d{yyyy-MM-dd}.%i.log&lt;/fileNamePattern&gt;
+            &lt;timeBasedFileNamingAndTriggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP&quot;&gt;
+                &lt;maxFileSize&gt;2MB&lt;/maxFileSize&gt;
+            &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;
+        &lt;/rollingPolicy&gt;
+        
+        &lt;append&gt;true&lt;/append&gt;
+        
+        &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;
+            &lt;pattern&gt;===%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n&lt;/pattern&gt;
+            &lt;charset&gt;utf-8&lt;/charset&gt;
+        &lt;/encoder&gt;
+        &lt;!-- 此日志文件只记录info级别的 --&gt;
+        &lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;
+            &lt;level&gt;info&lt;/level&gt;
+            &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;
+            &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;
+        &lt;/filter&gt;
+    &lt;/appender&gt;
+    
+    &lt;!-- 日志记录器，日期滚动记录 FILEINFO 写法2--&gt;
+    &lt;appender name=&quot;ROLLING&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+        &lt;file&gt;${LOG_PATH}/${APPDIR}/log_info.log&lt;/file&gt;
+        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy&quot;&gt;
+            &lt;!-- rollover daily --&gt;
+            &lt;fileNamePattern&gt;${LOG_PATH}/${APPDIR}/info/log-info-%d{yyyy-MM-dd}.%i.log&lt;/fileNamePattern&gt;
+            &lt;!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB --&gt;
+            &lt;maxFileSize&gt;2MB&lt;/maxFileSize&gt;
+            &lt;maxHistory&gt;60&lt;/maxHistory&gt;
+            &lt;totalSizeCap&gt;20GB&lt;/totalSizeCap&gt;
+        &lt;/rollingPolicy&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;===%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n&lt;/pattern&gt;
+            &lt;charset&gt;utf-8&lt;/charset&gt;
+        &lt;/encoder&gt;
+        &lt;!-- 此日志文件只记录info级别的 --&gt;
+        &lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;
+            &lt;level&gt;info&lt;/level&gt;
+            &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;
+            &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;
+        &lt;/filter&gt;
+    &lt;/appender&gt;
+    
+
+    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+        &lt;!--encoder 默认配置为PatternLayoutEncoder--&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;===%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n&lt;/pattern&gt;
+            &lt;charset&gt;utf-8&lt;/charset&gt;
+        &lt;/encoder&gt;
+        &lt;!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息--&gt;
+        &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;
+            &lt;level&gt;debug&lt;/level&gt;
+        &lt;/filter&gt;
+    &lt;/appender&gt;
+    
+    &lt;!--日志异步到数据库 --&gt; 
+    &lt;appender name=&quot;DB&quot; class=&quot;ch.qos.logback.classic.db.DBAppender&quot;&gt;
+        &lt;connectionSource class=&quot;ch.qos.logback.core.db.DriverManagerConnectionSource&quot;&gt;
+           &lt;!--连接池 --&gt; 
+            &lt;dataSource class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
+                &lt;driverClass&gt;com.mysql.jdbc.Driver&lt;/driverClass&gt;
+                &lt;url&gt;jdbc:mysql://127.0.0.1:3306/databaseName&lt;/url&gt;
+                &lt;user&gt;usrname&lt;/user&gt;
+                &lt;password&gt;password&lt;/password&gt;
+            &lt;/dataSource&gt;
+        &lt;/connectionSource&gt;
+    &lt;/appender&gt;
+    
+    
+    &lt;!-- show parameters for hibernate sql 专为 Hibernate 定制 --&gt; 
+    &lt;logger name=&quot;org.hibernate.type.descriptor.sql.BasicBinder&quot;  level=&quot;TRACE&quot; /&gt;  
+    &lt;logger name=&quot;org.hibernate.type.descriptor.sql.BasicExtractor&quot;  level=&quot;DEBUG&quot; /&gt;  
+    &lt;logger name=&quot;org.hibernate.SQL&quot; level=&quot;DEBUG&quot; /&gt;  
+    &lt;logger name=&quot;org.hibernate.engine.QueryParameters&quot; level=&quot;DEBUG&quot; /&gt;
+    &lt;logger name=&quot;org.hibernate.engine.query.HQLQueryPlan&quot; level=&quot;DEBUG&quot; /&gt;  
+    
+    &lt;!--myibatis log configure--&gt; 
+    &lt;logger name=&quot;com.apache.ibatis&quot; level=&quot;TRACE&quot;/&gt;
+    &lt;logger name=&quot;java.sql.Connection&quot; level=&quot;DEBUG&quot;/&gt;
+    &lt;logger name=&quot;java.sql.Statement&quot; level=&quot;DEBUG&quot;/&gt;
+    &lt;logger name=&quot;java.sql.PreparedStatement&quot; level=&quot;DEBUG&quot;/&gt;
+    
+    
+    &lt;!-- 生产环境下，将此级别配置为适合的级别，以免日志文件太多或影响程序性能 --&gt;
+    &lt;logger name=&quot;org.springframework&quot; level=&quot;WARN&quot; /&gt;
+    &lt;logger name=&quot;org.hibernate&quot; level=&quot;WARN&quot; /&gt;
+    &lt;root level=&quot;INFO&quot;&gt;
+        &lt;appender-ref ref=&quot;FILEERROR&quot; /&gt;
+        &lt;appender-ref ref=&quot;FILEWARN&quot; /&gt;
+        &lt;appender-ref ref=&quot;FILEINFO&quot; /&gt;
+
+        &lt;!-- 生产环境将请stdout,testfile去掉 --&gt;
+        &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/java/spring/%E6%89%8B%E5%86%99springmvc%E5%AE%9E%E8%B7%B5/" data-toggle="tooltip" data-placement="top" title="手写springmvc实践">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/java/basic/siftingappender/" data-toggle="tooltip" data-placement="top" title="SiftingAppender">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

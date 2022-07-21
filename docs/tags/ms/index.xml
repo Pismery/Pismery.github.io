@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MS on Pismery Blog</title>
+    <link>https://pismery.github.io/tags/ms/</link>
+    <description>Recent content in MS on Pismery Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+<<<<<<< HEAD
+    <lastBuildDate>Wed, 05 May 2021 21:28:17 +0800</lastBuildDate>
+    
+	<atom:link href="https://pismery.github.io/tags/ms/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+=======
+    <lastBuildDate>Wed, 05 May 2021 21:28:17 +0800</lastBuildDate><atom:link href="https://pismery.gitee.io/blog/tags/ms/index.xml" rel="self" type="application/rss+xml" />
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+    <item>
+      <title>Kafka基础</title>
+      <link>https://pismery.github.io/post/java/ms/kafka/kafka%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Wed, 05 May 2021 21:28:17 +0800</pubDate>
+      
+      <guid>https://pismery.github.io/post/java/ms/kafka/kafka%E5%9F%BA%E7%A1%80/</guid>
+      <description>&lt;p&gt;目前系统设计中，消息队列是一个非常重要的中间件；目前市面上有许多消息队列的中间件，本文主要介绍 kafka 的一些基本概念；&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

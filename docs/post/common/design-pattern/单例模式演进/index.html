@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>单例模式演进-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E6%BC%94%E8%BF%9B/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                    </div>
+                    <h1>单例模式演进</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Wednesday, July 1, 2020
+                        
+                            <span id="/blog/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E6%BC%94%E8%BF%9B/" class="leancloud_visitors meta_data_item" data-flag-title="单例模式演进">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#单例模式">单例模式</a></li>
+</ul>
+</nav>
+                
+                <p>本文将通过梳理编码的思考过程，来讲述各种单例模式实现的缘由和注意事项；</p>
+
+<h1 id="单例模式">单例模式</h1>
+
+<p>单例模式各种实现方式中，最容易想到方式就是饿汉式单例，代码实现如下：</p>
+
+<pre><code class="language-Java">public class Singleton {
+    private static Singleton instance = new Singleton();
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        return instance;
+    }
+}
+</code></pre>
+
+<p>如果单例对象，不能通过简单的 new 生成，则可以通过静态代码块来实现</p>
+
+<pre><code class="language-Java">public class Singleton {
+    private static Singleton instance = null;
+    
+    static {
+        instance = new Singleton();
+        ... //other initial operation
+    }
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        return instance;
+    }
+}
+</code></pre>
+
+<p>饿汉式的代码实现十分简单，就不需要多解释了；饿汉式的实现最明显的缺点就是无法做到懒加载；懒加载最经典的方式就是双重检查锁方式的实现；</p>
+
+<p>下面我们看看双重检查锁方式的实现思路，先实现一个最简版本的懒加载方式的单例模式：</p>
+
+<pre><code class="language-Java">public class Singleton {
+    private static Singleton instance = null;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if(null == instance) {
+            instance = new Sigleton();
+        }
+        return instance;
+    }
+}
+</code></pre>
+
+<p>上述实现方式，确实做到了懒加载，但却有并发问题，如果多线程调用 getIntance() 方法，则有可能出现多个线程进入 null 判断的代码块中，最终导致 JVM 内有多个单例实例对象；</p>
+
+<p>对于多线程调用导致的并发问题，我们第一个想到的解决方案，就是 synchronized 关键字了，下面我们看下 sychronized 方式的实现；</p>
+
+<pre><code class="language-Java">public class Singleton {
+    private static Singleton instance = null;
+
+    private Singleton() {}
+
+    public synchronized static Singleton getInstance() {
+        if(null == instance) {
+            instance = new Sigleton();
+        }
+        return instance;
+    }
+}
+</code></pre>
+
+<p>实现十分简单，就是在 getIntance 方法上加上 synchrnoized 关键字；这样确实解决了多线程的问题，却引入了并发性能的问题；由于 getInstance 是静态方法，此时的 synchronized 加的是类级别的锁；那么要如何解决并发性能问题呢？那就是缩小 synchronized 的调用范围；</p>
+
+<p>下面我们修改一下代码如下：</p>
+
+<pre><code class="language-Java">public class Singleton {
+    private static Singleton instance = null;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if(null == instance) {
+            synchronized(Singleton.class) {
+                instance = new Singleton();
+            }
+        }
+        return instance;
+    }
+}
+</code></pre>
+
+<p>上述实现解决了并发性能问题，却由于缩小了 synchronized 的加锁范围，又导致了并发问题；多线程运行情况下，仍然会出现多个线程同时进入 null 判断代码块内，最终 JVM 出现了两个实例对象；解决这个问题，方式也很简单，代码如下：</p>
+
+<pre><code class="language-Java">public class Singleton {
+    private static Singleton instance = null;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if(null == instance) {
+            synchronized(Singleton.class) {
+                if(null == instance) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+</code></pre>
+
+<p>到这里，我们的实现方式跟双重检查锁的方式很接近了，并且也能够意识到实现中的两次 if 判断的作用：</p>
+
+<ul>
+<li>第一个 if 的目的是缩小锁的范围，避免并发性能问题；</li>
+<li>第二个 if 的目的是保证线程安全，解决多个线程进入初始化代码块重复初始化对象；</li>
+</ul>
+
+<p>细心的读者可能发现了，上述实现方式跟双重检查锁的方式还有出入，那就是 instance 对象没有加上 volatile 关键字；下面我们看看标准的双重检查锁方式实现：</p>
+
+<pre><code class="language-Java">public class Singleton {
+    private static volatile Singleton instance = null;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if(null == instance) {
+            synchronized(Singleton.class) {
+                if(null == instance) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+</code></pre>
+
+<p>至此，我们就实现了双重检查锁的单例模式了，但双重检测锁的方式为什么必须加上 volatile ？</p>
+
+<p>我们知道 volatile 关键字主要有两个作用，保证可见性和防止指令重排序；而在双重检测锁中，我们使用了 synchronizaed 关键字，所以可见性已经保证了；因此，关键就在于 volatile 另一个功能防止指令重排序；</p>
+
+<p>原因是这样的，在 Java 中初始化对象本身并不是一个原子操作，初始化对象至少分为了以下三个步骤</p>
+
+<ol>
+<li>申请 JVM 堆内存空间；</li>
+<li>初始化对象，调用对象的构造方法；</li>
+<li>将申请的堆内存空间的地址赋值给对象；（此时对象不是 null）</li>
+</ol>
+
+<p>而 CPU 的指令重排序的存在，实际执行过程有可能是 1 -&gt; 3 -&gt; 2 ；假设「线程 1」 初始化对象，执行了 3 但还未执行 2；此时「线程 2」 会发现对象不是 null，认为对象初始化完毕，立即使用此对象，而对象实际还未初始化完毕，「线程 2」 将立即出现异常；volatile 关键字则保证了初始化对象的始终按照 1 -&gt; 2 -&gt; 3 的顺序，也就避免了对象未初始化完毕被使用的情况；</p>
+
+<p>双重检测锁的方式已经基本没有问题了，但是实现上还是比较复杂，项目实现过程中难免会有一些小遗漏，导致不可知的系统错误；下面我们看看更加简洁的实现方式 - 静态内部类实现</p>
+
+<pre><code class="language-Java">public class Singleton {
+    private Singleton() {}
+
+    private static class Holder {
+        private static final Singleton singleton = new Sigleton();
+    }
+
+    public static Singleton getInstance() {
+        return Holder.sigleton;
+    }
+}
+</code></pre>
+
+<p>静态内部类实现方式是利用了 JVM 类加载机制，而 JVM 加载静态内部类是通过懒加载的模式，并且保证了线程安全；因此，静态内部类的方式也就既能懒加载，又避免了并发问题；</p>
+
+<p>到这里，我们实现的单例模式，具有懒加载，线程安全，性能高，实现简单等优点了；但我们看看下面的代码，仍然能够在 JVM 中创建不同的单例实例对象；</p>
+
+<pre><code>public class Sample {
+    public static void main(String[] args) {
+        Singleton singletonInstance = Singleton.getInstance();
+        Singleton reflectionInstance = null;
+        
+        try {
+            Constructor[] constructors = Singleton.class.getDeclaredConstructors();
+            for (Constructor constructor : constructors) {
+                constructor.setAccessible(true);
+                reflectionInstance = (Singleton) constructor.newInstance();
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+        System.out.println(&quot;singletonInstance hashCode: &quot; + singletonInstance.hashCode());
+        System.out.println(&quot;reflectionInstance hashCode: &quot; + reflectionInstance.hashCode());
+    }
+}
+
+运行结果
+singletonInstance hashCode: 1618212626
+reflectionInstance hashCode: 947679291
+</code></pre>
+
+<p>没错，就是通过反射，我们可以强行调用单例方法的私有构造函数，初始化出另一个不同的单例实例对象；那么如何避免这种情况了，关键就在与构造方法了</p>
+
+<pre><code class="language-Java">public class Singleton {
+    private volatile static Singleton singleton;
+
+    private Singleton() {
+        // protect against instantiation via reflection
+        if(singleton != null) {
+            throw new IllegalStateException(&quot;Singleton already initialized&quot;);
+        }
+    }
+
+    public static Singleton getInstance() {
+        if (singleton == null) {
+            synchronized (Singleton.class) {
+               if(singleton == null)
+                   singleton = new Singleton();
+            }
+        }
+        return singleton;
+    }
+}
+</code></pre>
+
+<p>解决了反射问题，下面还有没有什么方式能够创建多个单例对象呢？这么问，当然是还有，那就是序列化与反序列化；下面我们看看如何通过序列化和反序列化初始化多个单例对象；</p>
+
+<pre><code class="language-Java">import java.io.*;
+
+class Singleton implements Serializable {
+    private static final long serialVersionUID = 8806820726158932906L;
+
+    private volatile static Singleton singleton;
+
+    private Singleton() {
+        // protect against instantiation via reflection
+        if(singleton != null) {
+            throw new IllegalStateException(&quot;Singleton already initialized&quot;);
+        }
+    }
+
+    public static Singleton getInstance() {
+        if (singleton == null) {
+            synchronized (Singleton.class) {
+               if(singleton == null)
+                   singleton = new Singleton();
+            }
+        }
+        return singleton;
+    }
+}
+
+public class SingletonAndSerialization throws Exception{
+    public static void main(String[] args) {
+        Singleton instance1 = Singleton.getInstance();
+        
+        // Serialize singleton object to a file.
+        ObjectOutput out = new ObjectOutputStream(new FileOutputStream(&quot;singleton.ser&quot;));
+        out.writeObject(instance1);
+        out.close();
+
+        // Deserialize singleton object from the file
+        ObjectInput in = new ObjectInputStream(new FileInputStream(&quot;singleton.ser&quot;));
+        Singleton instance2 = (Singleton) in.readObject();
+        in.close();
+
+        System.out.println(&quot;instance1 hashCode: &quot; + instance1.hashCode());
+        System.out.println(&quot;instance2 hashCode: &quot; + instance2.hashCode());
+    }
+}
+
+运行结果
+# Output
+instance1 hashCode: 1348949648
+instance2 hashCode: 434091818
+</code></pre>
+
+<p>从上面代码运行结果我们可以知道，单例对象经过序列化，再反序列化便生成了一个不同的实例对象了。那么要如何解决这个问题呢？关键在于控制单例对象反序列化的行为，可以通过重写 Serializable 接口中的 readResolve() 方法来控制反序列化过程；</p>
+
+<p>下面我们实现一个完整版的单例模式：</p>
+
+<pre><code class="language-Java">class SerializableSingleton implements Serializable {
+    private static final long serialVersionUID = 8806820726158932906L;
+    private static volatile SerializableSingleton instance;
+
+    private Singleton() {
+        // protect against instantiation via reflection
+        if(singleton != null) {
+            throw new IllegalStateException(&quot;Singleton already initialized&quot;);
+        }
+    }
+
+    public static Singleton getInstance() {
+        if (singleton == null) {
+            synchronized (Singleton.class) {
+               if(singleton == null)
+                   singleton = new Singleton();
+            }
+        }
+        return singleton;
+    }
+
+    // implement readResolve method to return the existing instance
+    protected Object readResolve() {
+        return instance;
+    }
+}
+</code></pre>
+
+<p>这样就实现了健壮，高效的单例模式了，从中可以发现一个单例模式可以包含这么多的技术点，这也是为什么面试官总喜欢问单例模式的原因；但我们最终实现方式仍然十分复杂，最后的最后，我们就拿出大名鼎鼎的枚举类方式实现单例模式，这也是 Think in Java 中推荐的单例实现模式：</p>
+
+<pre><code class="language-Java">public enum Singleton {
+    INSTANCE;
+
+    public void anyMethod() {
+    }
+
+}
+
+# 使用方式
+public class Client {
+    public static void main(String[] args) {
+        Singleton singleton = Singleton.INSTANCE;
+        singleton.anyMethod();
+    }
+}
+</code></pre>
+
+<p>枚举类的单例模式就是这么简单，并且天然的解决了反射和序列化问题；</p>
+
+<blockquote>
+<p>总结回顾</p>
+</blockquote>
+
+<p>首先，我们使用饿汉式的方式实现单例模式；然后，解释了双重检查锁方式中两个 if 判断的作用，以及为什么要加 volatile 关键字；接着，引出了反射和反序列化导致的单例不安全，并且提供了相应的解决方案；最后，引出了枚举类的实现方式；</p>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/java/spring/%E6%8B%A6%E6%88%AA%E5%99%A8%E4%B8%8E%E8%BF%87%E6%BB%A4%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="拦截器与过滤器">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/storage/mysql/mysql_execution_process/" data-toggle="tooltip" data-placement="top" title="「MySQL 45 讲」- MySQL 查询语句执行流程">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

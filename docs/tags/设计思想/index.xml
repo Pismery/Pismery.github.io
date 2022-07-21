@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>设计思想 on Pismery Blog</title>
+    <link>https://pismery.gitee.io/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/</link>
+    <description>Recent content in 设计思想 on Pismery Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+    <lastBuildDate>Sun, 29 Dec 2019 21:16:14 +0800</lastBuildDate>
+    
+	<atom:link href="https://pismery.gitee.io/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>接口幂等性</title>
+      <link>https://pismery.gitee.io/blog/post/common/design-pattern/%E6%8E%A5%E5%8F%A3%E5%B9%82%E7%AD%89%E6%80%A7/</link>
+      <pubDate>Sun, 29 Dec 2019 21:16:14 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/common/design-pattern/%E6%8E%A5%E5%8F%A3%E5%B9%82%E7%AD%89%E6%80%A7/</guid>
+      <description>什么是幂等性？ 接口的幂等性是指相同的参数，调用一次或多次产生一致的效果； 为什么要保证幂等性？ 在系统运行过程中，总会由于各种原因导致重复调用接</description>
+    </item>
+    
+  </channel>
+</rss>

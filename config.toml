@@ -1,0 +1,118 @@
+baseurl = "https://pismery.gitee.io/blog/"
+title = "Pismery Blog"
+
+theme = "hugo-theme-cleanwhite"
+
+languageCode = "utf-8"
+# Enable comments by entering your Disqus shortname
+disqusShortname = "pismery.disqus.com"
+googleAnalytics = ""
+preserveTaxonomyNames = true
+paginate = 10 #frontpage pagination
+hasCJKLanguage = true
+publishDir = 'docs'
+[outputs]
+home = ["HTML", "RSS", "Algolia"]
+
+[params]
+  header_image = "img/home-bg.jpg"
+  about_me = true
+  SEOTitle = "博客 | Pismery Liu Blog"
+  description = "程序员"
+  keyword = "Pismery 博客"
+  slogan = "Stay high all the time"
+
+  image_404 = "img/404-bg.jpg"
+  title_404 = "你来到了没有知识的荒原 :("
+  
+  
+
+  # leancloud storage for page view counter
+  page_view_conter = true
+  leancloud_app_id = "zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz"
+  leancloud_app_key = "vvDdQkMwgbffpkHklpHPTHkP"
+  
+
+  # algolia site search
+  algolia_search = false 
+  algolia_appId = ""
+  algolia_indexName = ""
+  algolia_apiKey = ""
+
+  # Sidebar settings
+  sidebar_about_description = "Java Developer"
+  sidebar_avatar = "img/head.jpg"      # use absolute URL, seeing it's used in both `/` and `/about/`
+  friends = false
+  bookmarks = false
+  featured_tags = true 
+  featured_condition_size = 0
+
+  # Baidu Analytics
+  ba_track_id = ""
+  
+  # We need a proxy to access Disqus api in China
+  disqus_proxy = ""
+  disqus_site = ""
+
+  #wechat pay & alipay 
+  reward = false
+  reward_guide = "如果这篇文章对你有用，请随意打赏" 
+
+  [params.social]
+  #rss            = true 
+  email          = "pismery@163.com"
+  #facebook      = "full profile url in facebook"
+  #googleplus    = "full profile url in googleplus"
+  #twitter       = "full profile url in twitter"
+  #linkedin       = "full profile url in linkedin"
+  #stackoverflow  = "full profile url in stackoverflow"
+  #instagram     = "full profile url in instagram"
+  github         = "https://github.com/Pismery"
+  gitee         = "https://gitee.com/pismery"
+  wechat         = "img/wechat_code.png" 
+  #pinterest     = "full profile url in pinterest"
+  
+  #[[params.friend_link]]
+  #title = "Linda的博客"
+  #href =  "https://zhaozhihan.com"
+  #[[params.bookmark_link]]
+  #title =  "Martin Fowler"
+  #href =  "https://martinfowler.com"
+  #[[params.bookmark_link]]
+  #title = "ServiceMesh中文网"
+  #href =  "http://www.servicemesh.cn"
+  #[[params.bookmark_link]]
+  #title = "Awesome Service Mesh"
+  #href = "https://servicemesh.gitbooks.io/awesome-servicemesh"
+  #[[params.bookmark_link]]
+  #title =  "Image Compression"
+  #href = "https://tinypng.com"
+  
+  [[params.addtional_menus]]
+  title =  "ABOUT"
+  href =  "/top/about/"
+  [[params.addtional_menus]]
+  title =  "TAG"
+  href =  "/tags"
+
+[outputFormats.Algolia]
+baseName = "algolia"
+isPlainText = true
+mediaType = "application/json"
+notAlternative = true
+
+[params.valine]
+enable = true
+appId = 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz'
+appKey = 'vvDdQkMwgbffpkHklpHPTHkP'
+notify = false  # mail notifier , https://github.com/xCss/Valine/wiki
+verify = false # Verification code
+avatar = 'identicon' 
+placeholder = '说点什么吧...'
+visitor = false #阅读量统计
+highlight = true
+
+
+[params.algolia]
+vars = ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
+params = ["categories", "tags"] 

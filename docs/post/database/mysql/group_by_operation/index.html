@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.github.io/img/favicon.jpg">
+
+    <title>「MySQL 45 讲」- Group By 操作处理-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.github.io/post/database/mysql/group_by_operation/">
+
+    <link rel="stylesheet" href="https://pismery.github.io/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.github.io/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.github.io/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.github.io/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.github.io/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.github.io/css/zanshang.css">
+
+    
+<<<<<<< HEAD:public/post/database/mysql/group_by_operation/index.html
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+
+    
+=======
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+>>>>>>> eba007b66e8b721d7f333bff00f6faf592a3b40b:docs/post/database/mysql/group_by_operation/index.html
+    
+    
+<<<<<<< HEAD
+    <script src="https://pismery.github.io/js/jquery.min.js"></script>
+    
+    
+    <script src="https://pismery.github.io/js/bootstrap.min.js"></script>
+    
+    
+    <script src="https://pismery.github.io/js/hux-blog.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+=======
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+<<<<<<< HEAD
+                        <a href="/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/python">Python</a>
+=======
+                        <a href="/blog/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">python</a>
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                    </div>
+                    <h1>「MySQL 45 讲」- Group By 操作处理</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Wednesday, September 30, 2020
+                        
+                            <span id="/post/database/mysql/group_by_operation/" class="leancloud_visitors meta_data_item" data-flag-title="「MySQL 45 讲」- Group By 操作处理">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前置条件">前置条件</a></li>
+    <li><a href="#基本执行流程">基本执行流程</a></li>
+    <li><a href="#group-by-优化方式---索引">group by 优化方式 - 索引；</a></li>
+    <li><a href="#group-by-优化方式---直接排序">group by 优化方式 - 直接排序；</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+                
+                <p>本文主要讲解 MySQL 对 group by 的处理流程；</p>
+<h1 id="mysql-group-by-操作处理">MySQL Group By 操作处理</h1>
+<h2 id="前置条件">前置条件</h2>
+<p>为了方便我们讲解，我们用如下 SQL 初始化表 t1；</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>t1<span style="color:#f92672">`</span> (
+  <span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>a<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>b<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>),
+  <span style="color:#66d9ef">KEY</span> <span style="color:#f92672">`</span>a<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>a<span style="color:#f92672">`</span>)
+) ENGINE<span style="color:#f92672">=</span>InnoDB;
+
+<span style="color:#66d9ef">drop</span> <span style="color:#66d9ef">procedure</span> idata;
+<span style="color:#66d9ef">delimiter</span> ;;
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">procedure</span> idata()
+<span style="color:#66d9ef">begin</span>
+  <span style="color:#66d9ef">declare</span> i int;
+  <span style="color:#66d9ef">set</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
+  while(i<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">1000</span>)<span style="color:#66d9ef">do</span>
+    <span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> t1 <span style="color:#66d9ef">values</span>(i, i, i);
+    <span style="color:#66d9ef">set</span> i<span style="color:#f92672">=</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>;
+  <span style="color:#66d9ef">end</span> while;
+<span style="color:#66d9ef">end</span>;;
+<span style="color:#66d9ef">delimiter</span> ;
+<span style="color:#66d9ef">call</span> idata();
+</code></pre></div><h2 id="基本执行流程">基本执行流程</h2>
+<p>下面我们先看看 Explain 一条简单的 group by 语句结果；</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">explain</span> <span style="color:#66d9ef">select</span> id<span style="color:#f92672">%</span><span style="color:#ae81ff">10</span> <span style="color:#66d9ef">as</span> m, <span style="color:#66d9ef">count</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">from</span> t1 <span style="color:#66d9ef">group</span> <span style="color:#66d9ef">by</span> m;
+</code></pre></div><p><img src="https://gitee.com/pismery/imageshack/raw/master/img/20200930210936.png" alt=""></p>
+<p>我们可以看到 Extra 字段有三个信息：</p>
+<ul>
+<li>Using index，表示这个语句使用了覆盖索引，选择了索引 a，不需要回表；</li>
+<li>Using temporary，表示使用了临时表；</li>
+<li>Using filesort，表示需要排序；</li>
+</ul>
+<p>MySQL 的具体执行流程如下：</p>
+<ol>
+<li>创建一个内存临时表，字段有 m 和 c，其中 m 设置为主键；</li>
+<li>扫描表 t1 的索引 a，依次取出 id 值，计算 id % 10 的结果 m1，进行如下操作；
+<ol>
+<li>如果内存临时表不存在 m1, 则插入数据 (m1, 1);</li>
+<li>如果内存临时表已存在 m1, 则将相应行的 c 加一;</li>
+</ol>
+</li>
+<li>遍历表 t1 结束后，再通过 sort buffer 进行排序，得到结果集返回给客户端；</li>
+</ol>
+<p><img src="https://gitee.com/pismery/imageshack/raw/master/img/20200930193141.png" alt=""></p>
+<p>从上面的执行流程，我们可以发现，MySQL 默认会对最终结果进行排序；如果返回结果不需要排序，我们可以通过 order by null 来告诉 MySQL 不需要排序；</p>
+<p>下面是相应的 explain 结果，可以看到没有了 Using filesort 的字样；</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">explain</span> <span style="color:#66d9ef">select</span> id<span style="color:#f92672">%</span><span style="color:#ae81ff">10</span> <span style="color:#66d9ef">as</span> m, <span style="color:#66d9ef">count</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">from</span> t1 <span style="color:#66d9ef">group</span> <span style="color:#66d9ef">by</span> m <span style="color:#66d9ef">order</span> <span style="color:#66d9ef">by</span> <span style="color:#66d9ef">null</span>;
+</code></pre></div><p><img src="https://gitee.com/pismery/imageshack/raw/master/img/20200930211035.png" alt=""></p>
+<p>需要另外说明的是，上面的 group by 由于只有 10 条记录，内存临时表可以装得下，所以全程只使用内存临时表；如果装不下则会将内存临时表转化成磁盘临时表；</p>
+<p>补充说明一下:</p>
+<ul>
+<li>磁盘临时表默认存储引擎可查看 &lsquo;internal_tmp_disk_storage_engine&rsquo;</li>
+<li>内存临时表默认存储引擎可查看 &lsquo;default_tmp_storage_engine&rsquo;</li>
+<li>内存临时表大小设置可查看 &lsquo;tmp_table_size&rsquo;</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">show</span> variables <span style="color:#66d9ef">where</span> variable_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;internal_tmp_disk_storage_engine&#39;</span> <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#66d9ef">G</span>;
+<span style="color:#66d9ef">show</span> variables <span style="color:#66d9ef">where</span> variable_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;default_tmp_storage_engine&#39;</span> <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#66d9ef">G</span>;
+<span style="color:#66d9ef">show</span> variables <span style="color:#66d9ef">where</span> variable_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;tmp_table_size&#39;</span> <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#66d9ef">G</span>;
+</code></pre></div><h2 id="group-by-优化方式---索引">group by 优化方式 - 索引；</h2>
+<p>可以看到，无论是内存临时表还是磁盘临时表，都需要构建一个带有唯一索引的表，执行代价都比较高，如果表数据量大时，性能会很低；</p>
+<p>那有什么方式可以避免创建临时表呢?</p>
+<p>首先，我们可以思考一下，为什么一定要使用临时表？原因是 group by 的字段是无序的，系统需要保留统计数值，因此需要构建这样的一张表；</p>
+<p>思路的关键就在 group by 的字段是无序的；如果 group by 的字段本身是有序的，则可以遍历获取最终统计结果；</p>
+<p>例如：如果 id % 10 是按如下顺序进行统计的：</p>
+<pre><code>0,0,0,0,1,1,2,2,2,3;
+</code></pre><p>这种情况，遇到第一个 1， 则表示扫描完所有的 0；遇到第一个 2, 则表示扫描完所有的 1；</p>
+<p>需要字段有序输入，我们可以自然想到索引，因为索引本身就是有顺序的；</p>
+<p>下面我们可以按照这个思路优化一下 SQL;</p>
+<ol>
+<li>新增一个字段 z，这个字段值始终设置为 id % 10;</li>
+<li>为字段 z 创建一个索引；</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">table</span> t1 <span style="color:#66d9ef">add</span> <span style="color:#66d9ef">column</span> z int <span style="color:#66d9ef">generated</span> always <span style="color:#66d9ef">as</span>(id <span style="color:#f92672">%</span> <span style="color:#ae81ff">10</span>), <span style="color:#66d9ef">add</span> <span style="color:#66d9ef">index</span>(z);
+
+<span style="color:#66d9ef">explain</span> <span style="color:#66d9ef">select</span> z <span style="color:#66d9ef">as</span> m, <span style="color:#66d9ef">count</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">from</span> t1 <span style="color:#66d9ef">group</span> <span style="color:#66d9ef">by</span> z;
+</code></pre></div><p><img src="https://gitee.com/pismery/imageshack/raw/master/img/20200930211215.png" alt=""></p>
+<p>可以看到 extra 字段只剩下 Using index 的字样了，表示只是用了覆盖索引；</p>
+<h2 id="group-by-优化方式---直接排序">group by 优化方式 - 直接排序；</h2>
+<p>日常开发过程中，能够通过添加索引解决 group by 的性能稳定，那是最好了；但是总会出于各种考虑，无法添加这样的一个索引；这样就不可避免的需要我们先排序再 group by 了；</p>
+<p>MySQL 同样提供了 SQL_BIG_RESULT，这个 hint 告知优化器按如下方式执行 group by 语句</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">explain</span> <span style="color:#66d9ef">select</span> SQL_BIG_RESULT id<span style="color:#f92672">%</span><span style="color:#ae81ff">10</span> <span style="color:#66d9ef">as</span> m, <span style="color:#66d9ef">count</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">from</span> t1 <span style="color:#66d9ef">group</span> <span style="color:#66d9ef">by</span> m;
+</code></pre></div><ol>
+<li>初始化一个 sort buffer，确认放入字段 m;</li>
+<li>扫描表 t1 的索引 a，依次取出里面的 id 值, 将 id%100 的值存入 sort_buffer 中；</li>
+<li>扫描完成后，对 sort_buffer 的字段 m 做排序（如果 sort_buffer 内存不够用，就会利用磁盘临时文件辅助排序）；</li>
+<li>排序完成后，就得到了一个有序数组。</li>
+<li>遍历有序数组，得到最终 group by 结果集，返回给客户端；</li>
+</ol>
+<p>下面我们看看 explain 的结果，可以发现 extra 没有了 Using temporary 的字样，表示没有使用内存临时表；</p>
+<p><img src="https://gitee.com/pismery/imageshack/raw/master/img/20200930211303.png" alt=""></p>
+<h2 id="总结">总结</h2>
+<p>首先，我们通过简单的 group by 语句，发现其正常流程中会使用临时表和 sort buffer 进行排序；</p>
+<p>然后，讲解到如果结果不需要排序，可以通过 order by null 的方式避免排序；</p>
+<p>接着，由于 group by 需要临时表存取数据，我们提出了通过索引的方式，将 group by 字段排好序，从而优化 group by 流程；</p>
+<p>最后, 日常开发总由于各种原因无法新增索引，我们又提出通过 SQL_BIG_Result 的方式告知优化器直接先通过 sort buffer 排序，再统计数值；从而避免创建临时表；</p>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/database/mysql/remove_algorithm/" data-toggle="tooltip" data-placement="top" title="「MySQL 45 讲」- Buffer Pool 淘汰算法">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/database/mysql/auto_increment/" data-toggle="tooltip" data-placement="top" title="「MySQL 45 讲」- 自增值处理">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ms" title="MS">
+                            MS
+=======
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/mysql" title="MySQL">
+                            MySQL
+=======
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/nio" title="NIO">
+                            NIO
+=======
+                        <a href="/blog/tags/database" title="database">
+                            database
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/netty" title="Netty">
+                            Netty
+=======
+                        <a href="/blog/tags/java" title="java">
+                            java
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/python" title="Python">
+                            Python
+=======
+                        <a href="/blog/tags/jvm" title="jvm">
+                            jvm
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/spring" title="Spring">
+                            Spring
+=======
+                        <a href="/blog/tags/log" title="log">
+                            log
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/transaction" title="Transaction">
+                            Transaction
+=======
+                        <a href="/blog/tags/mysql" title="mysql">
+                            mysql
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/basic" title="basic">
+                            basic
+=======
+                        <a href="/blog/tags/netty" title="netty">
+                            netty
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/concurrent" title="concurrent">
+                            concurrent
+=======
+                        <a href="/blog/tags/nio" title="nio">
+                            nio
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/database" title="database">
+                            database
+=======
+                        <a href="/blog/tags/python" title="python">
+                            python
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+=======
+                        <a href="/blog/tags/spring" title="spring">
+                            spring
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/log" title="log">
+                            log
+=======
+                        <a href="/blog/tags/transaction" title="transaction">
+                            transaction
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

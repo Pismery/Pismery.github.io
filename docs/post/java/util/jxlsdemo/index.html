@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>JxlsDemo-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/java/util/jxlsdemo/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        <a class="tag" href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                    </div>
+                    <h1>JxlsDemo</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Sunday, May 12, 2019
+                        
+                            <span id="/blog/post/java/util/jxlsdemo/" class="leancloud_visitors meta_data_item" data-flag-title="JxlsDemo">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#jxls">JXLS</a>
+<ul>
+<li><a href="#指令介绍">指令介绍</a>
+<ul>
+<li><a href="#jx-each-循环">jx:each 循环</a></li>
+<li><a href="#jx-if-条件判断">jx:if 条件判断</a></li>
+<li><a href="#jx-updatecell-动态输出公式">jx:updateCell 动态输出公式</a></li>
+<li><a href="#jx-grid-输出一个表格">jx:grid 输出一个表格</a></li>
+</ul></li>
+<li><a href="#完整示例">完整示例</a>
+<ul>
+<li><a href="#grid-demo">Grid Demo</a></li>
+<li><a href="#each-and-if-指令示例">Each and IF 指令示例</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                
+                <h1 id="jxls">JXLS</h1>
+
+<p>JXLS 是 Java 导出 Excel 的一个工具包，尽管 POI 工具包已经可以满足所有的需求，但是有时候操作还是比较复杂，且有一定的代码量，而 JXLS 在生成 Excel 方面显得更加方便好用；下面开始介绍 JXLS 工具包</p>
+
+<p>基本介绍：</p>
+
+<ol>
+<li>可以通过 Java 或 Excel 批注的方式编写指令；</li>
+<li>在 Excel 的第一个单元格需要指定模板范围；</li>
+<li>单元格可通过 ${} 方式获取上下文对象的值；</li>
+<li>指令中可通过 &ldquo;&rdquo; 方式获取上下文；</li>
+</ol>
+
+<h2 id="指令介绍">指令介绍</h2>
+
+<p>JXLS 中其采用了 <a href="http://commons.apache.org/proper/commons-jexl/reference/syntax.html">Apache JEXL</a> 指令表达式，下面介绍一些常用的指令；</p>
+
+<h3 id="jx-each-循环">jx:each 循环</h3>
+
+<pre><code>jx:each(items=&quot;employees&quot; var=&quot;employee&quot; lastCell=&quot;D4&quot; area=&quot;[A4，D4]&quot; select=&quot;employee.payment &gt; 2000&quot;)
+</code></pre>
+
+<blockquote>
+<p>参数介绍</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>介绍</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>items</td>
+<td>items=&ldquo;employees&rdquo;</td>
+<td>表示遍历上下文中的集合对象 employees</td>
+</tr>
+
+<tr>
+<td>var</td>
+<td>var=&ldquo;employee&rdquo;</td>
+<td>表示遍历值设为 employee,在遍历区域可以通过 ${employee} 方式访问</td>
+</tr>
+
+<tr>
+<td>lastCell</td>
+<td>lastCell=&ldquo;D4&rdquo;</td>
+<td>表示指令的结束位置</td>
+</tr>
+
+<tr>
+<td>direaction</td>
+<td>direction =&ldquo;RIGHT&rdquo;</td>
+<td>输出的方向向下(DOWN)或向右(RIGHT),默认为DOWN</td>
+</tr>
+
+<tr>
+<td>area</td>
+<td>areas=[&ldquo;A8:F8&rdquo;,&ldquo;A13:F13&rdquo;]</td>
+<td>循环的区域，多个可用 「,」 分隔</td>
+</tr>
+
+<tr>
+<td>select</td>
+<td>select=&ldquo;employee.payment &gt; 2000&rdquo;</td>
+<td>过滤条件</td>
+</tr>
+
+<tr>
+<td>groupBy</td>
+<td>groupBy=&ldquo;name&rdquo;</td>
+<td>依据 employee 中 name 进行分组，分组后的集合可通过 nameGroup.items 来获取;</td>
+</tr>
+
+<tr>
+<td>groupOrder</td>
+<td>groupOrder=&ldquo;asc&rdquo;</td>
+<td>指定分组排序(‘desc’ or ‘asc’)</td>
+</tr>
+
+<tr>
+<td>multisheet</td>
+<td>multisheet =&ldquo;sheets&rdquo;</td>
+<td>循环上下文中的 sheets 对象，指定后会产生多个 sheet，指定后 each 的维度会变为 sheet，不需要指定 area；</td>
+</tr>
+
+<tr>
+<td>shiftMode</td>
+<td>shiftMode =&ldquo;adjacent&rdquo;</td>
+<td>adjacent 指定后通过添加行的方式向指定方向输出，inner: 则为通过添加单元格的方式向指定方向输出，默认为inner；</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="jx-if-条件判断">jx:if 条件判断</h3>
+
+<pre><code>jx:if(condition=&quot;employee.payment &lt;= 20000&quot;, lastCell=&quot;E9&quot;, areas=[&quot;A9:E9&quot;,&quot;A18:E18&quot;])
+</code></pre>
+
+<blockquote>
+<p>参数介绍</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>介绍</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>condition</td>
+<td>condition=&ldquo;employee.payment &lt;= 20000&rdquo;</td>
+<td>if 条件判断表达式</td>
+</tr>
+
+<tr>
+<td>lastCell</td>
+<td>lastCell=&ldquo;E9&rdquo;</td>
+<td>指令结束位置</td>
+</tr>
+
+<tr>
+<td>areas</td>
+<td>areas=[&ldquo;A9:E9&rdquo;,&ldquo;A18:E18&rdquo;]</td>
+<td>如果为 true 使用 A9:E9 单元格模板渲染，反之使用 A18:E18；</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="jx-updatecell-动态输出公式">jx:updateCell 动态输出公式</h3>
+
+<pre><code>jx:updateCell(lastCell=&quot;E4&quot; updater=&quot;totalCellUpdater&quot;)
+</code></pre>
+
+<blockquote>
+<p>参数介绍</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>介绍</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>updater</td>
+<td>updater=&ldquo;totalCellUpdater&rdquo;</td>
+<td>totalCellUpdater 是上下文中的一个对象，并且该对象必须实现 CellDataUpdater 接口</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>示例</p>
+</blockquote>
+
+<pre><code>static class TotalCellUpdater implements CellDataUpdater{
+    /**
+    * cellData 批注对应的单元格
+    * targetCell 输出的单元格
+    * context  模板中的上下文通过getVar(变量名)来获取传入的对象
+    */
+    @Override
+    public void updateCellData(CellData cellData, CellRef targetCell, Context context) {
+        if( cellData.isFormulaCell() &amp;&amp; cellData.getFormula().equals(&quot;SUM(E2)&quot;)){
+            String resultFormula = String.format(&quot;SUM(E2:E%d)&quot;, targetCell.getRow());
+            cellData.setEvaluationResult(resultFormula);
+        }
+    }
+}
+</code></pre>
+
+<h3 id="jx-grid-输出一个表格">jx:grid 输出一个表格</h3>
+
+<pre><code>jx:grid(lastCell=&quot;A4&quot; headers=&quot;headers&quot; data=&quot;data&quot; areas=[A3:A3, A4:A4] 
+</code></pre>
+
+<blockquote>
+<p>参数介绍</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>介绍</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>headers</td>
+<td>headers=&ldquo;headers&rdquo;</td>
+<td>循环的表头内容为List ，表头和表体没有必然的关系，可以多一列也可以少一列</td>
+</tr>
+
+<tr>
+<td>data</td>
+<td>data=&ldquo;datas&rdquo;</td>
+<td>循环的表体内容为List<List>，当为 javabean 时 java 代码中需指定读取的属性名称</td>
+</tr>
+
+<tr>
+<td>formatCells</td>
+<td>formatCells=&ldquo;BigDecimal:C1,Date:D1&rdquo;</td>
+<td>表示 BigDecimal 采用 C1 单元格方式渲染，Date 类型使用 D1 单元格方式渲染</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>Java 示例</p>
+</blockquote>
+
+<pre><code class="language-Java">try(InputStream is = GridCommandDemo.class.getResourceAsStream(&quot;grid_template.xls&quot;)) {
+    try(OutputStream os = new FileOutputStream(&quot;grid_output2.xls&quot;)) {
+        Context context = new Context();
+        context.putVar(&quot;headers&quot;, Arrays.asList(&quot;Name&quot;, &quot;Birthday&quot;, &quot;Payment&quot;));
+        context.putVar(&quot;data&quot;, employees);
+        //当循环的表体为javabean时指定读取的属性，Sheet2!A1表示输出开始的位置
+        JxlsHelper.getInstance().processGridTemplateAtCell(is, os, context, &quot;name,birthDate,payment,bonus&quot;, &quot;Sheet2!A1&quot;);
+    }
+}
+</code></pre>
+
+<h2 id="完整示例">完整示例</h2>
+
+<p>下面展示两种常用的使用方式，更多的使用 Demo 可参考<a href="https://bitbucket.org/leonate/jxls/src/master/">官方 Demo 仓库</a></p>
+
+<blockquote>
+<p>Maven</p>
+</blockquote>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.jxls&lt;/groupId&gt;
+    &lt;artifactId&gt;jxls&lt;/artifactId&gt;
+    &lt;version&gt;2.6.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.jxls&lt;/groupId&gt;
+    &lt;artifactId&gt;jxls-poi&lt;/artifactId&gt;
+    &lt;version&gt;1.2.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.jxls&lt;/groupId&gt;
+    &lt;artifactId&gt;jxls-jexcel&lt;/artifactId&gt;
+    &lt;version&gt;1.0.9&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<blockquote>
+<p>Model Bean</p>
+</blockquote>
+
+<pre><code class="language-Java">@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Department {
+    private String name;
+    private Employee chief;
+    private List&lt;Employee&gt; staff = new ArrayList&lt;&gt;();
+    private String link;
+}
+
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Employee {
+    private String name;
+    private Integer years;
+    private Date birthDate;
+    private BigDecimal payment;
+    private BigDecimal bonus;
+}
+</code></pre>
+
+<h3 id="grid-demo">Grid Demo</h3>
+
+<blockquote>
+<p>Excel 模板</p>
+</blockquote>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190512221631.png" alt="" /></p>
+
+<blockquote>
+<p>Java</p>
+</blockquote>
+
+<pre><code class="language-Java">public class JXLSUtil {
+
+    public static final String TEMPLATE_PATH = System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/template/&quot;;
+    public static final String REPORT_PATH = System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/report/&quot;;
+
+    public static void generateTableExcel(List&lt;Employee&gt; data) throws IOException {
+        List&lt;String&gt; headers = Arrays.asList(&quot;Name&quot;, &quot;BirthDate&quot;, &quot;Payment&quot;, &quot;Bonus&quot;);
+        String objectProps = &quot;name,birthDate,payment,bonus&quot;;
+        try (InputStream is = new FileInputStream(new File(TEMPLATE_PATH, &quot;simple_exporter_template.xlsx&quot;))) {
+            try (OutputStream os = new FileOutputStream(new File(REPORT_PATH,&quot;simple_exporter_report.xlsx&quot;))) {
+                SimpleExporter simpleExporter = new SimpleExporter();
+                simpleExporter.registerGridTemplate(is);
+                simpleExporter.gridExport(headers, data, objectProps, os);
+            }
+        }
+    }
+}
+</code></pre>
+
+<pre><code class="language-Java">
+public class JXLSUtilTest {
+    @Test
+    public void generateTableExcel() throws IOException {
+        //Given
+        List&lt;Employee&gt; staff = Arrays.asList(
+                buildEmployee(&quot;IQ Chan1&quot;, new Date(), new BigDecimal(10000.01), new BigDecimal(0.15)),
+                buildEmployee(&quot;IQ Chan2&quot;, new Date(), new BigDecimal(20000.05), new BigDecimal(0.25))
+        );
+        //When
+        JXLSUtil.generateTableExcel(staff);
+        //Then
+    }
+    
+    private static Employee buildEmployee(String name, Date birthdate, BigDecimal payment, BigDecimal bonus) {
+        return Employee.builder()
+                .name(name)
+                .birthDate(birthdate)
+                .years(1)
+                .payment(payment)
+                .bonus(bonus)
+                .build();
+    }
+}
+</code></pre>
+
+<blockquote>
+<p>运行结果</p>
+</blockquote>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190512222012.png" alt="" /></p>
+
+<h3 id="each-and-if-指令示例">Each and IF 指令示例</h3>
+
+<blockquote>
+<p>Excel 模板</p>
+</blockquote>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190512222620.png" alt="" /></p>
+
+<blockquote>
+<p>Java</p>
+</blockquote>
+
+<pre><code class="language-Java">public class JXLSUtil {
+
+    public static final String TEMPLATE_PATH = System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/template/&quot;;
+    public static final String REPORT_PATH = System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/report/&quot;;
+
+    public static void generateExcel(Map&lt;String, Object&gt; model, String templateName, String reportName) throws IOException {
+        try (InputStream is = new FileInputStream(new File(TEMPLATE_PATH, templateName))) {
+            File reportPath = new File(REPORT_PATH);
+            if (!reportPath.exists())
+                reportPath.mkdir();
+
+            try (OutputStream os = new FileOutputStream(new File(REPORT_PATH, reportName))) {
+                Context ctx = new Context();
+                model.forEach(ctx::putVar);
+                JxlsHelper.getInstance().processTemplate(is, os, ctx);
+            }
+        }
+    }
+}
+</code></pre>
+
+<pre><code class="language-Java">public class JXLSUtilTest {
+    @Test
+    public void generateExcel_each_if_command() throws IOException {
+        //Given
+        List&lt;Employee&gt; hrStaff = getStaffList(&quot;IQ Chan1&quot;, &quot;IQ Chan2&quot;);
+        List&lt;Employee&gt; itStaff = getStaffList(&quot;Pismery1&quot;, &quot;Pismery2&quot;);
+        Employee hr_chief = buildEmployee(&quot;HR Chief&quot;, new Date(), new BigDecimal(30000.05), new BigDecimal(0.5));
+        Employee it_chief = buildEmployee(&quot;IT Chief&quot;, new Date(), new BigDecimal(30000.05), new BigDecimal(0.5));
+        List&lt;Department&gt; departmentList = Arrays.asList(
+                buildDepartment(&quot;HR&quot;, hr_chief, &quot;HR Link&quot;, hrStaff),
+                buildDepartment(&quot;IT&quot;, it_chief, &quot;IT Link&quot;, itStaff)
+        );
+        Map&lt;String, Object&gt; model = new HashMap&lt;&gt;();
+        model.put(&quot;departments&quot;, departmentList);
+        model.put(&quot;employees&quot;, hrStaff);
+        //When
+        JXLSUtil.generateExcel(model, &quot;each_if_demo_template.xlsx&quot;,&quot;each_if_demo_report.xlsx&quot;);
+        //Then
+    }
+
+    @NotNull
+    private List&lt;Employee&gt; getStaffList(String staff1, String staff2) {
+        return Arrays.asList(
+                buildEmployee(staff1, new Date(), new BigDecimal(10000.01), new BigDecimal(0.15)),
+                buildEmployee(staff2, new Date(), new BigDecimal(20000.05), new BigDecimal(0.25))
+        );
+    }
+
+
+    private static Employee buildEmployee(String name, Date birthdate, BigDecimal payment, BigDecimal bonus) {
+        return Employee.builder()
+                .name(name)
+                .birthDate(birthdate)
+                .years(1)
+                .payment(payment)
+                .bonus(bonus)
+                .build();
+    }
+
+    private static Department buildDepartment(String name, Employee chief, String link, List&lt;Employee&gt; staff) {
+        return Department.builder()
+                .name(name)
+                .chief(chief)
+                .link(link)
+                .staff(staff)
+                .build();
+    }
+}
+</code></pre>
+
+<blockquote>
+<p>运行结果</p>
+</blockquote>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190512222945.png" alt="" /></p>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/java/basic/siftingappender/" data-toggle="tooltip" data-placement="top" title="SiftingAppender">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/python/spider/%E7%8E%8B%E8%80%85%E8%90%A5%E5%9C%B0%E7%88%AC%E8%99%AB%E5%A4%8D%E7%9B%98/" data-toggle="tooltip" data-placement="top" title="王者营地爬虫复盘">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

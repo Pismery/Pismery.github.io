@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+{{ partial "head.html" . }}
+{{ partial "nav.html" . }}
+<!-- Page Header -->
+{{ block "header" .}}
+<header class="intro-header" style="background-image: url('{{ .Site.Params.header_image | relURL }}')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>{{ .Site.Title}} </h1>
+                    <!--<hr class="small">-->
+		    <span class="subheading">{{ .Site.Params.slogan }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{{ end }}
+
+<div class="container">
+    <div class="row">
+        <!-- Post Container -->
+        <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+
+            <h1>分类标签有{{ len .Data.Terms }}个</h1>
+            {{ $data := .Data }}
+            {{ range .Data.Terms.ByCount }}
+            {{ $termLink := printf "/%s/%s/" $data.Plural .Term | urlize }}
+            <h2>
+                <a href="{{ $termLink }}">{{ .Term }}</a>
+                有{{ .Count }}篇
+            </h2>
+            <ul>
+                {{ range .Pages | first 5 }}
+                <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+                {{ end }}
+                {{ if gt (len .Pages) 5 }}
+                <li><a href="{{ $termLink }}">……</a></li>
+                {{ end }}
+            </ul>
+            {{ end }}
+        </div>
+
+        {{ partial "sidebar.html" . }}
+    </div>
+</div>
+
+
+
+
+
+
+{{ partial "footer.html" . }}
+</body>
+</html>
+

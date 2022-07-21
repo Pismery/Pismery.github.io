@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>Java-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/tags/java/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/blog/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Pismery Blog </h1>
+                    
+		    <span class="subheading">Stay high all the time</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+  
+<div class="container">
+    <div class="row">
+        
+        
+   	    <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container
+        ">
+            
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA/">
+        <h2 class="post-title">
+            并发编程基础概念-核心理论
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        核心理论 共享性 共享性指资源对多个线程操作同一份资源，是导致线程不安全的主要前提之一。若所有线程都只操作线程内的数据，则就不会产生线程安全问题
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Thursday 2018 - 12 - 20
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-synchronized/">
+        <h2 class="post-title">
+            并发编程基础-synchronized
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        synchronized synchronized三种使用方式 修饰实例方法，表示对当前类的实例加锁，若要访问此方法需要获取当前实例的对象锁。 修饰静态方法，表示对当前
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Thursday 2018 - 12 - 20
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/util/%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/">
+        <h2 class="post-title">
+            生成随机数
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        <p>生成随机数工具类</p>
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Wednesday 2018 - 12 - 12
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/util/exchangeutils/">
+        <h2 class="post-title">
+            ExchangeUtils
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        <p>三种方式实现交换数组中两个数。</p>
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Wednesday 2018 - 12 - 12
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-executor%E6%A1%86%E6%9E%B6/">
+        <h2 class="post-title">
+            并发编程之线程池-Executor框架
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        <p>Executor 框架线程池框架。</p>
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Sunday 2018 - 12 - 09
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%B7%A5%E5%8E%82%E7%B1%BBexecutors/">
+        <h2 class="post-title">
+            并发编程之线程池-工厂类Executors
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        <p>线程池工厂类 Executors</p>
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Wednesday 2018 - 12 - 05
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E9%94%81/">
+        <h2 class="post-title">
+            并发编程基础概念-锁
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        偏向锁、轻量级锁 引入偏向锁和轻量级锁目的都是为了当没有多线程竞争或者竞争不激烈的情况下，减少传统的重量级锁使用操作系统的互斥量（即Monit
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Friday 2018 - 11 - 30
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%8D%8F%E4%BD%9C/">
+        <h2 class="post-title">
+            并发编程基础-线程间的协作
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        线程间的协作 线程状态 新建状态(New)：新创建了一个线程对象。 就绪状态(Runnable)：线程对象创建后，其他线程调用了该对象的start
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Friday 2018 - 11 - 30
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-threadrunnablecallable/">
+        <h2 class="post-title">
+            并发编程基础-Thread、Runnable、Callable
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        Thread vs Runnable 示例代码 public class Demo extend Thread { public Demo() { super(&quot;Demo-Thread&quot;); } public void run() { //Code } public static void main(String[] args) { new Demo().start(); } } public class Demo implements Runnable { public void run() { //Code } public static void main(String[] args) { new Thread(new Demo()).start(); } } 比较 通过实现Runnabl
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Thursday 2018 - 11 - 29
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/test/powermock%E4%BD%BF%E7%94%A8/">
+        <h2 class="post-title">
+            PowerMock使用
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        PowerMock PowerMockito的优势在于能够mock静态方法，final方法，私有方法，构造函数，相当于弥补了mockito的不足。 基本使用 po
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Wednesday 2018 - 11 - 28
+    </p>
+</div>
+<hr>
+
+
+            
+
+
+<ul class="pager">
+    
+    <li class="previous">
+        <a href="/blog/tags/java/page/2/">&larr; Newer Posts</a>
+    </li>
+    
+    
+    <li class="next">
+        <a href="/blog/tags/java/page/4/">Older Posts &rarr;</a>
+    </li>
+    
+</ul>
+
+
+       	</div>
+        
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+             
+            
+                
+                    <a href="/blog/tags/jvm" title="JVM">
+                        JVM
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/java" title="Java">
+                        Java
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/mysql" title="MySQL">
+                        MySQL
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/nio" title="NIO">
+                        NIO
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/netty" title="Netty">
+                        Netty
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/python" title="Python">
+                        Python
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/redis" title="Redis">
+                        Redis
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/spring" title="Spring">
+                        Spring
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/transaction" title="Transaction">
+                        Transaction
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/basic" title="basic">
+                        basic
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/concurrent" title="concurrent">
+                        concurrent
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/database" title="database">
+                        database
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/log" title="log">
+                        log
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                        工具类
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                        数据结构
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                        极客时间笔记
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                        测试
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                        算法
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                        设计思想
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                        设计模式
+                    </a>
+                
+            
+        </div>
+    </section>
+    
+
+    
+    <section class="visible-md visible-lg">
+        <hr><h5><a href="">ABOUT ME</a></h5>
+        <div class="short-about">
+            
+            <img src="https://pismery.gitee.io/blog/img/head.jpg" />
+            
+            
+                <p>Java Developer</p>
+            
+           
+           <ul class="list-inline"> 
+               
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://pismery.gitee.io/blog/img/wechat_code.png">
+                       <span class="fa-stack fa-lg">
+                           <i class="fa fa-circle fa-stack-2x"></i>
+                           <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/Pismery">
+                       <span class="fa-stack fa-lg">
+                           <i class="fa fa-circle fa-stack-2x"></i>
+                           <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+                
+               <li>
+                   <a target="_blank" href="https://gitee.com/pismery">
+                       <span class="fa-stack fa-lg">
+                           <i class="fa fa-circle fa-stack-2x"></i>
+                           <i class="fa fa-git fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+                
+            </ul>
+        </div>
+    </section>
+   
+   
+
+   
+   
+</div>
+
+	</div>
+</div>
+
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

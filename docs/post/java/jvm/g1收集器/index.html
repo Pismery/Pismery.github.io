@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>G1收集器-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        <a class="tag" href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                    </div>
+                    <h1>G1收集器</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Sunday, September 29, 2019
+                        
+                            <span id="/blog/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/" class="leancloud_visitors meta_data_item" data-flag-title="G1收集器">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#垃圾收集器-g1">垃圾收集器 G1</a>
+<ul>
+<li><a href="#g1-回收算法">G1 回收算法</a></li>
+<li><a href="#参考链接">参考链接</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                <h1 id="垃圾收集器-g1">垃圾收集器 G1</h1>
+
+<p>G1「Garbage First」收集器是继 CMS 收集器的下一代垃圾收集器，在 Java 7 中加入了 JVM 垃圾收集器大家族中；其目的是为了适应服务器中大内存，多 CPU 的场景，同 CMS 收集器 一样，G1 关注最低时延的问题，官方也推荐使用 G1 来替代 CMS 收集器；</p>
+
+<blockquote>
+<p>G1 收集器的特点</p>
+</blockquote>
+
+<ol>
+<li>引入了 Region 来划分堆空间，弱化了分代的概念；</li>
+<li>「软实时」：力求达到暂停时间目标，允许少部分情况超出指定时间；</li>
+<li>垃圾回收从可回收空间最多的 Region 开始，回收更多的堆空间，同时尽可能不超过暂停时间目标；这也是它名字「Grabage First」的由来;</li>
+</ol>
+
+<blockquote>
+<p>相较于 CMS 的改进</p>
+</blockquote>
+
+<ol>
+<li>CMS 采用标记 - 清除算法，会产生内存碎片，不利于大对象的分配，导致提前触发 Full GC；G1 则采用了标记 - 整理算法；</li>
+<li>CMS 只能用于老年代，而 G1 可用于新生代和老年代；</li>
+<li>G1 垃圾收集停顿时间可控，算法会尽可能保证在指定停顿时间内完成垃圾回收，防止垃圾收集突然停顿过长导致应用出现雪崩现象；</li>
+<li>并行与并发：更加充分利用多 CPU 的硬件优势</li>
+</ol>
+
+<blockquote>
+<p>G1 应用场景</p>
+</blockquote>
+
+<p>G1 主要应用于多 CPU 的大内存服务器中，在满足低延时的前提下，尽可能满足垃圾回收暂停时间；以下场景适合使用 G1 收集器：</p>
+
+<ol>
+<li>服务端多核并且应用程序占用大内存，至少 4 G 以上；</li>
+<li>采用 CMS 时产生大量内存碎片；</li>
+<li>需要更可控的垃圾收集时间，避免高并发下出现雪崩现象；</li>
+</ol>
+
+<blockquote>
+<p>G1 堆内存划分</p>
+</blockquote>
+
+<p>JVM 对堆内存有着分代划分的概念，目的是为了适应不同类型的对象的垃圾回收；JVM 将堆内存分为新生代和老年代；新生代又分为一个 Eden 区和两个存活区；</p>
+
+<p>在 G1 收集器之前的收集器都是在物理层面划分了堆内存；而 G1 将内存划分为大小相等的 Region，但逻辑上还是有着分代的概念；每个 Region 的大小从 1M 到 32M，且值需要是 2 的幂，Region 个数不能超过 2048 个；</p>
+
+<p>下面两张图，可以更直观的看出 G1 对堆内存的划分</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190928173720.png" alt="" /></p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190928173553.png" alt="" /></p>
+
+<p>从上图中可以看到，G1 将 Region 分为四种类型：Eden, Survivor, Old, Humongous;
+Eden，Survivor 则为新生代；Old, Humongous 对应老年代区域；其中 Humongous 代表巨型区，当一个对象大小超过了 Region 大小的一半则将对象视为「巨型对象」，这类巨型对象会直接进入老年代，存放这类巨型对象的区域称为巨型区；</p>
+
+<p>区分出巨型区的原因是 G1 局部的垃圾收集算法是复制算法，整体是标记整理算法，为了避免巨型对象的复制，单独处理；由于巨型对象区的对象都是超过 Region 的一半，巨型区会产生内存碎片；</p>
+
+<p>如果想避免巨型区导致的老年代碎片化问题，可以通过 -XX:G1HeapRegionSize 增加单个 Region 的大小，使得对象不再是巨型对象，采用常规的分配路径。</p>
+
+<h2 id="g1-回收算法">G1 回收算法</h2>
+
+<p>G1 提供了两种垃圾回收模式，Young GC 和 Mixed GC，并且两种模式都会 STW「Stop The World」.</p>
+
+<blockquote>
+<p>Young GC</p>
+</blockquote>
+
+<p>Youg GC 过程中，会回收 Eden 区和上次垃圾回收后的 Survivor 区。GC 后的存活对象将被复制或者移动到其他 Region 中；如果是存活超过指定阈值的对象会被提升到老年代的 Region，否则移动到 Survivor 的 Region 并同时将此 Region 加入 CSet 中，为下一次 GC 做准备；</p>
+
+<blockquote>
+<p>Mixed GC</p>
+</blockquote>
+
+<p>当执行完一次整个并发标记周期，则会将 GC 模式从 Young GC 转换为 Mixed GC，G1 会有选择的将部分 Old Region 加入都需要回收的集合中；加入 Old Region 的数目由一系列的参数控制；经过多次 Mixed GC 回收了足够的 Old Region后，GC 模式会从 Mixed GC 转换为 Young GC；等到下次并发标记周期完成后，再回到 Mixed GC 执行；</p>
+
+<blockquote>
+<p>并发标记周期</p>
+</blockquote>
+
+<p>并发标记周期包含以下几个过程：</p>
+
+<ol>
+<li>初始化标记阶段(Initial mark phase)：对根节点进行标记，该阶段会 STW;</li>
+<li>根区域扫描阶段(Root region scanning phase)：扫描上一步被标记的 Survivor 区域，获取对 Old Region 的引用，然后标记 Old Region 被引用的对象；此阶段不会 STW ，会与程序并发运行；且只有本过程执行完后才能执行 Young GC；</li>
+<li>并发标记阶段(Concurrent marking phase)：扫描整个堆找到所有可达的对象，此阶段不会 STW 与程序并发运行，并且可以被 Young GC 所中断；</li>
+<li>最终标记阶段(Remark phase)：此阶段会 STW 收集并帮助完成标记过程，G1 GC 通过消耗 SATB 的缓冲区，跟踪未访问的对象，处理是否有引用；</li>
+<li>清理阶段(Cleanup phase)：此阶段会 STW，G1 GC 会标记完成空闲的 Region 和需要进行 Mixed GC 的 Region；整个过程在返回空闲的空的 Region 后就可以并发的执行。执行完此阶段后，就可以执行 Mixed GC 了。</li>
+</ol>
+
+<blockquote>
+<p>执行流程图</p>
+</blockquote>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190928205708.png" alt="" /></p>
+
+<h2 id="参考链接">参考链接</h2>
+
+<ul>
+<li><a href="https://www.oracle.com/technetwork/cn/articles/java/g1gc-1984535.html">Garbage First Garbage Collector Tuning</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/59861022">深入剖析JVM：G1收集器+回收流程+推荐用例</a></li>
+<li><a href="https://www.jianshu.com/p/50869c0bead1">深入理解 Java G1 垃圾收集器</a></li>
+<li><a href="https://www.jianshu.com/p/aef0f4765098">G1垃圾回收器详解</a></li>
+</ul>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/python/spider/%E7%8E%8B%E8%80%85%E8%90%A5%E5%9C%B0%E7%88%AC%E8%99%AB%E5%A4%8D%E7%9B%98/" data-toggle="tooltip" data-placement="top" title="王者营地爬虫复盘">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/common/algorithm/getprime/" data-toggle="tooltip" data-placement="top" title="GetPrime">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

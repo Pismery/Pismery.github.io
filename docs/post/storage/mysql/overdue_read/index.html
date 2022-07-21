@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>「MySQL 45 讲」- 过期读-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/storage/mysql/overdue_read/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        <a class="tag" href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                    </div>
+                    <h1>「MySQL 45 讲」- 过期读</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Monday, September 7, 2020
+                        
+                            <span id="/blog/post/storage/mysql/overdue_read/" class="leancloud_visitors meta_data_item" data-flag-title="「MySQL 45 讲」- 过期读">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#概要">概要</a></li>
+<li><a href="#强制走主库方案">强制走主库方案</a></li>
+<li><a href="#强制等待方案">强制等待方案</a></li>
+<li><a href="#检测主从无延迟方案">检测主从无延迟方案</a>
+<ul>
+<li><a href="#对比-seconds-behind-master-确保主备无延迟">对比 seconds_behind_master 确保主备无延迟</a></li>
+<li><a href="#对比同步位点确保主备无延迟">对比同步位点确保主备无延迟</a></li>
+<li><a href="#对比-gtid-集合确保主备无延迟">对比 GTID 集合确保主备无延迟</a></li>
+</ul></li>
+<li><a href="#半同步方案">半同步方案</a></li>
+<li><a href="#等待主库位点方案">等待主库位点方案</a></li>
+<li><a href="#等待-gtid-方案">等待 GTID 方案</a></li>
+<li><a href="#总结">总结</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                <p>本文为 「极客时间- MySQL 实战 45 讲」 学习笔记；主要目的是加深理解；</p>
+
+<h2 id="概要">概要</h2>
+
+<p>下图是经典的 MySQL 读写分离架构，其中 A 机为主库，A&rsquo; 机为 A 机的备库；B, C, D 均为只读从库；引用自 「极客时间- MySQL 实战 45 讲」；</p>
+
+<p><img src="https://gitee.com/pismery/imageshack/raw/master/img/20200829225707.png" alt="" /></p>
+
+<p>读写分离架构中，主库允许读写，而从库只允许读。主库进行写入后，MySQL 会通过主从机制将数据同步给从库。当然主从同步是需要一定时间的，如果客户端请求写入主库后，客户端立刻查询从库，则会读取到从库还未同步主库的结果，这种现象我们称为「过期读」；</p>
+
+<p>解决过期读，我们有下列几种方法：</p>
+
+<ul>
+<li>强制走主库方案</li>
+<li>强制等待方案</li>
+<li>检测主从无延迟方案</li>
+<li>半同步方案</li>
+<li>等待主库位点方案</li>
+<li>等待 GTID 方案</li>
+</ul>
+
+<h2 id="强制走主库方案">强制走主库方案</h2>
+
+<p>强制走主库方案，就是将查询需求分类；可将查询需求分为以下两类：</p>
+
+<ul>
+<li>查询请求必须拿到最新结果，则将请求强制发送到主库上；</li>
+<li>查询请求允许读到旧数据，则可以将请求发送到从库上；</li>
+</ul>
+
+<p>这种方式，在实际运用中用的很多，但是对于金融业务场景，很可能所有查询请求都必须拿到最新结果，此时读写分离的水平扩展能力完全失效；</p>
+
+<p>下面看看支持读写分离的解决「过期读」的方案</p>
+
+<h2 id="强制等待方案">强制等待方案</h2>
+
+<p>强制等待方案，就是主库进行写入后，从库的读请求，强制等待一定时间再进行处理读操作；类似与从库的查询请求，先执行类似 select sleep(1) 的命令；</p>
+
+<p>我们可以看出这是一个不靠谱的方案，每次查询都需要先 sleep 再查询，用户体验十分不好，并且等待时间也无法精确；下面为了让方案更靠谱，一般业务场景设置为如下：</p>
+
+<p>用户进行更新操作后，希望立刻查看更新是否成功；此时系统可以直接将更新信息放到查询页面中，不进行数据库查询；当用户对页面进行刷新时，再从数据库查询；</p>
+
+<p>尽管经过业务改造，方案还是不靠谱的；主要查询等待时间不精确，不精确体现在两个方面；</p>
+
+<ul>
+<li>从库只需要 0.5s 同步完成，查询请求还是需要等待指定时间 1s；</li>
+<li>从库可能 1s 还未同步完成，查询请求任然是过期读；</li>
+</ul>
+
+<p>下面展示更加精确的方案</p>
+
+<h2 id="检测主从无延迟方案">检测主从无延迟方案</h2>
+
+<p>检测主从无延迟方案，主要思路是执行查询请求前，先判断主从延迟情况；具体执行步骤如下：</p>
+
+<ol>
+<li>先判断主从延迟情况；</li>
+<li>若无延迟，则直接在从库中执行查询；</li>
+<li>若有延迟，则等待一定时间；</li>
+<li>若指定等待时间内， 主从同步完成，则直接在从库中执行查询；</li>
+<li>若指定等待时间为同步完成，则抛弃请求或直接在主库执行查询请求；</li>
+</ol>
+
+<p>步骤 2，3，4，5 都很好理解实现；而如何判断主从延迟情况呢? MySQL 提供了三种方式</p>
+
+<ul>
+<li>对比 seconds_behind_master 确保主备无延迟</li>
+<li>对比同步位点确保主备无延迟</li>
+<li>对比 GTID 集合确保主备无延迟</li>
+</ul>
+
+<h3 id="对比-seconds-behind-master-确保主备无延迟">对比 seconds_behind_master 确保主备无延迟</h3>
+
+<p>在从库中执行 show slave status，获取参数 seconds_behind_master， 参数值表示的是从库相对于主库延迟多少秒；</p>
+
+<p>当在从库查询时，可以判断 seconds_behind_master 是否为 0 来确认主从是否有延迟；但是这种方案只能精确到秒；</p>
+
+<h3 id="对比同步位点确保主备无延迟">对比同步位点确保主备无延迟</h3>
+
+<p>在从库中执行 show slave status 获取以下四个参数</p>
+
+<ul>
+<li>Master_Log_File 和 Read_Master_Log_Pos，表示的是读到的主库的最新位点；</li>
+<li>Relay_Master_Log_File 和 Exec_Master_Log_Pos，表示的是备库执行的最新位点。</li>
+</ul>
+
+<p>如果 Master_Log_File 和 Relay_Master_Log_File、Read_Master_Log_Pos 和 Exec_Master_Log_Pos 这两组值完全相同，就表示接收到的日志已经同步完成。</p>
+
+<h3 id="对比-gtid-集合确保主备无延迟">对比 GTID 集合确保主备无延迟</h3>
+
+<p>在从库中执行 show slave status 获取以下三个参数</p>
+
+<ul>
+<li>Auto_Position = 1，表示主备关系使用了 GTID 协议。</li>
+<li>Retrieved_Gtid_Set，是备库收到的所有日志的 GTID 集合；</li>
+<li>Executed_Gtid_Set，是备库所有已经执行完成的 GTID 集合。</li>
+</ul>
+
+<p>如果集合 Retrieved_Gtid_Set 和 Executed_Gtid_Set 相同，表示备库接收到的日志都已经同步完成。</p>
+
+<p>从上述三个方案中，可以看出，对比同步位点和对比 GTID 的方式要比判断 seconds_behind_master 要更加精确，这三种方案相比「强制等待方案」要准确不少；但还未达到精确的程度，仍然会出现「过期读」的现象；</p>
+
+<p>MySQL 一个事务的主从同步流程大概如下：</p>
+
+<ol>
+<li>主库执行完成，写入 binlog, 并返回结果至客户端；</li>
+<li>主库将 binlog 发送给从库，从库收到；</li>
+<li>从库执行 binlong, 进行同步，同步完成；</li>
+</ol>
+
+<p>当客户端执行完更新操作，并且在步骤二主库发送 binlog 给从库前，执行查询操作；此时从库由于没有收到 binlog ，会认为主从无延迟；此时查询会直接在从库执行，也就出现了「过期读」；</p>
+
+<p>「检测主从无延迟方案」还有一个缺点，那就是更新高峰期，主库的位点或者 GTID 集合更新很快，那么上面的两个位点等值判断就会一直不成立，很可能出现从库上迟迟无法响应查询请求的情况。</p>
+
+<h2 id="半同步方案">半同步方案</h2>
+
+<p>要解决「检测主从无延迟方案」的过期读问题，就要引入半同步复制「semi-sync replication」;</p>
+
+<p>在半同步方案中，一个事务的主从同步流程大概如下：</p>
+
+<ol>
+<li>主库执行完成，写入 binlog；</li>
+<li>从库收到 binlog 以后，发回给主库一个 ack，表示收到了；</li>
+<li>主库收到这个 ack 以后，才能给客户端返回“事务完成”的确认；</li>
+</ol>
+
+<p>因此，启动了半同步机制，主库在返回给客户端前，确保了从库获取到了 binlog；此时再配置同步位点或 GTID 集合方案，则不再出现「过期读」现象；但是这也只适用于一主一从的情况；</p>
+
+<p>因为，主库确保了一个从库收到 binlog，就返回结果给客户端了；</p>
+
+<p>到目前为止，使用半同步 + 检测主从延迟，还有以下两个问题：</p>
+
+<ol>
+<li>由于 binlog 发送机制，部分从库，可能出现「过期读」现象；</li>
+<li>持续延迟的情况下，可能出现过度等待现象；</li>
+</ol>
+
+<h2 id="等待主库位点方案">等待主库位点方案</h2>
+
+<p>首先，介绍一条命令</p>
+
+<pre><code class="language-SQL">select master_pos_wait(file, pos[, timeout]);
+</code></pre>
+
+<p>这条命令的逻辑如下：</p>
+
+<ul>
+<li>在从库执行的；</li>
+<li>参数 file 和 pos 指的是主库上的文件名和位置；</li>
+<li>timeout 可选，设置为正整数 N 表示这个函数最多等待 N 秒。</li>
+</ul>
+
+<p>这个命令正常返回的结果是一个整数 M；</p>
+
+<ul>
+<li>如果正常执行，返回一个正整数，表示命令开始执行，到应用完 file 和 pos 表示的 binlog 位置，执行了多少事务；</li>
+<li>如果执行过程，出现主从同步异常，返回 NULL；</li>
+<li>如果等待时间超过 N 秒，返回 -1；</li>
+<li>如果刚开始执行，发现已经同步了这个位置，返回 0；</li>
+</ul>
+
+<p>下面介绍「等待主库位点方案」流程：</p>
+
+<ol>
+<li>事务 trx1 更新完成后，马上执行 show master status 得到当前主库执行到的 File 和 Position；</li>
+<li>选定一个从库执行查询语句；</li>
+<li>在从库上执行 select master_pos_wait(File, Position, 1)；</li>
+<li>如果返回值是 &gt;=0 的正整数，则在这个从库执行查询语句；</li>
+<li>否则，到主库执行查询语句或超时放弃。</li>
+</ol>
+
+<h2 id="等待-gtid-方案">等待 GTID 方案</h2>
+
+<p>如果你的数据库开启了 GTID 模式，对应的也有等待 GTID 的方案，MySQL 提供了一条相似的命令；</p>
+
+<pre><code class="language-SQL">select wait_for_executed_gtid_set(gtid_set, 1);
+</code></pre>
+
+<p>这条命令的逻辑是：</p>
+
+<ul>
+<li>等待，直到这个库执行的事务中包含传入的 gtid_set，返回 0；</li>
+<li>超时返回 1。</li>
+</ul>
+
+<p>等待 GTID 方案，通过设置 session_track_gtids 为 OWN_GTID；可在事务 trx1 更新完成返回包中，直接解析出 GTID；因此，相对于「等待主库位点方案」，少一条 show master status 命令；</p>
+
+<h2 id="总结">总结</h2>
+
+<p>本文主要解决「过期读」的问题，首先，我们能想到的最简单的方案就是将业务请求分类，对于允许「过期读」的分流至从库，否则只允许读主库；</p>
+
+<p>然后为了解决大部分业务都不允许「过期读」的问题，我们引入了一个「不靠谱方案」&ndash; 延时读。通过业务改造或强制请求等待，使得从库有足够的时间同步主库内容；</p>
+
+<p>接着，我们引入了一个较为靠谱的方案，检测同步情况，根据同步情况进行分流主从库；检测同步本文讲解了以下三种方案</p>
+
+<ul>
+<li>对比 seconds_behind_master (只能精确到秒级)</li>
+<li>对比同步位点</li>
+<li>对比 GTID 集合</li>
+</ul>
+
+<p>由于 MySQL 主从同步机制，事务请求结束后，会立刻返回，然后再发送 binlog 至从库；所以仍旧有可能出现「过期读」，我们引入了半同步方案，主库确保一个从库收到 binlog 后再返回给客户端；解决了一主一备的情况的「过期读」；</p>
+
+<p>最后，我们介绍了下面两个命令，才完全解决「过期读」的问题；</p>
+
+<pre><code class="language-SQL">select master_pos_wait(file, pos[, timeout]);
+select wait_for_executed_gtid_set(gtid_set, 1);
+</code></pre>
+
+<p>实际开发过程中，我们是会多个方案组合，根据业务权衡选择方案，并非一定采用完全解决「过期读」的翻案；其中业务请求分类，以及「不靠谱方案」&ndash; 业务改造，延迟请求，日常开发过程中使用会很广泛；</p>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/java/spring/spring%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%A4%B1%E6%95%88/" data-toggle="tooltip" data-placement="top" title="Spring 事务处理失效">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/storage/mysql/kill_thread/" data-toggle="tooltip" data-placement="top" title="「MySQL 45 讲」- Kill 命令">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

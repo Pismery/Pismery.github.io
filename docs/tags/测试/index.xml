@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>测试 on Pismery Blog</title>
+    <link>https://pismery.gitee.io/blog/tags/%E6%B5%8B%E8%AF%95/</link>
+    <description>Recent content in 测试 on Pismery Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+    <lastBuildDate>Wed, 28 Nov 2018 21:30:42 +0800</lastBuildDate>
+    
+	<atom:link href="https://pismery.gitee.io/blog/tags/%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PowerMock使用</title>
+      <link>https://pismery.gitee.io/blog/post/java/test/powermock%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 28 Nov 2018 21:30:42 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/test/powermock%E4%BD%BF%E7%94%A8/</guid>
+      <description>PowerMock PowerMockito的优势在于能够mock静态方法，final方法，私有方法，构造函数，相当于弥补了mockito的不足。 基本使用 po</description>
+    </item>
+    
+    <item>
+      <title>Mockito使用</title>
+      <link>https://pismery.gitee.io/blog/post/java/test/mockito%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 14 Nov 2018 20:05:35 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/test/mockito%E4%BD%BF%E7%94%A8/</guid>
+      <description>Mockito 初始化注解 背景 使用@Mock,@spy,@InjectMock等注解需要先初始化才能使用。 在测试类上使用@RunWith(MockitoJ</description>
+    </item>
+    
+  </channel>
+</rss>

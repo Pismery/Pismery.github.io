@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on Pismery Blog</title>
+    <link>https://pismery.gitee.io/blog/tags/java/</link>
+    <description>Recent content in Java on Pismery Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+    <lastBuildDate>Sun, 12 Jul 2020 14:52:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://pismery.gitee.io/blog/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Spring 事务处理失效</title>
+      <link>https://pismery.gitee.io/blog/post/java/spring/spring%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%A4%B1%E6%95%88/</link>
+      <pubDate>Sun, 12 Jul 2020 14:52:40 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/spring/spring%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%A4%B1%E6%95%88/</guid>
+      <description>&lt;p&gt;本文重点介绍 Spring 事务处理的几个失效的场景和相关解决方案；&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>拦截器与过滤器</title>
+      <link>https://pismery.gitee.io/blog/post/java/spring/%E6%8B%A6%E6%88%AA%E5%99%A8%E4%B8%8E%E8%BF%87%E6%BB%A4%E5%99%A8/</link>
+      <pubDate>Sat, 04 Jan 2020 22:28:51 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/spring/%E6%8B%A6%E6%88%AA%E5%99%A8%E4%B8%8E%E8%BF%87%E6%BB%A4%E5%99%A8/</guid>
+      <description>过滤器与拦截器 本篇文章，主要讲解过滤器与拦截器的区别，使用方式以及使用场景； 过滤器与拦截器的区别： 使用范围不同：过滤器 (filter) 是 Java Sevlet 规范中的一部分</description>
+    </item>
+    
+    <item>
+      <title>OrderByUtils</title>
+      <link>https://pismery.gitee.io/blog/post/java/util/orderbyutils/</link>
+      <pubDate>Sun, 15 Dec 2019 22:26:56 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/util/orderbyutils/</guid>
+      <description>Order by 操作 排序问题是日常开发中经常遇到的问题，以下是 Java 解决各类排序问题的一些例子，以供大家参考。 单字段排序 对于排序问题，Java 提供了两种解决</description>
+    </item>
+    
+    <item>
+      <title>Nio 零拷贝</title>
+      <link>https://pismery.gitee.io/blog/post/java/netty/niozerocopy/</link>
+      <pubDate>Sat, 23 Nov 2019 20:24:44 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/netty/niozerocopy/</guid>
+      <description>Nio Zero Copy 谈到 NIO，总会提起 Zero Copy「零拷贝」；本篇文章就大概讲述一下零拷贝的内容。 首先，零拷贝的技术必须依赖操作系统，如果操作系统不支持，</description>
+    </item>
+    
+    <item>
+      <title>Nio 聊天室</title>
+      <link>https://pismery.gitee.io/blog/post/java/netty/niochartroom/</link>
+      <pubDate>Sat, 09 Nov 2019 21:29:35 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/netty/niochartroom/</guid>
+      <description>Nio 聊天室 本篇文章运用 NIO 实现一个简易的聊天室功能，目的是为了整合一下最近学习 NIO 中的 Channel, Buffer, Selector 的功能； 实现逻辑大概如下： 服务端： 启动一个 Server</description>
+    </item>
+    
+    <item>
+      <title>G1收集器</title>
+      <link>https://pismery.gitee.io/blog/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/</link>
+      <pubDate>Sun, 29 Sep 2019 10:47:59 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/</guid>
+      <description>垃圾收集器 G1 G1「Garbage First」收集器是继 CMS 收集器的下一代垃圾收集器，在 Java 7 中加入了 JVM 垃圾收集器大家族中；其目的是为了适应服务器</description>
+    </item>
+    
+    <item>
+      <title>JxlsDemo</title>
+      <link>https://pismery.gitee.io/blog/post/java/util/jxlsdemo/</link>
+      <pubDate>Sun, 12 May 2019 22:35:32 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/util/jxlsdemo/</guid>
+      <description>JXLS JXLS 是 Java 导出 Excel 的一个工具包，尽管 POI 工具包已经可以满足所有的需求，但是有时候操作还是比较复杂，且有一定的代码量，而 JXLS 在生成 Excel 方面显得更加方便好</description>
+    </item>
+    
+    <item>
+      <title>SiftingAppender</title>
+      <link>https://pismery.gitee.io/blog/post/java/basic/siftingappender/</link>
+      <pubDate>Thu, 02 May 2019 21:40:34 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/basic/siftingappender/</guid>
+      <description>&lt;p&gt;通过 Logback 的 SiftingAppender 实现按线程分配 log 文件 文件。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Logback</title>
+      <link>https://pismery.gitee.io/blog/post/java/basic/logback/</link>
+      <pubDate>Wed, 01 May 2019 18:25:30 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/basic/logback/</guid>
+      <description>Logback Spring Boot 默认采用的日志框架就是 Logback; Logback 是 Log4j 创建者 Ceki Gülcü 创建的；下面介绍一下 Logback 的一些特性； 与 Log4j 相比更高的性能和更小的初始加载内存空间； Logback 经过了</description>
+    </item>
+    
+    <item>
+      <title>手写springmvc实践</title>
+      <link>https://pismery.gitee.io/blog/post/java/spring/%E6%89%8B%E5%86%99springmvc%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Sun, 28 Apr 2019 11:23:34 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/spring/%E6%89%8B%E5%86%99springmvc%E5%AE%9E%E8%B7%B5/</guid>
+      <description>Spring MVC Spring MVC 中核心关键类是 DispatchServlet, 所有的请求都会通过这个类进行分派调用指定的业务逻辑代码；这个类中最重要的两个入口方法是 initStrategies() 和 doDispatch() DispatchServlet.initStrategies() 从上图继承关系，可以发</description>
+    </item>
+    
+    <item>
+      <title>GetParameterName</title>
+      <link>https://pismery.gitee.io/blog/post/java/util/getparametername/</link>
+      <pubDate>Mon, 22 Apr 2019 21:08:54 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/util/getparametername/</guid>
+      <description>&lt;p&gt;近期，自己在实现 Spring MVC 功能时，发现通过 Java 反射不能够获取到方法的参数名称；因此，查阅了一下资料，特此记录&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Distinct_Demo</title>
+      <link>https://pismery.gitee.io/blog/post/java/util/distinct_demo/</link>
+      <pubDate>Thu, 21 Mar 2019 22:11:09 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/util/distinct_demo/</guid>
+      <description>&lt;p&gt;Java 8 去重写法&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并发编程之并发工具类 Exchanger</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-exchanger/</link>
+      <pubDate>Sat, 02 Mar 2019 20:47:12 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-exchanger/</guid>
+      <description>&lt;div&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>初识Try Finally</title>
+      <link>https://pismery.gitee.io/blog/post/java/basic/%E5%88%9D%E8%AF%86try-finally/</link>
+      <pubDate>Sun, 17 Feb 2019 11:35:32 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/basic/%E5%88%9D%E8%AF%86try-finally/</guid>
+      <description>&lt;p&gt;一文了解 Try Finally 执行顺序。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并发编程之 Atomic 原子类</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Batomic-atomic%E5%8E%9F%E5%AD%90%E7%B1%BB/</link>
+      <pubDate>Sat, 26 Jan 2019 20:28:19 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Batomic-atomic%E5%8E%9F%E5%AD%90%E7%B1%BB/</guid>
+      <description>&lt;p&gt;J.U.C Atomic 类通过 CAS 实现原子性操作。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>JVM之垃圾回收机制</title>
+      <link>https://pismery.gitee.io/blog/post/java/jvm/jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</link>
+      <pubDate>Fri, 18 Jan 2019 22:22:39 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/jvm/jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</guid>
+      <description>垃圾回收机制 JVM 内存分配和回收策略 JDK1.8 前堆内存示意图 如上图，堆内存分为新生代、老年代，永久代；而新生代又分为Eden, Survivor 1, Survivor 2; 注意：永久代在JD</description>
+    </item>
+    
+    <item>
+      <title>并发编程基础 Volatile</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-volatile/</link>
+      <pubDate>Wed, 09 Jan 2019 20:53:07 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-volatile/</guid>
+      <description>voliatile 关键字 我们知道synchronized经过Java6的偏向锁、轻量级锁、锁消除、锁粗化等等优化性能得到了很大的提升，与Lock相差不大。但</description>
+    </item>
+    
+    <item>
+      <title>并发编程之并发工具类-Semaphore</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-semaphore/</link>
+      <pubDate>Fri, 21 Dec 2018 21:05:18 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-semaphore/</guid>
+      <description>&lt;p&gt;同步工具类 Semaphore 实现信号量的功能，具有公平锁和非公平锁两种方式。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并发编程之并发工具类-CyclicBarrier</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-cyclicbarrier/</link>
+      <pubDate>Fri, 21 Dec 2018 21:05:00 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-cyclicbarrier/</guid>
+      <description>&lt;p&gt;同步工具类 CyclicBarrer 实现一组线程相互等待，直到所有线程到达屏障。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并发编程之并发工具类-CountDownLatch</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-countdownlatch/</link>
+      <pubDate>Fri, 21 Dec 2018 21:04:54 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-countdownlatch/</guid>
+      <description>&lt;p&gt;同步工具类 CountDownLatch 实现一个或多个线程阻塞等待其他他线程完成操作。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并发编程基础概念-核心理论</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA/</link>
+      <pubDate>Thu, 20 Dec 2018 22:03:05 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA/</guid>
+      <description>核心理论 共享性 共享性指资源对多个线程操作同一份资源，是导致线程不安全的主要前提之一。若所有线程都只操作线程内的数据，则就不会产生线程安全问题</description>
+    </item>
+    
+    <item>
+      <title>并发编程基础-synchronized</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-synchronized/</link>
+      <pubDate>Thu, 20 Dec 2018 21:46:37 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-synchronized/</guid>
+      <description>synchronized synchronized三种使用方式 修饰实例方法，表示对当前类的实例加锁，若要访问此方法需要获取当前实例的对象锁。 修饰静态方法，表示对当前</description>
+    </item>
+    
+    <item>
+      <title>生成随机数</title>
+      <link>https://pismery.gitee.io/blog/post/java/util/%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/</link>
+      <pubDate>Wed, 12 Dec 2018 22:44:33 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/util/%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/</guid>
+      <description>&lt;p&gt;生成随机数工具类&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ExchangeUtils</title>
+      <link>https://pismery.gitee.io/blog/post/java/util/exchangeutils/</link>
+      <pubDate>Wed, 12 Dec 2018 21:58:47 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/util/exchangeutils/</guid>
+      <description>&lt;p&gt;三种方式实现交换数组中两个数。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并发编程之线程池-Executor框架</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-executor%E6%A1%86%E6%9E%B6/</link>
+      <pubDate>Sun, 09 Dec 2018 08:50:27 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-executor%E6%A1%86%E6%9E%B6/</guid>
+      <description>&lt;p&gt;Executor 框架线程池框架。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并发编程之线程池-工厂类Executors</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%B7%A5%E5%8E%82%E7%B1%BBexecutors/</link>
+      <pubDate>Wed, 05 Dec 2018 21:16:38 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%B7%A5%E5%8E%82%E7%B1%BBexecutors/</guid>
+      <description>&lt;p&gt;线程池工厂类 Executors&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并发编程基础概念-锁</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E9%94%81/</link>
+      <pubDate>Fri, 30 Nov 2018 06:38:14 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E9%94%81/</guid>
+      <description>偏向锁、轻量级锁 引入偏向锁和轻量级锁目的都是为了当没有多线程竞争或者竞争不激烈的情况下，减少传统的重量级锁使用操作系统的互斥量（即Monit</description>
+    </item>
+    
+    <item>
+      <title>并发编程基础-线程间的协作</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%8D%8F%E4%BD%9C/</link>
+      <pubDate>Fri, 30 Nov 2018 06:10:15 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%8D%8F%E4%BD%9C/</guid>
+      <description>线程间的协作 线程状态 新建状态(New)：新创建了一个线程对象。 就绪状态(Runnable)：线程对象创建后，其他线程调用了该对象的start</description>
+    </item>
+    
+    <item>
+      <title>并发编程基础-Thread、Runnable、Callable</title>
+      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-threadrunnablecallable/</link>
+      <pubDate>Thu, 29 Nov 2018 21:57:58 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-threadrunnablecallable/</guid>
+      <description>Thread vs Runnable 示例代码 public class Demo extend Thread { public Demo() { super(&amp;quot;Demo-Thread&amp;quot;); } public void run() { //Code } public static void main(String[] args) { new Demo().start(); } } public class Demo implements Runnable { public void run() { //Code } public static void main(String[] args) { new Thread(new Demo()).start(); } } 比较 通过实现Runnabl</description>
+    </item>
+    
+    <item>
+      <title>PowerMock使用</title>
+      <link>https://pismery.gitee.io/blog/post/java/test/powermock%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 28 Nov 2018 21:30:42 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/test/powermock%E4%BD%BF%E7%94%A8/</guid>
+      <description>PowerMock PowerMockito的优势在于能够mock静态方法，final方法，私有方法，构造函数，相当于弥补了mockito的不足。 基本使用 po</description>
+    </item>
+    
+    <item>
+      <title>Collectors使用</title>
+      <link>https://pismery.gitee.io/blog/post/java/util/collectors%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Thu, 15 Nov 2018 06:06:28 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/util/collectors%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;p&gt;介绍 Collectors 工具类&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Mockito使用</title>
+      <link>https://pismery.gitee.io/blog/post/java/test/mockito%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 14 Nov 2018 20:05:35 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/test/mockito%E4%BD%BF%E7%94%A8/</guid>
+      <description>Mockito 初始化注解 背景 使用@Mock,@spy,@InjectMock等注解需要先初始化才能使用。 在测试类上使用@RunWith(MockitoJ</description>
+    </item>
+    
+    <item>
+      <title>日期类操作</title>
+      <link>https://pismery.gitee.io/blog/post/java/util/%E6%97%A5%E6%9C%9F%E7%B1%BB%E6%93%8D%E4%BD%9C/</link>
+      <pubDate>Wed, 14 Nov 2018 19:49:17 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/util/%E6%97%A5%E6%9C%9F%E7%B1%BB%E6%93%8D%E4%BD%9C/</guid>
+      <description>&lt;p&gt;Java 8 新增日期类基本使用介绍&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

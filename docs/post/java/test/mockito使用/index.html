@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>Mockito使用-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/java/test/mockito%E4%BD%BF%E7%94%A8/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        <a class="tag" href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                    </div>
+                    <h1>Mockito使用</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Wednesday, November 14, 2018
+                        
+                            <span id="/blog/post/java/test/mockito%E4%BD%BF%E7%94%A8/" class="leancloud_visitors meta_data_item" data-flag-title="Mockito使用">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#mockito">Mockito</a>
+<ul>
+<li><a href="#初始化注解">初始化注解</a></li>
+<li><a href="#mock-and-spy-训练">Mock and Spy 训练</a></li>
+<li><a href="#injectmock">@InjectMock</a>
+<ul>
+<li><a href="#examples">examples</a>
+<ul>
+<li><a href="#构造注入">构造注入</a></li>
+<li><a href="#set方法注入">set方法注入</a></li>
+<li><a href="#属性注入">属性注入</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#argumentcaptor">ArgumentCaptor</a>
+<ul>
+<li><a href="#argumentcaptor-doanswer-vertify使用实例">ArgumentCaptor + doAnswer + vertify使用实例</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                
+                <h1 id="mockito">Mockito</h1>
+
+<h2 id="初始化注解">初始化注解</h2>
+
+<blockquote>
+<p>背景</p>
+</blockquote>
+
+<p>使用@Mock,@spy,@InjectMock等注解需要先初始化才能使用。</p>
+
+<blockquote>
+<ol>
+<li>在测试类上使用@RunWith(MockitoJUnitRunner.class)注解。</li>
+</ol>
+</blockquote>
+
+<pre><code>@RunWith(MockitoJUnitRunner.class)
+public class XxxTest {
+}
+</code></pre>
+
+<blockquote>
+<ol>
+<li>在测试方法调用前使用MockitoAnnotations.initMocks(this);</li>
+</ol>
+</blockquote>
+
+<pre><code>public class XxxTest {
+    @Before
+    public void initMocks(){
+        MockitoAnnotations.initMocks(this);
+    } 
+}
+</code></pre>
+
+<blockquote>
+<ol>
+<li>在测试类中使用MockitoRule</li>
+</ol>
+</blockquote>
+
+<pre><code>public class XxxTest {
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
+}
+public class XxxTest {
+    //严格模式
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS);
+}
+</code></pre>
+
+<h2 id="mock-and-spy-训练">Mock and Spy 训练</h2>
+
+<pre><code>## Mock 训练
+
+Object mock = Mock(new List);
+when(mock.method).thenReturn();
+
+## Spy 训练
+List list = new LinkedList();
+List spy = spy(list);
+
+//Impossible: real method is called so spy.get(0) throws IndexOutOfBoundsException (the list is yet empty)
+when(spy.get(0)).thenReturn(&quot;foo&quot;);
+
+//You have to use doReturn() for stubbing
+doReturn(&quot;foo&quot;).when(spy).get(0);
+</code></pre>
+
+<h2 id="injectmock">@InjectMock</h2>
+
+<blockquote>
+<p>注入方式: 优先级：1&gt;2&gt;3</p>
+</blockquote>
+
+<pre><code>1. 构造器注入
+2. set方法注入
+3. 属性注入
+</code></pre>
+
+<blockquote>
+<p>注入过程</p>
+</blockquote>
+
+<pre><code>1. 找最长的构造器注入，如果不符合直接找空构造器;
+2. 如果空构造器不存在，则注入失败报exception;
+3. 如果空构造器存在，则通过set方法注入;
+4. 如果set方法不存在，则通过属性注入;
+</code></pre>
+
+<blockquote>
+<p>注意事项</p>
+</blockquote>
+
+<pre><code>1. 如果通过构造器注入,则只按类型注入。@Mock()中name属性无效，且后声明的覆盖前声明的。
+2. 如果最长构造器不合则直接找空构造器，不会找最符合的构造器
+3. 如果通过set方法或属性注入，若有重复类型的属性。
+    1. 只有一个@Mock且不指定name属性，则按注入类中的注入目标的变量名的比较小的优先注入。
+    2. 若有多个@Mock且不指定name属性, 则默认按变量名为name
+    注入,若找不到则报exception。
+    3. 如果存在相同类型需要注入则最好设置好@Mock的name属性。
+</code></pre>
+
+<blockquote>
+<p>mock static field</p>
+</blockquote>
+
+<pre><code>1. 通过构造函数注入。**
+</code></pre>
+
+<h3 id="examples">examples</h3>
+
+<pre><code>public class InjectMockTest {
+    
+    @Mock private ArticleCalculator calculator;
+    @Mock(name = &quot;database&quot;) private ArticleDatabase dbMock; // note the mock name attribute
+    
+    @InjectMocks private ArticleManager manager;
+    @Before public void initMocks() {
+        MockitoAnnotations.initMocks(this);
+    }
+    
+    @Test 
+    public void shouldDoSomething() {
+        when(calculator.calculator()).thenReturn(&quot;mock calculator&quot;);
+        when(dbMock.select()).thenReturn(&quot;mock ArticleDatabase&quot;);
+        
+        manager.initiateArticle();
+    }
+    
+}
+
+public class ArticleCalculator {
+    public String calculator() {
+        System.out.println(&quot;ArticleCalculator.calculator&quot;);
+        return &quot;ArticleCalculator.calculator&quot;;
+    }
+}
+
+public class ArticleDatabase {
+    public String select() {
+        System.out.println(&quot;ArticleDatabase.select&quot;);
+        return &quot;ArticleDatabase.select&quot;;
+    }
+}
+</code></pre>
+
+<h4 id="构造注入">构造注入</h4>
+
+<pre><code>public class ArticleManager {
+    private ArticleCalculator calculator;
+    private ArticleDatabase database;
+
+    public ArticleManager(ArticleCalculator calculator, ArticleDatabase database) {
+        super();
+        this.calculator = calculator;
+        this.database = database;
+    }
+    
+    public void initiateArticle() {
+        System.out.println(calculator.calculator());
+        System.out.println(database.select());
+    }
+}
+</code></pre>
+
+<h4 id="set方法注入">set方法注入</h4>
+
+<pre><code>public class ArticleManager {
+    private ArticleCalculator calculator;
+    private ArticleDatabase database;
+
+    public ArticleManager() {
+    }
+    
+    public void setCalculator(ArticleCalculator calculator) {
+        this.calculator = calculator;
+    }
+
+    public void setDatabase(ArticleDatabase database) {
+        this.database = database;
+    }
+
+    public void initiateArticle() {
+        System.out.println(calculator.calculator());
+        System.out.println(database.select());
+    }
+}
+</code></pre>
+
+<h4 id="属性注入">属性注入</h4>
+
+<pre><code>public class ArticleManager {
+    private ArticleCalculator calculator;
+    private ArticleDatabase database;
+
+    public ArticleManager() {
+    }
+    
+    public void initiateArticle() {
+        System.out.println(calculator.calculator());
+        System.out.println(database.select());
+    }
+}
+</code></pre>
+
+<h2 id="argumentcaptor">ArgumentCaptor</h2>
+
+<blockquote>
+<p>介绍:</p>
+</blockquote>
+
+<p>用于捕获传入方法的参数</p>
+
+<blockquote>
+<p>使用场景:</p>
+</blockquote>
+
+<p>在某些场景中，不光要对方法的返回值和调用进行验证，同时需要验证一系列交互后所传入方法的参数。那么我们可以用参数捕获器来捕获传入方法的参数进行验证，看它是否符合我们的要求。</p>
+
+<pre><code>//例1
+//当多次调用时，argument.getValue()返回最后一次调用的参数
+ArgumentCaptor&lt;PhonePo&gt; argument = ArgumentCaptor.forClass(PhonePo.class);
+
+verify(mockedPhonePoRepository, times(2)).saveAndFlush(argument.capture());
+assertThat(argument.getValue().getPhoneNo()).isEqualTo(&quot;456&quot;);
+
+
+//例2
+//当多次调用时使用argument.getAllValues()获取所有参数
+ArgumentCaptor&lt;PhonePo&gt; argument = ArgumentCaptor.forClass(PhonePo.class);
+
+verify(mockedPhonePoRepository, times(2)).saveAndFlush(argument.capture());
+List&lt;PhonePo&gt; argumentList = argument.getAllValues();
+assertThat(argumentList.get(0).getPhoneNo()).isEqualTo(&quot;123&quot;);
+assertThat(argumentList.get(1).getPhoneNo()).isEqualTo(&quot;456&quot;);
+
+verify(mockedPhonePoRepository, times(2)).saveAndFlush(any());
+
+</code></pre>
+
+<blockquote>
+<p>注意事项</p>
+</blockquote>
+
+<pre><code>1. 要先capture()在getValue();
+2. 当多次调用时，argument.getValue()返回最后一次调用的参数
+</code></pre>
+
+<h3 id="argumentcaptor-doanswer-vertify使用实例">ArgumentCaptor + doAnswer + vertify使用实例</h3>
+
+<pre><code></code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/java/util/%E6%97%A5%E6%9C%9F%E7%B1%BB%E6%93%8D%E4%BD%9C/" data-toggle="tooltip" data-placement="top" title="日期类操作">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/java/util/collectors%E4%BD%BF%E7%94%A8/" data-toggle="tooltip" data-placement="top" title="Collectors使用">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

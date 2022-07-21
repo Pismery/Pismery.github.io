@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>单例模式-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                    </div>
+                    <h1>单例模式</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Sunday, December 16, 2018
+                        
+                            <span id="/blog/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="leancloud_visitors meta_data_item" data-flag-title="单例模式">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#单例模式">单例模式</a>
+<ul>
+<li><a href="#饿汉式单例">饿汉式单例</a></li>
+<li><a href="#懒汉式单例">懒汉式单例</a></li>
+<li><a href="#内部类单例">内部类单例</a></li>
+<li><a href="#枚举类单例">枚举类单例</a></li>
+</ul></li>
+<li><a href="#单例与反射">单例与反射</a></li>
+<li><a href="#单例与序列化">单例与序列化</a></li>
+<li><a href="#总结">总结</a></li>
+</ul>
+</nav>
+                
+                <h1 id="单例模式">单例模式</h1>
+
+<blockquote>
+<p>意图</p>
+</blockquote>
+
+<p>解决一个类不需要多次实例化，系统只需要一个实例化对象；或者资源占用太大只允许创建一个。</p>
+
+<blockquote>
+<p>优缺点</p>
+</blockquote>
+
+<p>单例模式: <br>
+优点：节约系统资源;<br>
+缺点：</p>
+
+<ol>
+<li>没有抽象层不易扩展；</li>
+<li>将创建对象职责和使用对象职责都安排给当单例类；</li>
+<li><strong>对于有垃圾回收机制的语言如Java,C#。长时间不被利用容易导致被回收重新实例化；导致共享状态丢失；</strong></li>
+</ol>
+
+<blockquote>
+<p>适用场景</p>
+</blockquote>
+
+<ol>
+<li>系统只需要一个实例，或者实例占用资源太多只允许一个实例；</li>
+</ol>
+
+<h2 id="饿汉式单例">饿汉式单例</h2>
+
+<pre><code>public class EagerSingleton {
+
+    private static final EagerSingleton singleton = new EagerSingleton();
+
+    private EagerSingleton() {
+    }
+
+    public static EagerSingleton getInstance() {
+        return singleton;
+    }
+}
+</code></pre>
+
+<pre><code>public class EagerSingleton {
+
+    private static final EagerSingleton singleton;
+
+    static {
+        singleton =  = new EagerSingleton();
+        //.... 更多初始化操作
+    }
+
+    private EagerSingleton() {
+    }
+
+    public static EagerSingleton getInstance() {
+        return singleton;
+    }
+}
+</code></pre>
+
+<h2 id="懒汉式单例">懒汉式单例</h2>
+
+<p>双重检测锁方式(Double-Checked Locking DCL)</p>
+
+<pre><code>public class LazySingleton {
+    private volatile static LazySingleton singleton; //留意volatile关键字
+
+    private LazySingleton() {
+    }
+
+    public static LazySingleton getInstance() {
+        if (singleton == null) {
+            synchronized (LazySingleton.class) {
+               if(singleton == null)
+                   singleton = new LazySingleton();
+            }
+        }
+        return singleton;
+    }
+}
+</code></pre>
+
+<p>注意singleton成员属性需要加上关键字volatile，来防止指令重排序。因为一个new操作在可以分解为以下三个操作：</p>
+
+<ol>
+<li>为singleton申请内存空间</li>
+<li>初始化singleton对象</li>
+<li>将singleton指向分配的内存地址</li>
+</ol>
+
+<p>而Java虚拟机可能会发生指令重排序导致线程以1-&gt;3-&gt;2的顺序执行。这就可能导致线程T1执行了1-&gt;3后中断，导致线程T2以为创建完毕，而实际未创建完毕。</p>
+
+<h2 id="内部类单例">内部类单例</h2>
+
+<p>利用静态内部类延迟加载，即内部类Holder直到第一次调用getInstance方法才加载。
+这种解决方式是天然的线程安全的,由Java虚拟机classloader机制保证其线程安全。</p>
+
+<pre><code>public class IoDHSingleton {
+
+    private IoDHSingleton() {
+    }
+
+    private static class Holder {
+        private static final IoDHSingleton singleton = new IoDHSingleton();
+    }
+
+    public static IoDHSingleton getInstance() {
+        return Holder.singleton;
+    }
+
+}
+</code></pre>
+
+<h2 id="枚举类单例">枚举类单例</h2>
+
+<pre><code>public enum EnumSingleton {
+    ENUM_SINGLETON;
+
+    EnumSingleton() {
+    }
+
+    public EnumSingleton getSingleton() {
+        return this;
+    }
+}
+## 客户端
+@Slf4j
+public class Client {
+
+    public static void main(String[] args) {
+        eagerSingleton();
+        lazySingleton();
+        ioDHSingleton();
+        enumSingleton();
+    }
+
+    private static void eagerSingleton() {
+        EagerSingleton e1 = EagerSingleton.getInstance();
+        EagerSingleton e2 = EagerSingleton.getInstance();
+        log.debug(&quot;EagerSingleton e1 == e2: &quot; + String.valueOf(e1 == e2));
+    }
+
+    private static void lazySingleton() {
+        LazySingleton e1 = LazySingleton.getInstance();
+        LazySingleton e2 = LazySingleton.getInstance();
+        log.debug(&quot;LazySingleton e1 == e2: &quot; + String.valueOf(e1 == e2));
+    }
+
+    private static void ioDHSingleton() {
+        IoDHSingleton e1 = IoDHSingleton.getInstance();
+        IoDHSingleton e2 = IoDHSingleton.getInstance();
+        log.debug(&quot;IoDHSingletonF e1 == e2: &quot; + String.valueOf(e1 == e2));
+    }
+
+    private static void enumSingleton() {
+        EnumSingleton e1 = EnumSingleton.ENUM_SINGLETON;
+        EnumSingleton e2 = EnumSingleton.ENUM_SINGLETON;
+        EnumSingleton e3 = EnumSingleton.valueOf(&quot;ENUM_SINGLETON&quot;);
+
+        log.debug(&quot;EnumSingleton e1 == e2: &quot; + String.valueOf(e1 == e2));
+        log.debug(&quot;EnumSingleton e1 == e3: &quot; + String.valueOf(e1 == e3));
+    }
+
+}
+</code></pre>
+
+<blockquote>
+<p>运行结果</p>
+</blockquote>
+
+<p><img src="http://pcu3ajroc.bkt.clouddn.com/18-8-5/12606186.jpg" alt="" /></p>
+
+<h1 id="单例与反射">单例与反射</h1>
+
+<p>Java中的反射Api是一个功能十分强大的Api。尽管构造函数私有，通过反射，我们都能够调用对象的构造函数初始化对象。这违背了单例的初衷。</p>
+
+<blockquote>
+<p>代码演示</p>
+</blockquote>
+
+<pre><code>import java.lang.reflect.Constructor;
+
+class MySingleton {
+    private static final MySingleton instance = new MySingleton();
+
+    private MySingleton() {}
+
+    public static MySingleton getInstance() {
+        return instance;
+    }
+}
+
+public class SingletonAndReflection {
+    public static void main(String[] args) {
+        MySingleton singletonInstance = MySingleton.getInstance();
+        MySingleton reflectionInstance = null;
+        
+        try {
+            Constructor[] constructors = MySingleton.class.getDeclaredConstructors();
+            for (Constructor constructor : constructors) {
+                constructor.setAccessible(true);
+                reflectionInstance = (MySingleton) constructor.newInstance();
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+        System.out.println(&quot;singletonInstance hashCode: &quot; + singletonInstance.hashCode());
+        System.out.println(&quot;reflectionInstance hashCode: &quot; + reflectionInstance.hashCode());
+    }
+}
+</code></pre>
+
+<p>运行结果</p>
+
+<pre><code># Output
+singletonInstance hashCode: 1618212626
+reflectionInstance hashCode: 947679291
+</code></pre>
+
+<blockquote>
+<p>解决方式</p>
+</blockquote>
+
+<p>在构造函数中判断对象是否已经初始化。通过枚举类实现的单例，天然能够防止方式，</p>
+
+<pre><code>class MySingleton {
+    private static final MySingleton instance = new MySingleton();
+
+    private MySingleton() {
+        // protect against instantiation via reflection
+        if(instance != null) {
+            throw new IllegalStateException(&quot;Singleton already initialized&quot;);
+        }
+    }
+
+    public static MySingleton getInstance() {
+        return instance;
+    }
+}
+</code></pre>
+
+<h1 id="单例与序列化">单例与序列化</h1>
+
+<p>在编码过程中，我们经常需要对class进行序列化和反序列化，而当单例对象经过序列化后再反序列化将生成新的对象，这违背了单例模式的初衷。</p>
+
+<blockquote>
+<p>代码演示</p>
+</blockquote>
+
+<pre><code>import java.io.*;
+
+class SerializableSingleton implements Serializable {
+    private static final long serialVersionUID = 8806820726158932906L;
+
+    private static SerializableSingleton instance;
+
+    private SerializableSingleton() {}
+
+    public static synchronized SerializableSingleton getInstance() {
+        if(instance == null) {
+            instance = new SerializableSingleton();
+        }
+        return instance;
+    }
+}
+
+public class SingletonAndSerialization throws Exception{
+    public static void main(String[] args) {
+        SerializableSingleton instance1 = SerializableSingleton.getInstance();
+        
+        // Serialize singleton object to a file.
+        ObjectOutput out = new ObjectOutputStream(new FileOutputStream(&quot;singleton.ser&quot;));
+        out.writeObject(instance1);
+        out.close();
+
+        // Deserialize singleton object from the file
+        ObjectInput in = new ObjectInputStream(new FileInputStream(&quot;singleton.ser&quot;));
+        SerializableSingleton instance2 = (SerializableSingleton) in.readObject();
+        in.close();
+
+        System.out.println(&quot;instance1 hashCode: &quot; + instance1.hashCode());
+        System.out.println(&quot;instance2 hashCode: &quot; + instance2.hashCode());
+    }
+}
+</code></pre>
+
+<p>运行结果</p>
+
+<pre><code># Output
+instance1 hashCode: 1348949648
+instance2 hashCode: 434091818
+</code></pre>
+
+<blockquote>
+<p>解决方式</p>
+</blockquote>
+
+<p>在单例类中实现readResolve()方法，返回已存在的实例。readResolve()方法会在反序列化时调用。同样枚举类实现的单例天然避免了序列化的问题。</p>
+
+<pre><code>class SerializableSingleton implements Serializable {
+    private static final long serialVersionUID = 8806820726158932906L;
+
+    private static SerializableSingleton instance;
+
+    private SerializableSingleton() {}
+
+    public static synchronized SerializableSingleton getInstance() {
+        if(instance == null) {
+            instance = new SerializableSingleton();
+        }
+        return instance;
+    }
+
+    // implement readResolve method to return the existing instance
+    protected Object readResolve() {
+        return instance;
+    }
+}
+</code></pre>
+
+<h1 id="总结">总结</h1>
+
+<blockquote>
+<p>注意事项</p>
+</blockquote>
+
+<ol>
+<li>懒汉式单例注意静态成员变量要使用volatile关键字</li>
+<li>饿汉式单例使用静态成员常量。若初始化比较复杂 可以在static块中初始化</li>
+<li>内部类单例注意内部类是静态内部类</li>
+</ol>
+
+<blockquote>
+<p>优缺点</p>
+</blockquote>
+
+<p>懒汉式单例: <br>
+优点：能够延迟加载单例类；<br>
+缺点：但是因为需要确保多线程下的安全需要使用<strong>双重检测锁定机制（DCL:Double-Check Locking）</strong>，对性能有所降低；无法阻止反射<br></p>
+
+<p>饿汉式单例: <br>
+优点：不需要考虑锁机制，实现简单效率高；<br>
+缺点：不能够延迟加载单例类；无法阻止反射<br></p>
+
+<p>内部类单例: <br>
+优点：能够延迟加载单例类，实现简单，不需要考虑线程安全，交由Java虚拟机classloader机制保证其线程安全；<br>
+缺点：缺点对语言方面有限制很多面向对象语言不支持；无法阻止反射</p>
+
+<p>枚举类单例: <br>
+优点：能够阻止反射、序列化、并且线程安全<br>
+缺点：不能够延迟加载单例类<br></p>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/java/util/%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/" data-toggle="tooltip" data-placement="top" title="生成随机数">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-synchronized/" data-toggle="tooltip" data-placement="top" title="并发编程基础-synchronized">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

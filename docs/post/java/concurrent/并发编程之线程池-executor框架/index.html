@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>并发编程之线程池-Executor框架-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-executor%E6%A1%86%E6%9E%B6/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        <a class="tag" href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                    </div>
+                    <h1>并发编程之线程池-Executor框架</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Sunday, December 9, 2018
+                        
+                            <span id="/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-executor%E6%A1%86%E6%9E%B6/" class="leancloud_visitors meta_data_item" data-flag-title="并发编程之线程池-Executor框架">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#executor-框架">Executor 框架</a>
+<ul>
+<li><a href="#接口介绍">接口介绍</a>
+<ul>
+<li><a href="#executor">Executor</a></li>
+<li><a href="#executorservice">ExecutorService</a></li>
+<li><a href="#scheduledexecutorservice">ScheduledExecutorService</a></li>
+</ul></li>
+<li><a href="#threadpoolexecutor">ThreadPoolExecutor</a>
+<ul>
+<li><a href="#重要字段解释">重要字段解释</a></li>
+<li><a href="#构造方法">构造方法</a></li>
+<li><a href="#线程池执行流程">线程池执行流程</a></li>
+<li><a href="#线程池状态">线程池状态</a></li>
+<li><a href="#线程池的关闭">线程池的关闭</a></li>
+<li><a href="#线程池监控">线程池监控</a></li>
+</ul></li>
+<li><a href="#scheduledthreadpoolexecutor">ScheduledThreadPoolExecutor</a>
+<ul>
+<li><a href="#介绍">介绍</a></li>
+<li><a href="#设置和执行任务">设置和执行任务</a></li>
+</ul></li>
+<li><a href="#forkjoinpool">ForkJoinPool</a>
+<ul>
+<li><a href="#介绍-1">介绍</a></li>
+<li><a href="#使用示例">使用示例</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#参考链接">参考链接</a></li>
+</ul>
+</nav>
+                
+                <p>Executor 框架线程池框架。</p>
+
+<h1 id="executor-框架">Executor 框架</h1>
+
+<blockquote>
+<p>类图</p>
+</blockquote>
+
+<p><img src="https://ws1.sinaimg.cn/large/006xNbipgy1fxw54dzfh4j30o60k2t9q.jpg" alt="" /></p>
+
+<blockquote>
+<p>基本介绍</p>
+</blockquote>
+
+<p>Java 中线程池的顶级接口是 Executor，但是 Executor 只是执行线程的工具，真正的线程池接口是 ExecutorService。其中实现的线程池有 ThreadPoolExecutor, ScheduledThreadPoolExecutor, ForkJoinPool;</p>
+
+<p>线程池中比较重要的几个类</p>
+
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th>介绍</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>ExecutorService</td>
+<td>线程池接口</td>
+</tr>
+
+<tr>
+<td>ScheduledExecutorService</td>
+<td>能和Timer/TimerTask类似，解决那些需要任务重复执行的问题。</td>
+</tr>
+
+<tr>
+<td>ThreadPoolExecutor</td>
+<td>ExecutorService的默认实现。</td>
+</tr>
+
+<tr>
+<td>ScheduledThreadPoolExecutor</td>
+<td>继承ThreadPoolExecutor的ScheduledExecutorService接口实现，周期性任务调度的类实现。</td>
+</tr>
+
+<tr>
+<td>ForkJoinPool</td>
+<td>使用Fork/Join模式，实现任务分解多核运行。</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="接口介绍">接口介绍</h2>
+
+<p>Executor 框架中有三个接口</p>
+
+<ul>
+<li>Executor: 一个运行新任务的简单接口；</li>
+<li>ExecutorService: 在 Executor 基础上添加了一些用来管理执行器生命周期和任务生命周期的方法；</li>
+<li>ScheduleExecutorService: 在 ExecutorService 基础上，支持定期执行任务</li>
+</ul>
+
+<h3 id="executor">Executor</h3>
+
+<blockquote>
+<p>源码</p>
+</blockquote>
+
+<pre><code>public interface Executor {
+    void execute(Runnable command);
+}
+</code></pre>
+
+<p>这个接口用来替代线程的创建与启动。例如</p>
+
+<pre><code>## Thread 启动
+Thread thread = new Thread();
+thread.run();
+
+## Executor 启动
+Thread thread = new Thread();
+executor.execute(thread);
+</code></pre>
+
+<p>对于不同的 Executor 实现，execute() 方法可能是创建一个新线程并立即启动，也有可能是使用已有的工作线程来运行传入的任务，也可能是根据设置线程池的容量或者阻塞队列的容量来决定是否要将传入的线程放入阻塞队列中或者拒绝接收传入的线程。</p>
+
+<h3 id="executorservice">ExecutorService</h3>
+
+<blockquote>
+<p>介绍</p>
+</blockquote>
+
+<p>ExecutorService 接口继承自 Executor 接口，提供了管理终止的方法，以及可为跟踪一个或多个异步任务执行状况而生成 Future 的方法。增加了shutDown()，shutDownNow()，invokeAll()，invokeAny() 和 submit() 等方法。</p>
+
+<blockquote>
+<p>源码</p>
+</blockquote>
+
+<pre><code class="language-Java">## 一个线程池操作的接口
+public interface ExecutorService extends Executor {
+    void shutdown();
+    List&lt;Runnable&gt; shutdownNow();
+    
+    isShutdown();
+    isTerminated();
+    
+    &lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);
+    &lt;T&gt; Future&lt;T&gt; submit(Runnable task, T result);
+    Future&lt;?&gt; submit(Runnable task);
+    void execute(Runnable command); //继承Executor而来
+    
+    boolean awaitTermination(long timeout, TimeUnit unit)
+        throws InterruptedException;
+    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks, long timeout, TimeUnit unit)
+        throws InterruptedException;
+    &lt;T&gt; T invokeAny(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks)
+        throws InterruptedException, ExecutionException;
+
+}
+</code></pre>
+
+<blockquote>
+<p>submit vs execute</p>
+</blockquote>
+
+<ul>
+<li>submit()，提交一个线程任务，可以接受回调函数的返回值，适用于需要处理返回着或者异常的业务场景;</li>
+<li>execute()，执行一个任务，没有返回值;</li>
+</ul>
+
+<h3 id="scheduledexecutorservice">ScheduledExecutorService</h3>
+
+<p>ScheduledExecutorService 扩展 ExecutorService 接口并增加了 schedule 方法。调用 schedule 方法可以在指定的延时后执行一个 Runnable 或者 Callable 任务。ScheduledExecutorService 接口还定义了按照指定时间间隔定期执行任务的 scheduleAtFixedRate() 方法和 scheduleWithFixedDelay() 方法。</p>
+
+<h2 id="threadpoolexecutor">ThreadPoolExecutor</h2>
+
+<blockquote>
+<p>介绍</p>
+</blockquote>
+
+<p>ThreadPoolExecutor 继承自 AbstractExecutorService，也是实现了 ExecutorService 接口。</p>
+
+<h3 id="重要字段解释">重要字段解释</h3>
+
+<pre><code class="language-Java">private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
+private static final int COUNT_BITS = Integer.SIZE - 3;
+private static final int CAPACITY   = (1 &lt;&lt; COUNT_BITS) - 1;
+
+// Packing and unpacking ctl
+private static int runStateOf(int c)     { return c &amp; ~CAPACITY; }
+private static int workerCountOf(int c)  { return c &amp; CAPACITY; }
+private static int ctlOf(int rs, int wc) { return rs | wc; }
+</code></pre>
+
+<p>ctl 是对线程池的运行状态和线程池中有效线程的数量进行控制的一个字段， 它包含两部分的信息: 线程池的运行状态 (runState) 和线程池内有效线程的数量 (workerCount)，这里可以看到，使用了 Integer 类型来保存，高 3 位保存runState，低29位保存workerCount。COUNT_BITS=Integer.SIZE-3=32-3=29，CAPACITY就是 1 左移 29 位减 1（29 个 1），这个常量表示 workerCount 的上限值，大约是 5 亿。</p>
+
+<ul>
+<li>runStateOf(int c)：获取运行状态；</li>
+<li>workerCountOf(int c)：获取活动线程数；</li>
+<li>ctlOf(int rs, int wc)：获取运行状态和活动线程数的值。</li>
+</ul>
+
+<h3 id="构造方法">构造方法</h3>
+
+<pre><code class="language-Java">## 构造函数声明
+public ThreadPoolExecutor(int corePoolSize,
+                          int maximumPoolSize,
+                          long keepAliveTime,
+                          TimeUnit unit,
+                          BlockingQueue&lt;Runnable&gt; workQueue,
+                          ThreadFactory threadFactory
+                          RejectedExecutionHandler handler) {
+    ...
+}
+</code></pre>
+
+<blockquote>
+<p>参数解释</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>corePoolSize</td>
+<td>线程池核心线程数(最小线程数)</td>
+</tr>
+
+<tr>
+<td>maximumPoolSize</td>
+<td>最大线程数</td>
+</tr>
+
+<tr>
+<td>keepAliveTime</td>
+<td>线程存活时间(线程闲置时间，超过则被回收移除)</td>
+</tr>
+
+<tr>
+<td>unit</td>
+<td>时间单位</td>
+</tr>
+
+<tr>
+<td>workQueue</td>
+<td>缓存阻塞队列</td>
+</tr>
+
+<tr>
+<td>threadFactory</td>
+<td>线程工厂</td>
+</tr>
+
+<tr>
+<td>handler</td>
+<td>线程被拒绝时执行handler</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>workQuene</strong>: 保存等待执行的任务的阻塞队列，当提交一个新的任务到线程池以后, 线程池会根据当前线程池中正在运行着的线程的数量来决定对该任务的处理方式，主要有以下几种处理方式：</p>
+
+<ul>
+<li>SynchronousQueue: 如果不希望任务在队列中等待而是希望将任务直接移交给工作线程，可使用 SynchronousQueue 作为等待队列。SynchronousQueue 机制是要将一个元素放入 SynchronousQueue 中，必须有另一个线程正在等待接收这个元素。只有在使用无界线程池或者有饱和策略时才建议使用该队列。</li>
+<li>LinkedBlockingQueue: 如果使用这种方式，那么线程池中能够创建的最大线程数就是 corePoolSize，而maximumPoolSize 就不会起作用了。当线程池中所有的核心线程都是 RUNNING 状态时，这时一个新的任务提交就会放入等待队列中。</li>
+<li>ArrayBlockingQueue: 使用该方式可以将线程池的最大线程数量限制为 maximumPoolSize，这样能够降低资源的消耗，但同时这种方式也使得线程池对线程的调度变得更困难，因为线程池线程数目和队列的容量都是有限的值，需要合理的设置这两个值,以达到尽可能的降低线程池对资源的消耗和吞吐率达到一个相对合理的范围的要求。</li>
+</ul>
+
+<p>设置线程池线程数目和队列的容量(PS:找到提高线程池的吞吐量和降低资源消耗的平衡)</p>
+
+<ol>
+<li>如果需要降低系统资源( CPU 使用率,上下文切换开销)的消耗，可以设置较低的线程池容量和较高的阻塞队列容量。但这样同时会降低整个线程池处理任务的吞吐量。</li>
+<li>如果整个线程池容量过小，导致提交任务经常阻塞，可以通过 setMaximumPoolSize() 方法来重新设定提高线程池的容量，提高处理任务的吞吐量。</li>
+<li>如果阻塞队列容量较小，一般需要增大线程池的容量，以避免任务经常性提交失败。但是若线程池容量过大，提交任务数目过多，会导致上下文切换频繁，反而会降低处理任务的吞吐量。</li>
+</ol>
+
+<p>总的来说，线程池容量过大过小都会降低线程池处理任务吞吐量，阻塞队列大小是为了在合适的线程池容量时确保高峰时期能够容纳足够的任务，使得任务不会提交失败。</p>
+
+<p><strong>handler</strong>： 表示线程池的饱和策略。如果阻塞队列满了并且没有空闲的线程，这时如果继续提交任务，就需要采取一种策略处理该任务。线程池提供了 4 种策略：</p>
+
+<ul>
+<li>AbortPolicy：直接抛出异常，这是默认策略；</li>
+<li>CallerRunsPolicy：用调用者所在的线程来执行任务；</li>
+<li>DiscardOldestPolicy：丢弃阻塞队列中靠最前的任务，并执行当前任务；</li>
+<li>DiscardPolicy：直接丢弃任务；</li>
+</ul>
+
+<h3 id="线程池执行流程">线程池执行流程</h3>
+
+<ol>
+<li>当前线程数小于 corePoolSize 时，新提交任务将创建一个新线程执行任务，即使此时线程池中存在空闲线程。</li>
+<li>当前线程数等于 corePoolSize 时，新提交任务将被放入 workQueue 中，等待线程池中任务调度执行</li>
+<li>当 workQueue 已满，且当前线程数小于 maximumPoolSize，新提交任务会创建新线程执行任务</li>
+<li>当 workQueue 已满，且当前线程数等于 maximumPoolSize 时，新提交任务由 RejectedExecutionHandler 处理</li>
+<li>当线程池中超过 corePoolSize 线程，空闲时间达到 keepAliveTime时，关闭空闲线程</li>
+<li>当设置 allowCoreThreadTimeOut(true) 时，线程池中 corePoolSize 线程空闲时间达到 keepAliveTime 也将关闭</li>
+</ol>
+
+<blockquote>
+<p>补充</p>
+</blockquote>
+
+<p>ThreadPoolExecutor 中，线程池任务队列采用 LinkedBlockingQueue 队列的话，那么不会拒绝任何任务（因为队列大小没有限制），这种情况下，ThreadPoolExecutor 最多仅会按照最小线程数来创建线程，也就是说线程池大小被忽略了。</p>
+
+<p>如果线程池任务队列采用 ArrayBlockingQueue 队列的话，假定线程池的最小线程数为 4，最大为 8 所用的ArrayBlockingQueue 最大为 10。随着任务到达并被放到队列中，线程池中最多运行 4 个线程（即最小线程数）。即使队列完全填满，也就是说有 10 个处于等待状态的任务，ThreadPoolExecutor 也只会利用 4 个线程。如果队列已满，而又有新任务进来，此时才会启动一个新线程，这里不会因为队列已满而拒接该任务，相反会启动一个新线程。新线程会运行队列中的第一个任务，为新来的任务腾出空间。</p>
+
+<p>这个算法背后的理念是：该池大部分时间仅使用核心线程（4 个），即使有适量的任务在队列中等待运行。这时线程池就可以用作节流阀。如果挤压的请求变得非常多，这时该池就会尝试运行更多的线程来清理；这时第二个节流阀—最大线程数就起作用了。</p>
+
+<h3 id="线程池状态">线程池状态</h3>
+
+<pre><code class="language-Java">// runState is stored in the high-order bits
+private static final int RUNNING    = -1 &lt;&lt; COUNT_BITS;
+private static final int SHUTDOWN   =  0 &lt;&lt; COUNT_BITS;
+private static final int STOP       =  1 &lt;&lt; COUNT_BITS;
+private static final int TIDYING    =  2 &lt;&lt; COUNT_BITS;
+private static final int TERMINATED =  3 &lt;&lt; COUNT_BITS;
+
+</code></pre>
+
+<ul>
+<li>RUNNING ：能接受新提交的任务，并且也能处理阻塞队列中的任务；</li>
+<li>SHUTDOWN：关闭状态，不再接受新提交的任务，但却可以继续处理阻塞队列中已保存的任务。在线程池处于 RUNNING 状态时，调用
+shutdown()方法会使线程池进入到该状态。（finalize() 方法在执行过程中也会调用 shutdown() 方法进入该状态）；</li>
+<li>STOP：不能接受新任务，也不处理队列中的任务，会中断正在处理任务的线程。在线程池处于 RUNNING 或 SHUTDOWN 状态时，调用 shutdownNow() 方法会使线程池进入到该状态；</li>
+<li>TIDYING：如果所有的任务都已终止了，workerCount (有效线程数) 为0，线程池进入该状态后会调用 terminated() 方法进入 TERMINATED 状态。</li>
+<li>TERMINATED：在 terminated() 方法执行完后进入该状态，默认 terminated() 方法中什么也没有做。</li>
+</ul>
+
+<h3 id="线程池的关闭">线程池的关闭</h3>
+
+<p><strong>shutdown()</strong>: 当调用此方法，线程池状态变为 SHUTDOWN 状态。此时，则不能再往线程池中添加任何任务，否则将会抛出 RejectedExecutionException 异常。但是，此时线程池不会立刻退出，直到添加到线程池中的任务都已经处理完成，才会退出。</p>
+
+<p><strong>shutdownNow()</strong>: 线程池的状态立刻变成 STOP 状态，并 interrupt() 方法试图停止所有正在执行的线程，不再处理还在池队列中等待的任务，返回那些未执行的任务。注意由于终止线程是通过 Thread.interrupt() 方法来实现的，但是这种方法只有线程sleep, wait, Condition, 定时锁等情况下才能终止。所以，shutdownNow() 也不意味着一定立即退出。</p>
+
+<p><strong>awaitTermination(long timeOut, TimeUnit unit)</strong>: 此方法是一个阻塞方法，直到所有任务结束(返回 true )，等待超时时间到(返回 false )，线程被打断(抛出 InterruptedException)。调用此方法后线程池还能够添加新的任务。</p>
+
+<p>总结:</p>
+
+<ul>
+<li>优雅关闭，允许新任务进入：awaitTermination</li>
+<li>优雅关闭，不允许新任务进入：shutdown</li>
+<li>立即关闭：shutdownNow</li>
+</ul>
+
+<h3 id="线程池监控">线程池监控</h3>
+
+<p>通过线程池提供的参数进行监控。线程池里有一些属性在监控线程池的时候可以使用</p>
+
+<ul>
+<li>getTaskCount：线程池已经执行的和未执行的任务总数；</li>
+<li>getCompletedTaskCount：线程池已完成的任务数量，该值小于等于taskCount；</li>
+<li>getLargestPoolSize：线程池曾经创建过的最大线程数量。通过这个数据可以知道线程池是否满过，也就是达到了maximumPoolSize；</li>
+<li>getPoolSize：线程池当前的线程数量；</li>
+<li>getActiveCount：当前线程池中正在执行任务的线程数量。</li>
+</ul>
+
+<p>通过这些方法，可以对线程池进行监控，在 ThreadPoolExecutor 类中提供了几个空方法，如 beforeExecute 方法， afterExecute 方法和 terminated 方法，可以扩展这些方法在执行前或执行后增加一些新的操作，例如统计线程池的执行任务的时间等，可以继承自 ThreadPoolExecutor 来进行扩展。</p>
+
+<h2 id="scheduledthreadpoolexecutor">ScheduledThreadPoolExecutor</h2>
+
+<h3 id="介绍">介绍</h3>
+
+<p>ScheduledThreadPoolExecutor 是用来支持周期性任务调度的。在此之前是使用 Timer 和 TimerTask 或者其它第三方工具来完成。但是 Timer 有以下缺陷</p>
+
+<ul>
+<li>Timer 是单线程的，因此如果某个 TimerTask 执行时间过长，影响其他任务调度</li>
+<li>Timer 调度对系统时间敏感，使用的绝对时间</li>
+<li>Timer 不会捕获 TimerTask 的异常，又因为是单线程，所以一旦 TimerTask 出现异常线程终止，则后续 Task 均得不到执行。</li>
+</ul>
+
+<p>ScheduledThreadPoolExecutor 实现方式概要：</p>
+
+<ul>
+<li>继承 ThreadPoolExecutor 来重用线程池的功能，将 Task 封装成 ScheduledFutureTask，而 ScheduledFutureTask 是基于相对时间的，所以不受系统时间改变的影响。</li>
+<li>ScheduledFutureTask 实现了 java.lang.Comparable 接口和 java.util.concurrent.Delayed 接口，所以有两个重要的方法：compareTo 和 getDelay。compareTo 方法用于比较任务之间的优先级关系，如果距离下次执行的时间间隔较短，则优先级高；getDelay 方法用于返回距离下次任务执行时间的时间间隔；</li>
+<li>内部定义了 DelayedWorkQueue，它是一个有序队列，会通过每个任务按照距离下次执行时间间隔的大小来排序；</li>
+<li>ScheduledFutureTask 继承自 FutureTask，可以通过返回 Future 对象来获取执行的结果。</li>
+</ul>
+
+<p>因此相较于 Timer，ScheduledThreadPoolExecutor 具有基于相对时间、多线程运行，Task 的执行不会影响其他线程执行 Task。</p>
+
+<blockquote>
+<p>构造函数</p>
+</blockquote>
+
+<pre><code class="language-Java">public class ScheduledThreadPoolExecutor extends ThreadPoolExecutor implements ScheduledExecutorService {
+
+    public ScheduledThreadPoolExecutor(int corePoolSize, ThreadFactory threadFactory ,RejectedExecutionHandler handler) {
+        super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS,
+              new DelayedWorkQueue(), threadFactory, handler);
+    }
+    
+}
+</code></pre>
+
+<p>从源码看出 ScheduledThreadPoolExecutor 仍是继承自 ThreadPoolExecutor。使用的是 DelayedWorkQueue 作为阻塞队列。</p>
+
+<h3 id="设置和执行任务">设置和执行任务</h3>
+
+<pre><code class="language-Java">public class ScheduledThreadPoolExecutor extends ThreadPoolExecutor implements ScheduledExecutorService {
+    public void execute(Runnable command) {
+        schedule(command, 0, NANOSECONDS);
+    }
+    public Future&lt;?&gt; submit(Runnable task) {
+        return schedule(task, 0, NANOSECONDS);
+    }
+    
+    public ScheduledFuture&lt;?&gt; schedule(Runnable command,long delay,TimeUnit unit) {
+        ...
+    }
+    public &lt;V&gt; ScheduledFuture&lt;V&gt; schedule(Callable&lt;V&gt; callable,long delay,TimeUnit unit) {
+        ...
+    }
+    
+    public ScheduledFuture&lt;?&gt; scheduleWithFixedDelay(Runnable command,long initialDelay,long delay, TimeUnit unit) {
+        ...
+    }
+    public ScheduledFuture&lt;?&gt; scheduleAtFixedRate(Runnable command,long initialDelay,long period,TimeUnit unit) {
+        ...
+    }
+}
+</code></pre>
+
+<blockquote>
+<p>execute、submit、schedule</p>
+</blockquote>
+
+<p>从源码上看 execute 和 submit 就是调用 schedule 方法只是没有延迟执行，是立即执行。</p>
+
+<p>schedule 方法参数中 delay 表示延时时间，unit 表示时间单位</p>
+
+<blockquote>
+<p>scheduleWithFixedDelay、scheduleAtFixedRate</p>
+</blockquote>
+
+<ul>
+<li>scheduleWithFixedDelay: 周期性的执行任务，nextBeginTime = lastEndTime + delayTime</li>
+<li>scheduleAtFixedRate: 周期性的执行任务，nextBeginTime = lastBeginTime + delayTime;如果 Task 执行时间大于 lastBeginTime+delayTime 则等待 Task 执行完后立即执行下一个任务。</li>
+</ul>
+
+<pre><code class="language-Java">## scheduleWithFixedDelay
+private static void fixedDelayDemo() throws InterruptedException {
+        ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(1);
+
+        threadPool.scheduleWithFixedDelay(
+                () -&gt; log.debug(Thread.currentThread().getName() + &quot;:scheduleWithFixedDelay Senior 1&quot;)
+                , 1L
+                , 1L
+                , TimeUnit.SECONDS
+        );
+        Thread.sleep(5000L);
+        threadPool.shutdown();
+    }
+
+## 结果
+pool-1-thread-1:scheduleWithFixedDelay Senior 1
+pool-1-thread-1:scheduleWithFixedDelay Senior 1
+pool-1-thread-1:scheduleWithFixedDelay Senior 1
+pool-1-thread-1:scheduleWithFixedDelay Senior 1
+
+## 分析
+下一个任务执行时在上一个任务执行完后延时 1s，所以 5s 时间内只能执行 4 次
+</code></pre>
+
+<pre><code class="language-Java">## scheduleAtFixedRate Senior 1: 执行时间小于间隔时间
+ ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(1);
+        threadPool.scheduleAtFixedRate(
+                () -&gt;log.debug(Thread.currentThread().getName() + &quot;:scheduleAtFixedRate Senior 1&quot;)
+                , 1L
+                , 1L
+                , TimeUnit.SECONDS
+        );
+        Thread.sleep(5500L);
+        threadPool.shutdown();
+## 结果
+pool-1-thread-1:scheduleAtFixedRate Senior 1
+pool-1-thread-1:scheduleAtFixedRate Senior 1
+pool-1-thread-1:scheduleAtFixedRate Senior 1
+pool-1-thread-1:scheduleAtFixedRate Senior 1
+pool-1-thread-1:scheduleAtFixedRate Senior 1
+
+## 分析
+
+线程睡眠 5500ms 是为了避免因为系统运行不精确问题，导致可能 5s 只运行 4 次。
+下一个任务执行时在上一个任务开始执行延时 1s，而执行任务时间小于 1s，所以 5s 时间内能执行 5 次
+</code></pre>
+
+<pre><code class="language-Java">## scheduleAtFixedRate Senior 2: 执行时间 2s 大于间隔时间 1s
+private static void fixedRateSenior2() throws InterruptedException {
+    ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(1);
+    threadPool.scheduleAtFixedRate(
+            () -&gt; {
+                try {
+                    Thread.sleep(2000L);
+                    log.debug(Thread.currentThread().getName() + &quot;:scheduleAtFixedRate execute time more than delay time&quot;);
+                } catch (InterruptedException e) {
+                   log.debug(Thread.currentThread().getName() + &quot;:sleep interrupt...&quot;);
+                }
+            }
+            , 1L
+            , 1L
+            , TimeUnit.SECONDS
+    );
+
+    Thread.sleep(5500L);
+    threadPool.shutdownNow();
+}
+
+## 结果
+pool-1-thread-1:scheduleAtFixedRate execute time more than delay time
+pool-1-thread-1:scheduleAtFixedRate execute time more than delay time
+pool-1-thread-1:sleep interrupt...
+
+## 分析
+下一个任务执行时在上一个任务开始执行延时 1s，而执行任务时间 2s，所以 5s 内能够运行 2 次，第三次运行中间， shutDownNow 打断线程睡眠。
+</code></pre>
+
+<h2 id="forkjoinpool">ForkJoinPool</h2>
+
+<h3 id="介绍-1">介绍</h3>
+
+<p>Fork\Join 框架：Java7 提供的一个用于并行执行任务的框架，将大任务拆分成小任务分别解决再合并小任务的结果得到大任务的结果。</p>
+
+<p>ForkJoinPool：Java7 新增的线程池，用来支持 Fork\Join 框架的特殊线程池。</p>
+
+<p>ForkJoinTask：定义一个可以并行和合并的任务，其实现了 Future 接口。具有两个抽象子类:</p>
+
+<ul>
+<li>RecursiveAction:  无返回值的任务</li>
+<li>RecursiveTask: 有返回值的任务</li>
+</ul>
+
+<blockquote>
+<p>compute 使用模板</p>
+</blockquote>
+
+<pre><code>if(任务足够小) {
+    解决任务;
+}eles {
+    拆分任务;
+    执行拆分任务等待执行结果;
+    合并执行结果;
+}
+</code></pre>
+
+<h3 id="使用示例">使用示例</h3>
+
+<pre><code class="language-Java">## RecursiveTask：求数组的和
+
+public static void main(String[] args) throws InterruptedException, ExecutionException {
+    ForkJoinPool forkJoinPool = new ForkJoinPool();
+    int size = 10;
+    int sum = 0;
+    long[] array = new long[size];
+    for (int i = 0; i &lt; size; i++) {
+        array[i] = i;
+        sum += i;
+    }
+
+    ForkJoinTask&lt;Integer&gt; task = forkJoinPool.submit(new SumArrayTask(array));
+
+    log.debug(&quot;Array result:&quot; + sum + &quot;;compute result:&quot; + task.get());
+}
+
+public class SumArrayTask extends RecursiveTask&lt;Integer&gt; {
+    private final static int THRESHOLD = 5;
+    private final long[] array;
+    private final int low, high;
+
+    public SumArrayTask(long[] array, int low, int high) {
+        this.array = array;
+        this.low = low;
+        this.high = high;
+    }
+
+    public SumArrayTask(long[] array) {
+        this(array, 0, array.length);
+    }
+
+    @Override
+    protected Integer compute() {
+        int sum = 0;
+        if (high - low &lt; THRESHOLD) {
+            for (int i = low; i &lt; high; i++) {
+                sum += array[i];
+            }
+            log.debug(&quot;{}: sub task[{},{}] result - {}&quot;, Thread.currentThread().getName(), low, high, sum);
+            return sum;
+        }
+
+        int mid = low + (high - low) / 2;
+
+        SumArrayTask left = new SumArrayTask(array, low, mid);
+        SumArrayTask right = new SumArrayTask(array, mid, high);
+        invokeAll(left, right);
+
+        sum = left.join() + right.join();
+        log.debug(&quot;{}: Join task result - {}&quot; , Thread.currentThread().getName(), sum);
+
+        return sum;
+    }
+}
+
+## 结果
+ForkJoinPool-1-worker-0: sub task[7,10] result - 24
+ForkJoinPool-1-worker-1: sub task[0,2] result - 1
+ForkJoinPool-1-worker-2: sub task[5,7] result - 11
+ForkJoinPool-1-worker-3: sub task[2,5] result - 9
+ForkJoinPool-1-worker-2: Join task result - 35
+ForkJoinPool-1-worker-1: Join task result - 10
+ForkJoinPool-1-worker-1: Join task result - 45
+Array result:45;compute result:45
+
+## 分析
+测试的计算机只有四核，所以总共 4 个线程计算结果，将子结果分别计算好后，合并任务至最终结果
+</code></pre>
+
+<pre><code class="language-Java">## RecursiveAction: 将数组每一个值自增
+
+public static void main(String[] args) throws InterruptedException, ExecutionException {
+    ForkJoinPool forkJoinPool = new ForkJoinPool();
+    int size = 10;
+    long[] array = new long[size];
+    for (int i = 0; i &lt; size; i++) {
+        array[i] = i;
+    }
+
+    log.debug(&quot;Before&quot;+Arrays.toString(array));
+    forkJoinPool.execute(new IncrementTask(array, 0, size));
+
+    forkJoinPool.awaitTermination(2, TimeUnit.SECONDS);
+    forkJoinPool.shutdown();
+    log.debug(&quot;After&quot;+Arrays.toString(array));
+}
+
+@Slf4j
+public class IncrementTask extends RecursiveAction {
+    private static final int THRESHOLD = 2;
+    private final long[] array;
+    private final int low, high;
+
+    public IncrementTask(long[] array, int low, int high) {
+        this.array = array;
+        this.low = low;
+        this.high = high;
+    }
+
+    public IncrementTask(long[] array) {
+        this(array, 0, array.length);
+    }
+
+    @Override
+    protected void compute() {
+        if (high - low &lt; THRESHOLD) {
+            for (int i = low; i &lt; high; i++)
+                log.debug(Thread.currentThread().getName() + &quot;:&quot; + array[i]++);
+        } else {
+            int mid = low + (high - low) / 2;
+            IncrementTask left = new IncrementTask(array, low, mid);
+            IncrementTask right = new IncrementTask(array, mid, high);
+
+            left.fork();
+            right.fork();
+        }
+    }
+}
+
+## 结果
+Before[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+ForkJoinPool-1-worker-1:9
+ForkJoinPool-1-worker-1:8
+ForkJoinPool-1-worker-1:7
+ForkJoinPool-1-worker-1:6
+ForkJoinPool-1-worker-1:5
+ForkJoinPool-1-worker-1:4
+ForkJoinPool-1-worker-2:1
+ForkJoinPool-1-worker-1:3
+ForkJoinPool-1-worker-3:2
+ForkJoinPool-1-worker-2:0
+After[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+</code></pre>
+
+<h1 id="参考链接">参考链接</h1>
+
+<ul>
+<li><a href="https://blog.csdn.net/u012168222/article/details/52790400">threadPoolExecutor 中的 shutdown() 、 shutdownNow() 、 awaitTermination() 的用法和区别</a></li>
+<li><a href="https://blog.csdn.net/lishehe/article/details/46563785">多线程（五） Fork/Join 框架介绍及实例讲解</a></li>
+<li><a href="https://www.jianshu.com/p/925dba9f5969">深入理解Java线程池：ScheduledThreadPoolExecutor</a></li>
+<li><a href="http://www.ideabuffer.cn/2017/04/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%9AThreadPoolExecutor/">深入理解Java线程池：ThreadPoolExecutor</a></li>
+</ul>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%B7%A5%E5%8E%82%E7%B1%BBexecutors/" data-toggle="tooltip" data-placement="top" title="并发编程之线程池-工厂类Executors">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/java/util/exchangeutils/" data-toggle="tooltip" data-placement="top" title="ExchangeUtils">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

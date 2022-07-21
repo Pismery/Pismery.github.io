@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Transaction on Pismery Blog</title>
+    <link>https://pismery.gitee.io/blog/tags/transaction/</link>
+    <description>Recent content in Transaction on Pismery Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+    <lastBuildDate>Sun, 12 Jul 2020 14:52:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://pismery.gitee.io/blog/tags/transaction/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Spring 事务处理失效</title>
+      <link>https://pismery.gitee.io/blog/post/java/spring/spring%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%A4%B1%E6%95%88/</link>
+      <pubDate>Sun, 12 Jul 2020 14:52:40 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/spring/spring%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%A4%B1%E6%95%88/</guid>
+      <description>&lt;p&gt;本文重点介绍 Spring 事务处理的几个失效的场景和相关解决方案；&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

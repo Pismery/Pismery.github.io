@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>王者营地爬虫复盘-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/post/python/spider/%E7%8E%8B%E8%80%85%E8%90%A5%E5%9C%B0%E7%88%AC%E8%99%AB%E5%A4%8D%E7%9B%98/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/blog/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                    </div>
+                    <h1>王者营地爬虫复盘</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Tuesday, September 10, 2019
+                        
+                            <span id="/blog/post/python/spider/%E7%8E%8B%E8%80%85%E8%90%A5%E5%9C%B0%E7%88%AC%E8%99%AB%E5%A4%8D%E7%9B%98/" class="leancloud_visitors meta_data_item" data-flag-title="王者营地爬虫复盘">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#王者营地数据爬取">王者营地数据爬取</a>
+<ul>
+<li><a href="#目标">目标</a></li>
+<li><a href="#执行过程">执行过程</a></li>
+<li><a href="#分析-js">分析 js</a></li>
+<li><a href="#代码">代码</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                <h1 id="王者营地数据爬取">王者营地数据爬取</h1>
+
+<p>这两周应大佬吩咐去王者营地 app 爬取相关数据，在这里复盘一下自己在爬取过程中的思考。</p>
+
+<h2 id="目标">目标</h2>
+
+<p>爬取 app 中每局的数据至 excel ，包含战局比分，事件时间名称，以及最后死亡时间；大致效果如下：</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190909210339.png" alt="" /></p>
+
+<h2 id="执行过程">执行过程</h2>
+
+<p>在此之前，没有任何的爬虫经验，对于爬虫仅有的认知是如果目标程序是通过 http 协议通信，则可以通过数据抓包工具，抓取 http 数据包分析内容，找到想要的数据；而后通过模拟 http 请求来爬取需要的数据；</p>
+
+<p>于是自己大概捋了一下执行过程：</p>
+
+<ol>
+<li>了解并学会使用一个抓包工具；</li>
+<li>尝试学习并完成一个简单的 python 爬虫，先爬一爬，热热身；</li>
+<li>开始抓包分析；</li>
+<li>爬取结果；</li>
+</ol>
+
+<p>捋好思路就开始干了，了解了一下抓包工具，发现了 Fiddle，就立刻决定用它了。原因无他，看到过身边的同事在用；于是开始学习工具，找到了一篇写的不错的<a href="https://www.cnblogs.com/yyhh/p/5140852.html">入门文章</a>，半小时就能上手了。</p>
+
+<p>接着了解了一下 python 爬虫小程序，模仿教程写了下面的第一个 python 爬虫小程序了；</p>
+
+<pre><code class="language-python">## 获取指定网页的 html 数据
+import urllib.request
+data  = urllib.request.urlopen(&quot;https://read.douban.com/provider/all&quot;).read()
+data = data.decode(&quot;utf-8&quot;)
+
+## 正则表达式分析获取 html 文件内容
+import re
+pat = '&lt;div class=&quot;name&quot;&gt;(.*?)&lt;/div&gt;'
+data = re.compile(pat).findall(data)
+
+## 将数据写入文件中
+fs = open(&quot;e:/document/1.txt&quot;,&quot;w&quot;)
+for i in range(0,len(data)):
+    fs.write(data[i]+&quot;\n&quot;)
+     
+fs.flush()
+</code></pre>
+
+<p>开始抓包，发现 app 抓包并不像浏览器抓包那样简单，花了两天时间折腾环境，尝试抓包依旧没有任何进展；转化一下思路，app 中有微信转发功能，将战局转发至微信，而后通过浏览器打开，这样就能够处理了。</p>
+
+<p>浏览器打开的页面效果如下：</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190910215854.png" alt="" /></p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190910220724.png" alt="" /></p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190910220449.png" alt="" /></p>
+
+<p>从页面中可以轻松找到战局比分，事件发生时间，事件名称等信息，且所有事件信息都是已经再 html 中生成好了，可通过正则表达式直接分析 html 获取。</p>
+
+<p>而获取死亡时间需要操作步骤如下：</p>
+
+<ol>
+<li>点击我方详细数据，获取死亡时间</li>
+<li>点击敌方详细数据，获取死亡时间</li>
+<li>比对获取最后死亡时间</li>
+</ol>
+
+<p>问题来了，如何模拟点击，此前听说过 selenium 自动化测试，印象中它能够完成这样的功能；于是经过两个晚上的现学现用，发现虽然能够达到目的，但是操作过于繁琐，爬取效率很低，决定放弃，重新另找思路； html 中死亡时间的数据，需要点击「详细信息」才会更新，如何能够不通过点击获取到数据？ 想到能不能像分析 http 数据包一样，分析页面 js 逻辑，看看最后数据是如何获取的，再模拟来获取即可。于是就开始了 js 源码的分析。</p>
+
+<h2 id="分析-js">分析 js</h2>
+
+<p>首先通过 Chrome debug 窗口的 EventListener 找到点击事件的 js 代码入口</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190909215633.png" alt="" /></p>
+
+<p>经过关键字搜索查找，终于找到了获取死亡时间的 js 函数</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190909220016.png" alt="" /></p>
+
+<p>分析这个函数，只要弄清楚参数 t 和 eventInfo 的数据结构以及来源则可以自己实现逻辑了。然后查看了一下 localStorage 中的存储，意外发现了数据内容，</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190909222249.png" alt="" /></p>
+
+<p>接着就要分析如何拿到 key 值，通过检索关键字 「analyze_」 发现了相应代码，从代码可以看出 key 只需要获取 url 的参数拼接即可完成。</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190909222635.png" alt="" /></p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190909222723.png" alt="" /></p>
+
+<p>最后分析 value 的内容，看看如何获取指定的死亡时间; 从上面找到的 getDeadTime() 函数，可以知道死亡时间是从 eventInfo.battle.killInfo 中获取；对比 localStorage 数据也发现了相应的结构；并且根据页面数据比对，发现了事件数据即为 keyEventArr；这样更加确认了找到的 killInfo 就是需要的死亡事件数据。</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190909223240.png" alt="" /></p>
+
+<p>死亡时间数据已确认拿到，最后一步，怎么区分死亡时间所属事件？ 从 getDeadTime() 方法发现是通过 objectId 匹配死亡时间与事件的，自然想到如何获取 obejctId，经过一系列 debug 依旧没有进度；而后想到了通过事件时间来匹配，毕竟每个事件发生时间是不会重复的；观察数据发现 localStorage 中的时间是一串数字，我们获取的时间经过了转换；继而开始找时间转换的函数，发现就在 getDeadTime() 中的 getTimeStr() 方法中。简单搜索就找到了相应的代码了。至此，这个数据链路也就疏通了；</p>
+
+<p><img src="https://raw.githubusercontent.com/Pismery/Picture/master/img20190909224016.png" alt="" /></p>
+
+<p>最后，捋一下编码思路，就可以开始撸码了。</p>
+
+<ol>
+<li>通过 selenium 用 Chrome 打开链接；</li>
+<li>获取 localStorage key 值；</li>
+<li>获取 localStorage value 值；</li>
+<li>通过 selenium 获取战局比分，事件时间，事件名称；</li>
+<li>通过事件时间与 localStorage value 值匹配获取死亡时间；</li>
+<li>将数据写入 excel；</li>
+</ol>
+
+<h2 id="代码">代码</h2>
+
+<pre><code class="language-python">import time
+import re
+import os
+import math
+import json
+
+from selenium import webdriver
+from urllib import parse
+from openpyxl import Workbook
+from openpyxl.utils import get_column_letter
+
+class GameData:
+    gameNo = 0
+    blueScore = 0
+    redScore = 0
+    eventTime = []
+    eventName = []
+    killTime = []
+
+    def __init__(self,gn,b,r,et,en,kt):
+        self.gameNo = gn
+        self.blueScore = b
+        self.redScore = r
+        self.eventTime = et
+        self.eventName = en
+        self.killTime = kt
+
+def getUrlParm(driver,url):
+    return parse.parse_qs(parse.urlparse(url).query)
+
+def getLocalStorage(params):
+    return r'analyze_&quot;{}&quot;'.format(params['gamesvrentity'][0] + params['relaysvrentity'][0] + params['gameseq'][0]+params['playerid'][0])
+
+def getKeyEventList(localStorage):
+    command = r&quot;return localStorage.getItem('{}')&quot;.format(localStorage)
+    eventList = json.loads(driver.execute_script(command))
+    return eventList['keyEventArr']
+
+def getEventKillTime(eventList,eventTime):
+    result = '-'
+    for event in eventList:
+        if (event['eventType'] == 'battle'):
+            if(convertTime(event['battle']['startTime']) == eventTime):
+                result = getMaxTimeInKillInfo(event['battle']['killInfo'])
+            
+    return result
+
+def getMaxTimeInKillInfo(killInfos):
+    maxTime = 0
+    for killInfo in killInfos:
+        if (maxTime &lt; int(killInfo['time'])):
+            maxTime = int(killInfo['time'])
+    
+    return convertTime(maxTime)
+
+def getData(driver,url):
+    blueScore = driver.execute_script('return document.getElementsByClassName(\&quot;blue\&quot;)[0].innerHTML')
+    redScore = driver.execute_script(&quot;return document.getElementsByClassName(\&quot;red\&quot;)[0].innerHTML&quot;)
+    
+    f = 'function a(url) {var result = [];elements = document.getElementsByClassName(url);for(var i = 0;i &lt; elements.length;i++) {result[i] = elements[i].innerText;}return result;}'
+    
+    script = f + 'return a(\&quot;time_txt\&quot;)'
+    eventTime = driver.execute_script(script)
+
+    script = f + 'return a(\&quot;txt\&quot;)'
+    eventName = driver.execute_script(script)
+
+    killTime = []
+    urlParam = getUrlParm(driver,url)
+    keyEventList = getKeyEventList(getLocalStorage(urlParam))
+    for et in eventTime:
+        killTime.append(getEventKillTime(keyEventList,et))
+
+    return GameData(urlParam['gameseq'][0],blueScore,redScore,eventTime,eventName,killTime)
+
+def createExcel(gamedataList):
+    wb = Workbook()
+    ws = wb.active
+    writeTitle(ws)
+    for i in range(0,len(gamedataList)): 
+        writeGameData(ws,gamedataList[i])
+    wb.save(filename  = 'result.xlsx')
+
+def writeTitle(ws):
+    ws.title = '战报分析'
+    ws.cell(row = 1,column = 1,value = '战局')
+    ws.cell(row = 1,column = 2,value = '战局比分(blue:red)')
+    ws.cell(row = 1,column = 3,value = '事件时间')
+    ws.cell(row = 1,column = 4,value = '事件名称')
+    ws.cell(row = 1,column = 5,value = '死亡时间')
+
+    ws.column_dimensions['A'].width = 17
+    ws.column_dimensions['B'].width = 19.5
+    ws.column_dimensions['D'].width = 17
+
+def writeGameData(ws,gamedata):
+    beginIndex = ws.max_row + 1
+    for i in range(0,len(gamedata.eventTime)):
+        ws.cell(row = beginIndex + i,column = 1,value = gamedata.gameNo)
+        ws.cell(row = beginIndex + i,column = 2,value = gamedata.blueScore+':'+gamedata.redScore)
+        ws.cell(row = beginIndex + i,column = 3,value = gamedata.eventTime[i])
+        ws.cell(row = beginIndex + i,column = 4,value = gamedata.eventName[i])
+        ws.cell(row = beginIndex + i,column = 5,value = gamedata.killTime[i])
+
+def getURL(): 
+    data = open('.\\source.txt','r',encoding='UTF-8').read()
+    pat = r'(https://.*&amp;playerid=[0-9a-zA-Z]{9})'
+    return re.compile(pat).findall(data)
+
+
+def convertTime(t):
+    t = int(t) / 1000
+    e = math.floor(t / 60)
+    n = math.floor(t - 60 * e)
+    r = &quot;&quot;
+
+    r = &quot;0&quot; + str(e) if e &lt; 10 else str(e)
+    r += &quot;:0&quot; + str(n) if n &lt; 10 else &quot;:&quot; + str(n)
+
+    return r
+
+
+if __name__ == &quot;__main__&quot;:
+    urlList = getURL()
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(5)
+
+    gameDataList = []
+    for url in urlList: 
+        driver.get(url)
+        time.sleep(4)
+        gameDataList.append(getData(driver,url))
+
+    createExcel(gameDataList)
+    driver.close()
+</code></pre>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/blog/post/java/util/jxlsdemo/" data-toggle="tooltip" data-placement="top" title="JxlsDemo">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="G1收集器">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/blog/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/nio" title="NIO">
+                            NIO
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/netty" title="Netty">
+                            Netty
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/spring" title="Spring">
+                            Spring
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/transaction" title="Transaction">
+                            Transaction
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/log" title="log">
+                            log
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.gitee.io/blog/img/favicon.jpg">
+
+    <title>Java-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.gitee.io/blog/tags/java/">
+
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.gitee.io/blog/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/blog/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">Python</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/blog/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/blog/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/blog/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Pismery Blog </h1>
+                    
+		    <span class="subheading">Stay high all the time</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+  
+<div class="container">
+    <div class="row">
+        
+        
+   	    <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container
+        ">
+            
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/spring/spring%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%A4%B1%E6%95%88/">
+        <h2 class="post-title">
+            Spring 事务处理失效
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        <p>本文重点介绍 Spring 事务处理的几个失效的场景和相关解决方案；</p>
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Sunday 2020 - 07 - 12
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/spring/%E6%8B%A6%E6%88%AA%E5%99%A8%E4%B8%8E%E8%BF%87%E6%BB%A4%E5%99%A8/">
+        <h2 class="post-title">
+            拦截器与过滤器
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        过滤器与拦截器 本篇文章，主要讲解过滤器与拦截器的区别，使用方式以及使用场景； 过滤器与拦截器的区别： 使用范围不同：过滤器 (filter) 是 Java Sevlet 规范中的一部分
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Saturday 2020 - 01 - 04
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/util/orderbyutils/">
+        <h2 class="post-title">
+            OrderByUtils
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        Order by 操作 排序问题是日常开发中经常遇到的问题，以下是 Java 解决各类排序问题的一些例子，以供大家参考。 单字段排序 对于排序问题，Java 提供了两种解决
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Sunday 2019 - 12 - 15
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/netty/niozerocopy/">
+        <h2 class="post-title">
+            Nio 零拷贝
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        Nio Zero Copy 谈到 NIO，总会提起 Zero Copy「零拷贝」；本篇文章就大概讲述一下零拷贝的内容。 首先，零拷贝的技术必须依赖操作系统，如果操作系统不支持，
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Saturday 2019 - 11 - 23
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/netty/niochartroom/">
+        <h2 class="post-title">
+            Nio 聊天室
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        Nio 聊天室 本篇文章运用 NIO 实现一个简易的聊天室功能，目的是为了整合一下最近学习 NIO 中的 Channel, Buffer, Selector 的功能； 实现逻辑大概如下： 服务端： 启动一个 Server
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Saturday 2019 - 11 - 09
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/">
+        <h2 class="post-title">
+            G1收集器
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        垃圾收集器 G1 G1「Garbage First」收集器是继 CMS 收集器的下一代垃圾收集器，在 Java 7 中加入了 JVM 垃圾收集器大家族中；其目的是为了适应服务器
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Sunday 2019 - 09 - 29
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/util/jxlsdemo/">
+        <h2 class="post-title">
+            JxlsDemo
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        JXLS JXLS 是 Java 导出 Excel 的一个工具包，尽管 POI 工具包已经可以满足所有的需求，但是有时候操作还是比较复杂，且有一定的代码量，而 JXLS 在生成 Excel 方面显得更加方便好
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Sunday 2019 - 05 - 12
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/basic/siftingappender/">
+        <h2 class="post-title">
+            SiftingAppender
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        <p>通过 Logback 的 SiftingAppender 实现按线程分配 log 文件 文件。</p>
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Thursday 2019 - 05 - 02
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/basic/logback/">
+        <h2 class="post-title">
+            Logback
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        Logback Spring Boot 默认采用的日志框架就是 Logback; Logback 是 Log4j 创建者 Ceki Gülcü 创建的；下面介绍一下 Logback 的一些特性； 与 Log4j 相比更高的性能和更小的初始加载内存空间； Logback 经过了
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Wednesday 2019 - 05 - 01
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://pismery.gitee.io/blog/post/java/spring/%E6%89%8B%E5%86%99springmvc%E5%AE%9E%E8%B7%B5/">
+        <h2 class="post-title">
+            手写springmvc实践
+        </h2>
+	
+        <div class="post-content-preview">
+    
+        Spring MVC Spring MVC 中核心关键类是 DispatchServlet, 所有的请求都会通过这个类进行分派调用指定的业务逻辑代码；这个类中最重要的两个入口方法是 initStrategies() 和 doDispatch() DispatchServlet.initStrategies() 从上图继承关系，可以发
+    
+        </div>
+    </a>
+    <p class="post-meta">
+    Posted by Pismery Liu  Sunday 2019 - 04 - 28
+    </p>
+</div>
+<hr>
+
+
+            
+
+
+<ul class="pager">
+    
+    
+    <li class="next">
+        <a href="/blog/tags/java/page/2/">Older Posts &rarr;</a>
+    </li>
+    
+</ul>
+
+
+       	</div>
+        
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+             
+            
+                
+                    <a href="/blog/tags/jvm" title="JVM">
+                        JVM
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/java" title="Java">
+                        Java
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/mysql" title="MySQL">
+                        MySQL
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/nio" title="NIO">
+                        NIO
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/netty" title="Netty">
+                        Netty
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/python" title="Python">
+                        Python
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/redis" title="Redis">
+                        Redis
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/spring" title="Spring">
+                        Spring
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/transaction" title="Transaction">
+                        Transaction
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/basic" title="basic">
+                        basic
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/concurrent" title="concurrent">
+                        concurrent
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/database" title="database">
+                        database
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/log" title="log">
+                        log
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                        工具类
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                        数据结构
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                        极客时间笔记
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                        测试
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E7%AE%97%E6%B3%95" title="算法">
+                        算法
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                        设计思想
+                    </a>
+                
+            
+                
+                    <a href="/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                        设计模式
+                    </a>
+                
+            
+        </div>
+    </section>
+    
+
+    
+    <section class="visible-md visible-lg">
+        <hr><h5><a href="">ABOUT ME</a></h5>
+        <div class="short-about">
+            
+            <img src="https://pismery.gitee.io/blog/img/head.jpg" />
+            
+            
+                <p>Java Developer</p>
+            
+           
+           <ul class="list-inline"> 
+               
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://pismery.gitee.io/blog/img/wechat_code.png">
+                       <span class="fa-stack fa-lg">
+                           <i class="fa fa-circle fa-stack-2x"></i>
+                           <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/Pismery">
+                       <span class="fa-stack fa-lg">
+                           <i class="fa fa-circle fa-stack-2x"></i>
+                           <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+                
+               <li>
+                   <a target="_blank" href="https://gitee.com/pismery">
+                       <span class="fa-stack fa-lg">
+                           <i class="fa fa-circle fa-stack-2x"></i>
+                           <i class="fa fa-git fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+                
+            </ul>
+        </div>
+    </section>
+   
+   
+
+   
+   
+</div>
+
+	</div>
+</div>
+
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/blog/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

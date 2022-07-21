@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>NIO on Pismery Blog</title>
+    <link>https://pismery.gitee.io/blog/tags/nio/</link>
+    <description>Recent content in NIO on Pismery Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+    <lastBuildDate>Sat, 23 Nov 2019 20:24:44 +0800</lastBuildDate>
+    
+	<atom:link href="https://pismery.gitee.io/blog/tags/nio/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Nio 零拷贝</title>
+      <link>https://pismery.gitee.io/blog/post/java/netty/niozerocopy/</link>
+      <pubDate>Sat, 23 Nov 2019 20:24:44 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/netty/niozerocopy/</guid>
+      <description>Nio Zero Copy 谈到 NIO，总会提起 Zero Copy「零拷贝」；本篇文章就大概讲述一下零拷贝的内容。 首先，零拷贝的技术必须依赖操作系统，如果操作系统不支持，</description>
+    </item>
+    
+    <item>
+      <title>Nio 聊天室</title>
+      <link>https://pismery.gitee.io/blog/post/java/netty/niochartroom/</link>
+      <pubDate>Sat, 09 Nov 2019 21:29:35 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/netty/niochartroom/</guid>
+      <description>Nio 聊天室 本篇文章运用 NIO 实现一个简易的聊天室功能，目的是为了整合一下最近学习 NIO 中的 Channel, Buffer, Selector 的功能； 实现逻辑大概如下： 服务端： 启动一个 Server</description>
+    </item>
+    
+  </channel>
+</rss>

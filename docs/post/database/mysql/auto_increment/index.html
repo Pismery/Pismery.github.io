@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="程序员">
+    
+    <meta name="keyword"  content="Pismery 博客">
+    <link rel="shortcut icon" href="https://pismery.github.io/img/favicon.jpg">
+
+    <title>「MySQL 45 讲」- 自增值处理-博客 | Pismery Liu Blog</title>
+
+    <link rel="canonical" href="https://pismery.github.io/post/database/mysql/auto_increment/">
+
+    <link rel="stylesheet" href="https://pismery.github.io/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="https://pismery.github.io/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.github.io/css/hux-blog.min.css">
+    <link rel="stylesheet" href="https://pismery.github.io/css/highlight-line-number.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.github.io/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://pismery.github.io/css/zanshang.css">
+
+    
+<<<<<<< HEAD:public/post/database/mysql/auto_increment/index.html
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+
+=======
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+>>>>>>> eba007b66e8b721d7f333bff00f6faf592a3b40b:docs/post/database/mysql/auto_increment/index.html
+    
+    
+<<<<<<< HEAD
+    <script src="https://pismery.github.io/js/jquery.min.js"></script>
+=======
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+<<<<<<< HEAD
+    <script src="https://pismery.github.io/js/bootstrap.min.js"></script>
+    
+    
+    <script src="https://pismery.github.io/js/hux-blog.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+=======
+    
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+
+    
+    
+    <script src="https://pismery.gitee.io/blog/js/hux-blog.min.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/docco.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Pismery Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+<<<<<<< HEAD
+                        <a href="/categories/java">Java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/python">Python</a>
+=======
+                        <a href="/blog/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/blog/categories/python">python</a>
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/tags">TAG</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/mysql" title="MySQL">
+                            MySQL
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                    </div>
+                    <h1>「MySQL 45 讲」- 自增值处理</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			    Pismery Liu
+			 
+			on 
+			Thursday, October 8, 2020
+                        
+                            <span id="/post/database/mysql/auto_increment/" class="leancloud_visitors meta_data_item" data-flag-title="「MySQL 45 讲」- 自增值处理">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz", "vvDdQkMwgbffpkHklpHPTHkP");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#自增值的修改逻辑">自增值的修改逻辑</a></li>
+    <li><a href="#自增值不连续的几种原因">自增值不连续的几种原因</a></li>
+    <li><a href="#自增值的相关配置">自增值的相关配置</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+                
+                <p>本文主要讲解 MySQL 中自增值相关内容</p>
+<h1 id="mysql-自增值">MySQL 自增值</h1>
+<p>文章主要涉及以下知识点：</p>
+<ol>
+<li>自增值的生成逻辑；</li>
+<li>自增值不连续的几种原因；</li>
+<li>自增值的相关配置；</li>
+</ol>
+<p>下面我们开始讲解自增值生成的基本逻辑；</p>
+<h2 id="自增值的修改逻辑">自增值的修改逻辑</h2>
+<p>介绍自增值的修改逻辑之前，我们先看一下如何查看当前自增值，以及自增值的保存机制；</p>
+<p>首先，我们可以通过 show create table [tableName] 命令查看自增值的当前值；</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>t<span style="color:#f92672">`</span> (
+  <span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> AUTO_INCREMENT,
+  <span style="color:#f92672">`</span><span style="color:#66d9ef">c</span><span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>d<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>),
+  <span style="color:#66d9ef">UNIQUE</span> <span style="color:#66d9ef">KEY</span> <span style="color:#f92672">`</span><span style="color:#66d9ef">c</span><span style="color:#f92672">`</span> (<span style="color:#f92672">`</span><span style="color:#66d9ef">c</span><span style="color:#f92672">`</span>)
+) ENGINE<span style="color:#f92672">=</span>InnoDB;
+
+<span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> t value(<span style="color:#66d9ef">null</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>);
+
+<span style="color:#66d9ef">show</span> <span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> t <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#66d9ef">G</span>
+</code></pre></div><p><img src="https://gitee.com/pismery/imageshack/raw/master/img/20201004155157.png" alt=""></p>
+<p>我们已经了解了如何查看自增值，接下来，介绍 MySQL 是如何保存这个自增值的?</p>
+<p>其实 MySQL 在不同的引擎，不同版本，处理保存自增值的方式是不一样的；</p>
+<ul>
+<li>在 MyISAM 引擎中，自增值是保存在数据文件中；</li>
+<li>在 InnoDB 引擎中：
+<ul>
+<li>如果是 8.0 版本是将自增值的变更保存在 redo log 中，因此，重启的时候可以依靠 redo log 恢复为重启前的值；</li>
+<li>如果是 5.7 及以下版本，自增值是保存在内存里的，没有做持久化；重启后会将自增值设置为 max(id) + 1;</li>
+</ul>
+</li>
+</ul>
+<p>下面，我们再看看自增值的修改逻辑。</p>
+<p>在 MySQL 中，自增值的设置有以下两个：</p>
+<ul>
+<li>auto_increment_offset：自增值的初始值，默认为 1；</li>
+<li>auto_increment_increment：自增值的增长步长，默认为 1；</li>
+</ul>
+<blockquote>
+<p>在某些场景，例如双 Master 架构，并且要求双写的时候，往往会将
+auto_increment_increment 设置为 2；Master 分别设置 auto_increment_offset 为 1 和 2; 从而保证自增字段不会冲突；</p>
+</blockquote>
+<p>在 MySQL 中，如果字段 A 被设置为 AUTO_INCREMENT，则在插入一行数据时，将按以下逻辑修改自增值  ：</p>
+<ul>
+<li>如果插入数据中，字段 A 的值为 null 或者 0:
+<ol>
+<li>获取当前表的自增值赋值到字段 A 中；</li>
+<li>将当前自增值 + auto_increment_increment；</li>
+<li>执行插入操作；</li>
+</ol>
+</li>
+<li>如果插入数据中，字段 A 指定了数值 X :
+<ul>
+<li>如果当前自增值 Y &gt; X，则不用修改自增值；</li>
+<li>如果 Y &lt;= X，则修改当前自增值为 X + auto_increment_increment；</li>
+</ul>
+</li>
+</ul>
+<h2 id="自增值不连续的几种原因">自增值不连续的几种原因</h2>
+<p>根据上述自增值修改逻辑，我们可以发现，对于 insert 语句，MySQL 首先获取当前自增值，然后更新当前自增值，最后才插入数据的；</p>
+<p>出于性能考虑，如果后续语句执行失败，自增值是不会执行回滚操作的，从而导致自增值不连续；MySQL 只保证自增值是递增但不连续；</p>
+<p>我们可以大致罗列导致自增值不连续的几个原因：</p>
+<ul>
+<li>insert 语句其他非自增字段不符合表数据要求，如违反唯一索引，数据格式不对，数据过长等等；</li>
+<li>事务回滚；</li>
+</ul>
+<p>此外，自增值的申请机制也会导致自增值的不连续；</p>
+<p>对于 insert values 的语句，MySQL 能够知道插入的数据量，可以预先申请指定数量的自增值，这种情况不会导致自增值的不连续；</p>
+<p>而对于批量插入数据的 SQL，如</p>
+<ul>
+<li>insert &hellip; select</li>
+<li>replace &hellip; select</li>
+<li>load data</li>
+</ul>
+<p>这种批量插入数据的语句，如果每插入一条数据申请自增值一次，很明显，不仅速度慢，而且会影响到并发性能；MySQL 采用了如下的批量申请策略：</p>
+<p>第一次申请一个自增值，后续的申请自增值的数量都是上次申请的两倍；</p>
+<p>这就导致，最后一次可能申请了过多的自增值，从而造成了自增值的不连续；示例如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> t <span style="color:#66d9ef">values</span>(<span style="color:#66d9ef">null</span>, <span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">2</span>);
+<span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> t <span style="color:#66d9ef">values</span>(<span style="color:#66d9ef">null</span>, <span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">3</span>);
+<span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> t <span style="color:#66d9ef">values</span>(<span style="color:#66d9ef">null</span>, <span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">4</span>);
+
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> t2 <span style="color:#66d9ef">like</span> t;
+<span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> tt(<span style="color:#66d9ef">c</span>,d) <span style="color:#66d9ef">select</span> <span style="color:#66d9ef">c</span>,d <span style="color:#66d9ef">from</span> t;
+</code></pre></div><p><img src="https://gitee.com/pismery/imageshack/raw/master/img/20201004164439.png" alt=""></p>
+<p>可以看到，表 t 有四条数据，批量插入四条数据时，表 tt 的自增值变成为 8；申请流程如下：</p>
+<ol>
+<li>申请一个自增值，插入第一条数据（此时，自增值为 2）</li>
+<li>申请两个自增值，插入第二和第三条数据（此时，自增值为 4）</li>
+<li>申请四个自增值，插入第四条数据（此时，自增值为 8）</li>
+</ol>
+<p>前面讲到，出于性能方面的考虑，MySQL 决定不回滚自增值，只保证自增值递增；那么具体是怎么影响性能呢？</p>
+<p>我们可以考虑一个场景如下：</p>
+<ul>
+<li>事务 A：申请了自增值 1，2；</li>
+<li>事务 B：申请了自增值 3，4；</li>
+<li>事务 B：提交事务；</li>
+<li>事务 A：事务失败，回滚，此时如果回滚自增值为 1，则由于已经存在自增值 3，4，可能导致后续的自增值冲突；</li>
+</ul>
+<p>如果要回滚自增值，并且避免自增值冲突，则有下面两个方案</p>
+<ol>
+<li>每次申请自增值时，都要确定自增值是否存在；这样本来一个快速的操作，就需要查找索引树了；</li>
+<li>申请自增值的锁，直到事务提交才释放，这就大大增加了自增值的锁粒度，从而影响并发性能；</li>
+</ol>
+<p>综上，为了提高性能，MySQL 决定不回滚自增值，只保证自增值的递增；</p>
+<h2 id="自增值的相关配置">自增值的相关配置</h2>
+<p>自 5.1.22 版本开始，MySQL 引入了参数 「innodb_autoinc_lock_mode」；</p>
+<ul>
+<li>当参数为 0 时，即 MySQL 5.0 所采用的策略，申请自增值的锁，等到语句执行完才释放；</li>
+<li>当参数为 1 时：
+<ul>
+<li>对于普通 insert 语句，自增值申请后立即释放；</li>
+<li>对于批量插入语句，自增值仍然需要执行完语句，才释放锁；（ps: 此为 MySQL 5.X 版本的默认值）</li>
+</ul>
+</li>
+<li>当参数为 2 时，所有自增值都申请后立即释放；（ps: MySQL 8.0 版本后将此设置为默认值，同时参数「binlog_format」设置为 row）</li>
+</ul>
+<p>善于思考的我们，不禁会想当「innodb_autoinc_lock_mode」值为 1 时，为什么对于批量插入语句需要等到语句执行完后，才能释放自增值的锁呢？</p>
+<p>答案很简单，为了数据的一致性；我们知道，当 MySQL 「binlog_format」设置为 statement 的时候，binlog 记录的是语句级别的日志；</p>
+<p>此时，遇到下面的场景：</p>
+<p>Session A: 执行 insert &hellip; select；
+Session B: 在 Session A 执行过程中执行 insert 语句；</p>
+<p>此时，假设 Session A 批量插入语句立即释放自增值的锁；则 Session B 的自增值是不确定的，而 binlog 只能记录这两句语句，如果发送给其他备库或者回滚数据库时，则无法保证自增值与原数据一致；</p>
+<p>相信你可以发现，当我们将 「binlog_format」设置为 row 格时，binlog 记录的是数据级别的日志，就不会出现这种的情况了；</p>
+<p>因此，这里也推荐使用 row 格式的 binlog，同时将「innodb_autoinc_lock_mode」设置为 2；</p>
+<h2 id="总结">总结</h2>
+<p>首先，我们讲解了如何查看当前表自增值，以及 MySQL 是如何保存自增值的；</p>
+<p>接着，我们说到，出于性能方面的考虑，MySQL 决定不回滚自增值只保证自增值递增；因此，我们可以知道，在申请自增值后，语句执行失败，或在事务回滚时，MySQL 会出现自增值不连续的情况；</p>
+<p>MySQL 为了提高申请自增值的申请效率，在重复申请时，申请数量按指数形式增长；因此，最后一次申请过多的自增值，最终导致自增值的不连续；</p>
+<p>最后，我们说到了自增值的策略配置「innodb_autoinc_lock_mode」，以及建议设置为 2，同时 binlog 采用 row 格式；</p>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/database/mysql/group_by_operation/" data-toggle="tooltip" data-placement="top" title="「MySQL 45 讲」- Group By 操作处理">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/database/mysql/copy_table/" data-toggle="tooltip" data-placement="top" title="「MySQL 45 讲」- 表复制">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine@v1.3.3/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'zfOn1B2YTxxPd1yjqecV2u9P-gzGzoHsz',
+        appKey: 'vvDdQkMwgbffpkHklpHPTHkP',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'identicon', 
+        placeholder: '说点什么吧...',
+        visitor: 'false',
+    });
+
+    $("code").each(function(){
+      $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+    });
+  </script>
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/jvm" title="JVM">
+                            JVM
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/ms" title="MS">
+                            MS
+=======
+                        <a href="/blog/tags/basic" title="basic">
+                            basic
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/mysql" title="MySQL">
+                            MySQL
+=======
+                        <a href="/blog/tags/concurrent" title="concurrent">
+                            concurrent
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/nio" title="NIO">
+                            NIO
+=======
+                        <a href="/blog/tags/database" title="database">
+                            database
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/netty" title="Netty">
+                            Netty
+=======
+                        <a href="/blog/tags/java" title="java">
+                            java
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/python" title="Python">
+                            Python
+=======
+                        <a href="/blog/tags/jvm" title="jvm">
+                            jvm
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/spring" title="Spring">
+                            Spring
+=======
+                        <a href="/blog/tags/log" title="log">
+                            log
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/transaction" title="Transaction">
+                            Transaction
+=======
+                        <a href="/blog/tags/mysql" title="mysql">
+                            mysql
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/basic" title="basic">
+                            basic
+=======
+                        <a href="/blog/tags/netty" title="netty">
+                            netty
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/concurrent" title="concurrent">
+                            concurrent
+=======
+                        <a href="/blog/tags/nio" title="nio">
+                            nio
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/database" title="database">
+                            database
+=======
+                        <a href="/blog/tags/python" title="python">
+                            python
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/kafka" title="kafka">
+                            kafka
+=======
+                        <a href="/blog/tags/spring" title="spring">
+                            spring
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+<<<<<<< HEAD
+                        <a href="/tags/log" title="log">
+                            log
+=======
+                        <a href="/blog/tags/transaction" title="transaction">
+                            transaction
+>>>>>>> 9ad5112389a1979efa57b1572ce165bc85fd8f88
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB" title="工具类">
+                            工具类
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84" title="数据结构">
+                            数据结构
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0" title="极客时间笔记">
+                            极客时间笔记
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%B5%8B%E8%AF%95" title="测试">
+                            测试
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%AE%97%E6%B3%95" title="算法">
+                            算法
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3" title="设计思想">
+                            设计思想
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" title="设计模式">
+                            设计模式
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:pismery@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat_code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Pismery">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Pismery Blog 2022
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

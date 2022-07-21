@@ -1,0 +1,24 @@
+.hljs {
+    border: 0;
+    font-size: 12px;
+    display: block;
+    padding: 1px;
+    margin: 0;
+    width: 100%;
+    font-weight: 200;
+    color: #333;
+    white-space: pre-wrap
+}
+.hljs ol {
+    list-style: decimal;
+    margin: 0px 0px 0 40px !important;
+    padding: 0px;
+    margin-bottom: 20px;
+}
+.hljs ol li {
+    list-style: decimal-leading-zero;
+    border-left: 1px solid #ddd !important;
+    padding: 1px!important;
+    margin: 0 !important;
+    white-space: pre;
+}

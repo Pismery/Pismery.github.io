@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on Pismery Blog</title>
+    <link>https://pismery.gitee.io/blog/tags/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on Pismery Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+    <lastBuildDate>Sun, 28 Feb 2021 15:31:23 +0800</lastBuildDate>
+    
+	<atom:link href="https://pismery.gitee.io/blog/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>「LeetCode - 3」无重复字符的最长子串</title>
+      <link>https://pismery.gitee.io/blog/post/common/algorithm/lengthoflongestsubstring/</link>
+      <pubDate>Sun, 28 Feb 2021 15:31:23 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/common/algorithm/lengthoflongestsubstring/</guid>
+      <description>算法 - 无重复字符的最长子串 题目要求： 给定一个字符串 s，请你找出其中不含有重复字符的最长子串的长度。 示例 1: 入: s = &amp;quot;abcabcbb&amp;quot; 出: 3 释: 因为无重复字符的</description>
+    </item>
+    
+    <item>
+      <title>GetPrime</title>
+      <link>https://pismery.gitee.io/blog/post/common/algorithm/getprime/</link>
+      <pubDate>Tue, 01 Oct 2019 20:26:55 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/common/algorithm/getprime/</guid>
+      <description>算法 - 素数 题目 求小于等于 maxNum 中的所有素数；「ps: 素数又称质数，质数是指在大于1的自然数中，除了1和它本身以外不再有其他因数的自然数。」 题解 思</description>
+    </item>
+    
+    <item>
+      <title>生成随机数</title>
+      <link>https://pismery.gitee.io/blog/post/java/util/%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/</link>
+      <pubDate>Wed, 12 Dec 2018 22:44:33 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/java/util/%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/</guid>
+      <description>&lt;p&gt;生成随机数工具类&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>快速排序</title>
+      <link>https://pismery.gitee.io/blog/post/common/algorithm/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Tue, 30 Oct 2018 21:55:38 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/common/algorithm/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</guid>
+      <description>快速排序 介绍 &amp;ensp;&amp;ensp;快速排序思想解决O(n)时间内求第N大数字 。 递归快速排序 版本一 思想 每次递归将基准移动到适合的位置，使得左</description>
+    </item>
+    
+    <item>
+      <title>冒泡排序</title>
+      <link>https://pismery.gitee.io/blog/post/common/algorithm/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Tue, 30 Oct 2018 21:54:30 +0800</pubDate>
+      
+      <guid>https://pismery.gitee.io/blog/post/common/algorithm/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</guid>
+      <description>冒泡排序 普通冒泡 思路 由index=[ 0 , length-1-rangNumber ) 开始比较a[i]与a[i+1]的大小，若a[i]&amp;gt;a[i+1]，则交换，因此一次循环则将最</description>
+    </item>
+    
+  </channel>
+</rss>
