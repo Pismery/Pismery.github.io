@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MySQL on Pismery Blog</title>
-    <link>https://pismery.gitee.io/blog/tags/mysql/</link>
+    <link>https://pismery.github.io/tags/mysql/</link>
     <description>Recent content in MySQL on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
     <lastBuildDate>Sun, 11 Oct 2020 15:27:12 +0800</lastBuildDate>
     
-	<atom:link href="https://pismery.gitee.io/blog/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pismery.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>「MySQL 45 讲」- 表复制</title>
-      <link>https://pismery.gitee.io/blog/post/storage/mysql/copy_table/</link>
+      <link>https://pismery.github.io/post/storage/mysql/copy_table/</link>
       <pubDate>Sun, 11 Oct 2020 15:27:12 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/storage/mysql/copy_table/</guid>
+      <guid>https://pismery.github.io/post/storage/mysql/copy_table/</guid>
       <description>&lt;p&gt;本文主要讲解 MySQL 中迁移表数据的一些方法；分别是&lt;/p&gt;
 
 &lt;ul&gt;
@@ -28,37 +28,37 @@
     
     <item>
       <title>「MySQL 45 讲」- 自增值处理</title>
-      <link>https://pismery.gitee.io/blog/post/storage/mysql/auto_increment/</link>
+      <link>https://pismery.github.io/post/storage/mysql/auto_increment/</link>
       <pubDate>Thu, 08 Oct 2020 20:16:07 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/storage/mysql/auto_increment/</guid>
+      <guid>https://pismery.github.io/post/storage/mysql/auto_increment/</guid>
       <description>&lt;p&gt;本文主要讲解 MySQL 中自增值相关内容&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>「MySQL 45 讲」- Group By 操作处理</title>
-      <link>https://pismery.gitee.io/blog/post/storage/mysql/group_by_operation/</link>
+      <link>https://pismery.github.io/post/storage/mysql/group_by_operation/</link>
       <pubDate>Wed, 30 Sep 2020 21:05:43 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/storage/mysql/group_by_operation/</guid>
+      <guid>https://pismery.github.io/post/storage/mysql/group_by_operation/</guid>
       <description>&lt;p&gt;本文主要讲解 MySQL 对 group by 的处理流程；&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>「MySQL 45 讲」- Buffer Pool 淘汰算法</title>
-      <link>https://pismery.gitee.io/blog/post/storage/mysql/remove_algorithm/</link>
+      <link>https://pismery.github.io/post/storage/mysql/remove_algorithm/</link>
       <pubDate>Tue, 22 Sep 2020 21:07:23 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/storage/mysql/remove_algorithm/</guid>
+      <guid>https://pismery.github.io/post/storage/mysql/remove_algorithm/</guid>
       <description>&lt;p&gt;本文为 「极客时间- MySQL 实战 45 讲」 的学习笔记；主要为了加深理解；&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>「MySQL 45 讲」- Kill 命令</title>
-      <link>https://pismery.gitee.io/blog/post/storage/mysql/kill_thread/</link>
+      <link>https://pismery.github.io/post/storage/mysql/kill_thread/</link>
       <pubDate>Mon, 14 Sep 2020 22:05:33 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/storage/mysql/kill_thread/</guid>
+      <guid>https://pismery.github.io/post/storage/mysql/kill_thread/</guid>
       <description>&lt;p&gt;本文为 「极客时间- MySQL 实战 45 讲」 学习笔记；记录内容主要为了加深理解；&lt;/p&gt;
 
 &lt;p&gt;本篇主要讲解 kill 命令的执行流程与原理；&lt;/p&gt;</description>
@@ -66,19 +66,19 @@
     
     <item>
       <title>「MySQL 45 讲」- 过期读</title>
-      <link>https://pismery.gitee.io/blog/post/storage/mysql/overdue_read/</link>
+      <link>https://pismery.github.io/post/storage/mysql/overdue_read/</link>
       <pubDate>Mon, 07 Sep 2020 21:56:23 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/storage/mysql/overdue_read/</guid>
+      <guid>https://pismery.github.io/post/storage/mysql/overdue_read/</guid>
       <description>&lt;p&gt;本文为 「极客时间- MySQL 实战 45 讲」 学习笔记；主要目的是加深理解；&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>「MySQL 45 讲」- MySQL 查询语句执行流程</title>
-      <link>https://pismery.gitee.io/blog/post/storage/mysql/mysql_execution_process/</link>
+      <link>https://pismery.github.io/post/storage/mysql/mysql_execution_process/</link>
       <pubDate>Sun, 05 Jul 2020 21:41:44 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/storage/mysql/mysql_execution_process/</guid>
+      <guid>https://pismery.github.io/post/storage/mysql/mysql_execution_process/</guid>
       <description>&lt;p&gt;本系列是「极客时间」课程「MySQL 实战 45 讲」的学习笔记，目的是为了强化学习效果；&lt;/p&gt;</description>
     </item>
     

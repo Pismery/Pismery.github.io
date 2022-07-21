@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JVM on Pismery Blog</title>
-    <link>https://pismery.gitee.io/blog/tags/jvm/</link>
+    <link>https://pismery.github.io/tags/jvm/</link>
     <description>Recent content in JVM on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
     <lastBuildDate>Sun, 29 Sep 2019 10:47:59 +0800</lastBuildDate>
     
-	<atom:link href="https://pismery.gitee.io/blog/tags/jvm/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pismery.github.io/tags/jvm/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>G1收集器</title>
-      <link>https://pismery.gitee.io/blog/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/</link>
+      <link>https://pismery.github.io/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/</link>
       <pubDate>Sun, 29 Sep 2019 10:47:59 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/</guid>
+      <guid>https://pismery.github.io/post/java/jvm/g1%E6%94%B6%E9%9B%86%E5%99%A8/</guid>
       <description>垃圾收集器 G1 G1「Garbage First」收集器是继 CMS 收集器的下一代垃圾收集器，在 Java 7 中加入了 JVM 垃圾收集器大家族中；其目的是为了适应服务器</description>
     </item>
     
     <item>
       <title>JVM之垃圾回收机制</title>
-      <link>https://pismery.gitee.io/blog/post/java/jvm/jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</link>
+      <link>https://pismery.github.io/post/java/jvm/jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</link>
       <pubDate>Fri, 18 Jan 2019 22:22:39 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/jvm/jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</guid>
+      <guid>https://pismery.github.io/post/java/jvm/jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</guid>
       <description>垃圾回收机制 JVM 内存分配和回收策略 JDK1.8 前堆内存示意图 如上图，堆内存分为新生代、老年代，永久代；而新生代又分为Eden, Survivor 1, Survivor 2; 注意：永久代在JD</description>
     </item>
     

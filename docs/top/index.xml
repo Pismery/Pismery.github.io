@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tops on Pismery Blog</title>
-    <link>https://pismery.gitee.io/blog/top/</link>
+    <link>https://pismery.github.io/top/</link>
     <description>Recent content in Tops on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
     
-	<atom:link href="https://pismery.gitee.io/blog/top/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pismery.github.io/top/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title></title>
-      <link>https://pismery.gitee.io/blog/top/about/</link>
+      <link>https://pismery.github.io/top/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/top/about/</guid>
+      <guid>https://pismery.github.io/top/about/</guid>
       <description>个人信息  刘嘉禾 | 本科 | 广州大学 | 软件工程 &amp;amp; 应用心理学（二专）| 毕业时间：2018.06 微信号：pismery001 | Email：pismery@163.com | 个人博客：https://pismery.gitee.io/blog/ 求职岗位：Java 高级工程师 | 项目经验：4 年  技能清单  掌握 Java 核心知识，具备良好的面向对象的编程思想，在项目中熟练使用各种设计模式； 掌握 Java 集合操作，并阅读过 HashMap 源码； 熟悉 JVM，对 JVM 的内存结构，内存模型，垃圾回收算法有深入了解；
  熟悉 Java 并发编程，对 Java 锁机制，线程池，AQS，并发工具类等都有深入理解，并在项目中熟练使用； 熟悉 Spring MVC，Spring Boot，Mybatis 等常用框架，可以根据需求快速搭建项目，并阅读过相关源码； 熟悉 SQL 与 MySQL 数据库优化，对事务，B+ 树，索引优化有深入理解，并实践过线上业务调优； 熟悉 Redis，对缓存击穿，缓存穿透，高可用机制，哨兵机制有深入了解； 熟悉 Kafka，在高吞吐下保证消息不丢，消息消费顺序性，有实际项目经验； 熟练搭建 Redis, ElasticSearch, Kafka, Flink, ZooKeeper 等高可用集群环境，有运维生产环境经验；  工作经历 坤湛科技有限公司（2021年5月 ~ 至今） 工作内容  参与智慧城市项目交付，主要负责健康，工地，文旅等后台管理模块的设计与代码实现； 参与共享服务管理平台项目交付，主要负责拓扑，链路，监控，统计等模块的设计与代码实现； 参与具体交付项目过程中，通过梳理和抽象，沉淀通用能力至公司技术平台中；  友邦资讯科技（广州）有限公司 （ 2018 年 1 月 ~ 2021年4月） 工作内容  负责旧系统迁移下线，相关的功能代码实现，迁移文档攥写，组织迁移演练； 负责核心团险系统二期功能的模块设计与代码实现； 负责再保险模块的需求分析，模块设计，代码实现与维护； 负责新系统框架可行性及性能验证；  项目经历 智慧城市（2021-12 ~ 至今） 技术选型：Spring Boot + Hibernate + MySQL + Nacos + Dubbo + XXL-Job + RocketMQ</description>
     </item>

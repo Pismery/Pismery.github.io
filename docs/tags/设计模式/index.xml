@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>设计模式 on Pismery Blog</title>
-    <link>https://pismery.gitee.io/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+    <link>https://pismery.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
     <description>Recent content in 设计模式 on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
     <lastBuildDate>Wed, 01 Jul 2020 21:09:02 +0800</lastBuildDate>
     
-	<atom:link href="https://pismery.gitee.io/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pismery.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>单例模式演进</title>
-      <link>https://pismery.gitee.io/blog/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E6%BC%94%E8%BF%9B/</link>
+      <link>https://pismery.github.io/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E6%BC%94%E8%BF%9B/</link>
       <pubDate>Wed, 01 Jul 2020 21:09:02 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E6%BC%94%E8%BF%9B/</guid>
+      <guid>https://pismery.github.io/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E6%BC%94%E8%BF%9B/</guid>
       <description>&lt;p&gt;本文将通过梳理编码的思考过程，来讲述各种单例模式实现的缘由和注意事项；&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>单例模式</title>
-      <link>https://pismery.gitee.io/blog/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</link>
+      <link>https://pismery.github.io/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Sun, 16 Dec 2018 21:09:02 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>https://pismery.github.io/post/common/design-pattern/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</guid>
       <description>单例模式 意图 解决一个类不需要多次实例化，系统只需要一个实例化对象；或者资源占用太大只允许创建一个。 优缺点 单例模式: 优点：节约系统资源; 缺点：</description>
     </item>
     
     <item>
       <title>工厂三兄弟</title>
-      <link>https://pismery.gitee.io/blog/post/common/design-pattern/%E5%B7%A5%E5%8E%82%E4%B8%89%E5%85%84%E5%BC%9F/</link>
+      <link>https://pismery.github.io/post/common/design-pattern/%E5%B7%A5%E5%8E%82%E4%B8%89%E5%85%84%E5%BC%9F/</link>
       <pubDate>Tue, 30 Oct 2018 21:43:29 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/common/design-pattern/%E5%B7%A5%E5%8E%82%E4%B8%89%E5%85%84%E5%BC%9F/</guid>
+      <guid>https://pismery.github.io/post/common/design-pattern/%E5%B7%A5%E5%8E%82%E4%B8%89%E5%85%84%E5%BC%9F/</guid>
       <description>工厂三兄弟 作用 一个类对象相关职责可以分为对象本身具有的职责、创建耦合对象职责、使用耦合对象职责；在工厂模式中强调，两个类A和B的关系要么A创</description>
     </item>
     

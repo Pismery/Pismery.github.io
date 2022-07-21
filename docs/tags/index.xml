@@ -2,192 +2,192 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Pismery Blog</title>
-    <link>https://pismery.gitee.io/blog/tags/</link>
+    <link>https://pismery.github.io/tags/</link>
     <description>Recent content in Tags on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
     <lastBuildDate>Sun, 29 Sep 2019 10:47:59 +0800</lastBuildDate>
     
-	<atom:link href="https://pismery.gitee.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pismery.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>JVM</title>
-      <link>https://pismery.gitee.io/blog/tags/jvm/</link>
+      <link>https://pismery.github.io/tags/jvm/</link>
       <pubDate>Sun, 29 Sep 2019 10:47:59 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/jvm/</guid>
+      <guid>https://pismery.github.io/tags/jvm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Java</title>
-      <link>https://pismery.gitee.io/blog/tags/java/</link>
+      <link>https://pismery.github.io/tags/java/</link>
       <pubDate>Sun, 12 Jul 2020 14:52:40 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/java/</guid>
+      <guid>https://pismery.github.io/tags/java/</guid>
       <description></description>
     </item>
     
     <item>
       <title>MySQL</title>
-      <link>https://pismery.gitee.io/blog/tags/mysql/</link>
+      <link>https://pismery.github.io/tags/mysql/</link>
       <pubDate>Sun, 11 Oct 2020 15:27:12 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/mysql/</guid>
+      <guid>https://pismery.github.io/tags/mysql/</guid>
       <description></description>
     </item>
     
     <item>
       <title>NIO</title>
-      <link>https://pismery.gitee.io/blog/tags/nio/</link>
+      <link>https://pismery.github.io/tags/nio/</link>
       <pubDate>Sat, 23 Nov 2019 20:24:44 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/nio/</guid>
+      <guid>https://pismery.github.io/tags/nio/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Netty</title>
-      <link>https://pismery.gitee.io/blog/tags/netty/</link>
+      <link>https://pismery.github.io/tags/netty/</link>
       <pubDate>Sat, 23 Nov 2019 20:24:44 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/netty/</guid>
+      <guid>https://pismery.github.io/tags/netty/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>https://pismery.gitee.io/blog/tags/python/</link>
+      <link>https://pismery.github.io/tags/python/</link>
       <pubDate>Tue, 10 Sep 2019 22:31:57 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/python/</guid>
+      <guid>https://pismery.github.io/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Redis</title>
-      <link>https://pismery.gitee.io/blog/tags/redis/</link>
+      <link>https://pismery.github.io/tags/redis/</link>
       <pubDate>Fri, 10 Jun 2022 14:51:07 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/redis/</guid>
+      <guid>https://pismery.github.io/tags/redis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spring</title>
-      <link>https://pismery.gitee.io/blog/tags/spring/</link>
+      <link>https://pismery.github.io/tags/spring/</link>
       <pubDate>Sun, 12 Jul 2020 14:52:40 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/spring/</guid>
+      <guid>https://pismery.github.io/tags/spring/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Transaction</title>
-      <link>https://pismery.gitee.io/blog/tags/transaction/</link>
+      <link>https://pismery.github.io/tags/transaction/</link>
       <pubDate>Sun, 12 Jul 2020 14:52:40 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/transaction/</guid>
+      <guid>https://pismery.github.io/tags/transaction/</guid>
       <description></description>
     </item>
     
     <item>
       <title>basic</title>
-      <link>https://pismery.gitee.io/blog/tags/basic/</link>
+      <link>https://pismery.github.io/tags/basic/</link>
       <pubDate>Sun, 17 Feb 2019 11:35:32 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/basic/</guid>
+      <guid>https://pismery.github.io/tags/basic/</guid>
       <description></description>
     </item>
     
     <item>
       <title>concurrent</title>
-      <link>https://pismery.gitee.io/blog/tags/concurrent/</link>
+      <link>https://pismery.github.io/tags/concurrent/</link>
       <pubDate>Sat, 02 Mar 2019 20:47:12 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/concurrent/</guid>
+      <guid>https://pismery.github.io/tags/concurrent/</guid>
       <description></description>
     </item>
     
     <item>
       <title>database</title>
-      <link>https://pismery.gitee.io/blog/tags/database/</link>
+      <link>https://pismery.github.io/tags/database/</link>
       <pubDate>Sun, 21 Apr 2019 21:03:34 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/database/</guid>
+      <guid>https://pismery.github.io/tags/database/</guid>
       <description></description>
     </item>
     
     <item>
       <title>log</title>
-      <link>https://pismery.gitee.io/blog/tags/log/</link>
+      <link>https://pismery.github.io/tags/log/</link>
       <pubDate>Thu, 02 May 2019 21:40:34 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/log/</guid>
+      <guid>https://pismery.github.io/tags/log/</guid>
       <description></description>
     </item>
     
     <item>
       <title>工具类</title>
-      <link>https://pismery.gitee.io/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/</link>
+      <link>https://pismery.github.io/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/</link>
       <pubDate>Sun, 15 Dec 2019 22:26:56 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/</guid>
+      <guid>https://pismery.github.io/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/</guid>
       <description></description>
     </item>
     
     <item>
       <title>数据结构</title>
-      <link>https://pismery.gitee.io/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+      <link>https://pismery.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
       <pubDate>Tue, 08 Oct 2019 22:08:29 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+      <guid>https://pismery.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
       <description></description>
     </item>
     
     <item>
       <title>极客时间笔记</title>
-      <link>https://pismery.gitee.io/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0/</link>
+      <link>https://pismery.github.io/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Sun, 11 Oct 2020 15:27:12 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://pismery.github.io/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E7%AC%94%E8%AE%B0/</guid>
       <description></description>
     </item>
     
     <item>
       <title>测试</title>
-      <link>https://pismery.gitee.io/blog/tags/%E6%B5%8B%E8%AF%95/</link>
+      <link>https://pismery.github.io/tags/%E6%B5%8B%E8%AF%95/</link>
       <pubDate>Wed, 28 Nov 2018 21:30:42 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/%E6%B5%8B%E8%AF%95/</guid>
+      <guid>https://pismery.github.io/tags/%E6%B5%8B%E8%AF%95/</guid>
       <description></description>
     </item>
     
     <item>
       <title>算法</title>
-      <link>https://pismery.gitee.io/blog/tags/%E7%AE%97%E6%B3%95/</link>
+      <link>https://pismery.github.io/tags/%E7%AE%97%E6%B3%95/</link>
       <pubDate>Sun, 28 Feb 2021 15:31:23 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/%E7%AE%97%E6%B3%95/</guid>
+      <guid>https://pismery.github.io/tags/%E7%AE%97%E6%B3%95/</guid>
       <description></description>
     </item>
     
     <item>
       <title>设计思想</title>
-      <link>https://pismery.gitee.io/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/</link>
+      <link>https://pismery.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/</link>
       <pubDate>Sun, 29 Dec 2019 21:16:14 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/</guid>
+      <guid>https://pismery.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/</guid>
       <description></description>
     </item>
     
     <item>
       <title>设计模式</title>
-      <link>https://pismery.gitee.io/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+      <link>https://pismery.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Wed, 01 Jul 2020 21:09:02 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>https://pismery.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
       <description></description>
     </item>
     

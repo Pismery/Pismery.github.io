@@ -2,129 +2,129 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>concurrent on Pismery Blog</title>
-    <link>https://pismery.gitee.io/blog/tags/concurrent/</link>
+    <link>https://pismery.github.io/tags/concurrent/</link>
     <description>Recent content in concurrent on Pismery Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
     <lastBuildDate>Sat, 02 Mar 2019 20:47:12 +0800</lastBuildDate>
     
-	<atom:link href="https://pismery.gitee.io/blog/tags/concurrent/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pismery.github.io/tags/concurrent/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>并发编程之并发工具类 Exchanger</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-exchanger/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-exchanger/</link>
       <pubDate>Sat, 02 Mar 2019 20:47:12 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-exchanger/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-exchanger/</guid>
       <description>&lt;div&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
       <title>并发编程之 Atomic 原子类</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Batomic-atomic%E5%8E%9F%E5%AD%90%E7%B1%BB/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Batomic-atomic%E5%8E%9F%E5%AD%90%E7%B1%BB/</link>
       <pubDate>Sat, 26 Jan 2019 20:28:19 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Batomic-atomic%E5%8E%9F%E5%AD%90%E7%B1%BB/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Batomic-atomic%E5%8E%9F%E5%AD%90%E7%B1%BB/</guid>
       <description>&lt;p&gt;J.U.C Atomic 类通过 CAS 实现原子性操作。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>并发编程基础 Volatile</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-volatile/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-volatile/</link>
       <pubDate>Wed, 09 Jan 2019 20:53:07 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-volatile/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-volatile/</guid>
       <description>voliatile 关键字 我们知道synchronized经过Java6的偏向锁、轻量级锁、锁消除、锁粗化等等优化性能得到了很大的提升，与Lock相差不大。但</description>
     </item>
     
     <item>
       <title>并发编程之并发工具类-Semaphore</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-semaphore/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-semaphore/</link>
       <pubDate>Fri, 21 Dec 2018 21:05:18 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-semaphore/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-semaphore/</guid>
       <description>&lt;p&gt;同步工具类 Semaphore 实现信号量的功能，具有公平锁和非公平锁两种方式。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>并发编程之并发工具类-CyclicBarrier</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-cyclicbarrier/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-cyclicbarrier/</link>
       <pubDate>Fri, 21 Dec 2018 21:05:00 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-cyclicbarrier/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-cyclicbarrier/</guid>
       <description>&lt;p&gt;同步工具类 CyclicBarrer 实现一组线程相互等待，直到所有线程到达屏障。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>并发编程之并发工具类-CountDownLatch</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-countdownlatch/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-countdownlatch/</link>
       <pubDate>Fri, 21 Dec 2018 21:04:54 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-countdownlatch/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-countdownlatch/</guid>
       <description>&lt;p&gt;同步工具类 CountDownLatch 实现一个或多个线程阻塞等待其他他线程完成操作。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>并发编程基础概念-核心理论</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA/</link>
       <pubDate>Thu, 20 Dec 2018 22:03:05 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E6%A0%B8%E5%BF%83%E7%90%86%E8%AE%BA/</guid>
       <description>核心理论 共享性 共享性指资源对多个线程操作同一份资源，是导致线程不安全的主要前提之一。若所有线程都只操作线程内的数据，则就不会产生线程安全问题</description>
     </item>
     
     <item>
       <title>并发编程基础-synchronized</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-synchronized/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-synchronized/</link>
       <pubDate>Thu, 20 Dec 2018 21:46:37 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-synchronized/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-synchronized/</guid>
       <description>synchronized synchronized三种使用方式 修饰实例方法，表示对当前类的实例加锁，若要访问此方法需要获取当前实例的对象锁。 修饰静态方法，表示对当前</description>
     </item>
     
     <item>
       <title>并发编程之线程池-Executor框架</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-executor%E6%A1%86%E6%9E%B6/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-executor%E6%A1%86%E6%9E%B6/</link>
       <pubDate>Sun, 09 Dec 2018 08:50:27 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-executor%E6%A1%86%E6%9E%B6/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-executor%E6%A1%86%E6%9E%B6/</guid>
       <description>&lt;p&gt;Executor 框架线程池框架。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>并发编程之线程池-工厂类Executors</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%B7%A5%E5%8E%82%E7%B1%BBexecutors/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%B7%A5%E5%8E%82%E7%B1%BBexecutors/</link>
       <pubDate>Wed, 05 Dec 2018 21:16:38 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%B7%A5%E5%8E%82%E7%B1%BBexecutors/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E5%B7%A5%E5%8E%82%E7%B1%BBexecutors/</guid>
       <description>&lt;p&gt;线程池工厂类 Executors&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>并发编程基础概念-锁</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E9%94%81/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E9%94%81/</link>
       <pubDate>Fri, 30 Nov 2018 06:38:14 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E9%94%81/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-%E9%94%81/</guid>
       <description>偏向锁、轻量级锁 引入偏向锁和轻量级锁目的都是为了当没有多线程竞争或者竞争不激烈的情况下，减少传统的重量级锁使用操作系统的互斥量（即Monit</description>
     </item>
     
     <item>
       <title>并发编程基础-线程间的协作</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%8D%8F%E4%BD%9C/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%8D%8F%E4%BD%9C/</link>
       <pubDate>Fri, 30 Nov 2018 06:10:15 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%8D%8F%E4%BD%9C/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%8D%8F%E4%BD%9C/</guid>
       <description>线程间的协作 线程状态 新建状态(New)：新创建了一个线程对象。 就绪状态(Runnable)：线程对象创建后，其他线程调用了该对象的start</description>
     </item>
     
     <item>
       <title>并发编程基础-Thread、Runnable、Callable</title>
-      <link>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-threadrunnablecallable/</link>
+      <link>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-threadrunnablecallable/</link>
       <pubDate>Thu, 29 Nov 2018 21:57:58 +0800</pubDate>
       
-      <guid>https://pismery.gitee.io/blog/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-threadrunnablecallable/</guid>
+      <guid>https://pismery.github.io/post/java/concurrent/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-threadrunnablecallable/</guid>
       <description>Thread vs Runnable 示例代码 public class Demo extend Thread { public Demo() { super(&amp;quot;Demo-Thread&amp;quot;); } public void run() { //Code } public static void main(String[] args) { new Demo().start(); } } public class Demo implements Runnable { public void run() { //Code } public static void main(String[] args) { new Thread(new Demo()).start(); } } 比较 通过实现Runnabl</description>
     </item>
     
